@@ -28,9 +28,9 @@ public class Demon
     public boolean pasar( Particle p){
         int posx = p.getpX();
         int posy = p.getpY();
-        int posCX = triangulo.getXposition();
-        int posCY = triangulo.getYposition();
-        return ( posx==posCX && posy == posCY) ;
+        int posDX = triangulo.getXposition();
+        int posDY = triangulo.getYposition();
+        return ( posx==posDX && posy == posDY) ;
     }
     public void makeVisible(){
         triangulo.makeVisible();
