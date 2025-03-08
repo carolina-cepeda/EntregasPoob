@@ -11,13 +11,12 @@ import java.awt.geom.*;
 public class Circle{
 
     public static final double PI=3.1416;
-    
+
     private int diameter;
-    private int xPosition;
-    private int yPosition;
+    protected int xPosition;
+    protected int yPosition;
     private String color;
     private boolean isVisible;
-    
 
     public Circle(){
         diameter = 30;
@@ -27,13 +26,10 @@ public class Circle{
         isVisible = false;
     }
 
-
-       
     public void makeVisible(){
         isVisible = true;
         draw();
     }
-    
 
     public void makeInvisible(){
         erase();
@@ -45,7 +41,7 @@ public class Circle{
             Canvas canvas = Canvas.getCanvas();
             canvas.draw(this, color, 
                 new Ellipse2D.Double(xPosition, yPosition, 
-                diameter, diameter));
+                    diameter, diameter));
             canvas.wait(10);
         }
     }
@@ -56,7 +52,7 @@ public class Circle{
             canvas.erase(this);
         }
     }
-    
+
     /**
      * Move the circle a few pixels to the right.
      */
@@ -164,7 +160,6 @@ public class Circle{
         color = newColor;
         draw();
     }
-
 
 
 }

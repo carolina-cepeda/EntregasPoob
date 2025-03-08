@@ -178,5 +178,20 @@ public class Triangle{
             canvas.erase(this);
         }
     }
+    
+    public int getXposition(){
+        return xPosition ;
+    }
+    
+    public int getYposition(){
+        return yPosition ;
+    }
+    public void setXposition(int xposition){
+        this.xPosition = xposition;
+    }
+    
+    public void setYposition( int position){
+        this.yPosition = position;
+    }
 }
 
