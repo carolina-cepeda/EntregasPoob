@@ -13,10 +13,10 @@ public class Rectangle{
 
     public static int EDGES = 4;
     
-    private int height;
-    private int width;
-    private int xPosition;
-    private int yPosition;
+    protected int height;
+    protected int width;
+    protected int xPosition;
+    protected int yPosition;
     private String color;
     private boolean isVisible;
 
