@@ -1,1 +1,5 @@
-# authors : Carolina Cepeda, Juanita Rubiano
+# Repositorio entregas proyecto de POOB ECI.
+
+
+
+## Autoras : Carolina Cepeda, Juanita Rubiano
