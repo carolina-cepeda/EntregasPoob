@@ -1,7 +1,11 @@
 #BlueJ class context
 comment0.target=Hole
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Hole\ here.\r\n\ \r\n\ @author\ Juanita\ Rubiano,\ Carolina\ Cepeda\r\n\ @version\ 8\ de\ marzo\r\n
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Hole\ here.\r\n\ \r\n\ @author\ Juanita\ Rubiano,\ Carolina\ Cepeda\r\n\ @version\ 10\ de\ marzo\r\n
 comment1.params=px\ py\ color
 comment1.target=Hole(int,\ int,\ java.lang.String)
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Hole\r\n
-numComments=2
+comment2.params=
+comment2.target=void\ makeVisible()
+comment3.params=
+comment3.target=void\ makeInvisible()
+numComments=4

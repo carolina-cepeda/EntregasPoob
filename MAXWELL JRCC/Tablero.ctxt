@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Tablero
+comment0.text=\r\n\ Tablero\ del\ juego\r\n\ \r\n\ @authors\ Carolina\ Cepeda,\ Juanita\ Rubiano\ \r\n\ @version\ 10/03/25\r\n
+comment1.params=h\ w
+comment1.target=Tablero(int,\ int)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Tablero\ based\ in\ canvas.\r\n
+numComments=2
