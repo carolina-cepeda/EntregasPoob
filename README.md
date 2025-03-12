@@ -2,4 +2,4 @@
 
 
 
-## Autoras : Carolina Cepeda, Juanita Rubiano
+## Autoras : Carolina Cepeda
