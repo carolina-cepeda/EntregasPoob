@@ -1,81 +1,89 @@
 
-import java.awt.*;
 /**
  * Write a description of class MaxwellContainer here.
  * 
- * @author Juanita Rubiano , Carolina Cepeda
+ * @author Carolina Cepeda
  * @version 4/03/2025
  */
-public class MaxwellContainer{
+public class MaxwellContainer {
     private int demon;
     private Particle particle;
+    private Tablero tablero;
+    private boolean isOk;
 
-    public MaxwellContainer ( int h, int w ){
-        
-        Tablero tablero= new Tablero(h,w);
-        
-    }
-    
-    public MaxwellContainer( int h, int w, int d, int b, int r, int[][] particles){
-        // creacion contenedor
-        this.addDemon(d);
-        
+    public MaxwellContainer(int h, int w) {
+
+        tablero = new Tablero(h, w);
+
     }
 
-    public void addDemon (int d){
-        
+    public MaxwellContainer(int h, int w, int d, int b, int r, int[][] particles) {
+
+        tablero = new Tablero(h, w);
+
+        tablero.addDemon(d);
     }
-    
-    public void addParticle (String color, boolean isRed,int px, int py, int vx, int vy){
-        
+
+    public void addDemon(int d) {
+        tablero.addDemon(d);
     }
-    
-    public void addHole( int px, int py, int particles){
-        
+
+    public void addParticle(String color, boolean isRed, int px, int py, int vx, int vy) {
+
+        tablero.addParticle(color, px, py, vx, vy);
     }
-    
-    public void delParticle( String color){
-        
+
+    public void addHole(int px, int py, int particles) {
+
+        tablero.addHole(px, py, particles);
     }
-    
-    public void delDemon (int d){
-        
+
+    public void delParticle(String color) {
+
     }
-    
-    public void start( int ticks){
-        
+
+    public void delDemon(int d) {
+        tablero.delDemon(d);
+
     }
-    
-    public boolean isGoal(){
+
+    public void start(int ticks) {
+
+    }
+
+    public boolean isGoal() {
+        return tablero.isGoal();
+    }
+
+    public int[] demons() {
+        return tablero.demons();
+    }
+
+    public int[][] particles() {
+        return tablero.particles();
+    }
+
+    public int[][] holes() {
+        return tablero.holes();
+    }
+
+    public void makeVisible() {
+        tablero.makeVisible();
+
+    }
+
+    public void makeInvisible() {
+
+        tablero.makeInvisible();
+    }
+
+    public void finish() {
+
+        tablero.finish();
+    }
+
+    public boolean ok() {
         return false;
     }
-    
-    public int[] demons(){
-        return new int[0];
-    }
-    
-    public int[][] particles(){
-        return new int[0][0];
-    }
-    
-    public int[][] holes(){
-        return new int[0][0];
-    }
-    
-    public void makeVisible(){
-        
-    }
-    
-    public void makeInvisible(){
-        
-    }
-    
-    public void finish(){
-        
-    }
-    
-    public boolean ok(){
-       return false; 
-    }    
-    
+
 }

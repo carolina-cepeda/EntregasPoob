@@ -1,0 +1,42 @@
+
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+/**
+ * The test class MaxwellContainerC1Test.
+ *
+ * @author  Carolina cepeda
+ * @version 13/03/25
+ */
+public class MaxwellContainerC1Test
+{
+    /**
+     * Default constructor for test class MaxwellContainerC1Test
+     */
+    public MaxwellContainerC1Test()
+    {
+    }
+
+    /**
+     * Sets up the test fixture.
+     *
+     * Called before every test case method.
+     */
+    @BeforeEach
+    public void setUp()
+    {
+    }
+
+    /**
+     * Tears down the test fixture.
+     *
+     * Called after every test case method.
+     */
+    @AfterEach
+    public void tearDown()
+    {
+    }
+}

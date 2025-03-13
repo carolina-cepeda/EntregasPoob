@@ -182,6 +182,10 @@ public class Rectangle{
             canvas.erase(this);
         }
     }
+    
+    public int getPositionX(){
+        return xPosition;
+    }
 }
 
 

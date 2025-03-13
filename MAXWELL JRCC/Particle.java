@@ -2,7 +2,7 @@
 /**
  * Write a description of class Particle here.
  * 
- * @author Juanita Rubiano, Carolina Cepeda
+ * @author Carolina Cepeda
  * @version 10/03/25
  */
 public class Particle {
@@ -12,27 +12,31 @@ public class Particle {
     private int vX;
     private int vY;
     private Circle grafico;
-    
+
     /**
      * Constructor for objects of class Particle
      */
-    public Particle(String color, int vX, int vY,int x, int y)
-    {   
+    public Particle(String color, int x, int y, int vX, int vY) {
         grafico = new Circle();
-        grafico.changeColor (color);
+        grafico.changeColor(color);
         grafico.setXposition(x);
         grafico.setYposition(y);
 
-        
     }
-    
-    
-    
-    
-    public int getpX(){
+
+    public void makeVisible() {
+        grafico.makeVisible();
+    }
+
+    public void makeInvisible() {
+        grafico.makeInvisible();
+    }
+
+    public int getpX() {
         return this.x;
     }
-    public int getpY(){
+
+    public int getpY() {
         return this.y;
     }
 }
