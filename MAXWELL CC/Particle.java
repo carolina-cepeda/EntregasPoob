@@ -66,13 +66,14 @@ public class Particle {
     }
 
     public boolean isGoalR(int h, int w) {
-        int maxX = ((w + 62) / 2);
+        int maxX = ((w + 70) / 2);
         return (70 <= x && x <= maxX);
     }
 
     public boolean isGoalB(int h, int w) {
-        int minX = ((w + 62) / 2);
-        return (minX <= x && x <= 2 * minX);
+        int minX = ((w + 70) / 2);
+        int maxX = w + 70;
+        return (minX <= x && x <= maxX);
     }
 
     public int getpX() {
@@ -81,5 +82,18 @@ public class Particle {
 
     public int getpY() {
         return this.y;
+    }
+
+    public void moveV() {
+        x += vX;
+        y += vY;
+    }
+
+    public void setpX(int dado) {
+        this.x = dado;
+    }
+
+    public void setpY(int dado) {
+        this.y = dado;
     }
 }

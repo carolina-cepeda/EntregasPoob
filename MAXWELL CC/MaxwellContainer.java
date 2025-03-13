@@ -22,6 +22,11 @@ public class MaxwellContainer {
         tablero = new Tablero(h, w);
 
         tablero.addDemon(d);
+        
+        
+        
+
+
     }
 
     public void addDemon(int d) {
@@ -39,7 +44,7 @@ public class MaxwellContainer {
     }
 
     public void delParticle(String color) {
-
+        tablero.delParticle(color);
     }
 
     public void delDemon(int d) {

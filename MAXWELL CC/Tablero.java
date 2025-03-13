@@ -214,7 +214,7 @@ public class Tablero {
 
         }
         for (Particle pb : blueParticles) {
-            if (!pb.isGoalR(h, w)) {
+            if (!pb.isGoalB(h, w)) {
                 return false;
             }
 
@@ -264,28 +264,74 @@ public class Tablero {
 
     public void start(int ticks) {
         for (int i = 0; i < ticks; i++) {
-
             if (isGoal()) {
                 JOptionPane.showMessageDialog(null, "El juego ha terminado.");
+                return;
             } else {
-                for (Demon d : demons) {
+                for (Particle p : redParticles) {
+                    boolean afectadaPorDemonio = false;
+                    boolean afectadaPorAgujero = false;
 
-                    for (Particle p : redParticles) {
+                    for (Demon d : demons) {
                         if (d.pasar(p)) {
-                            p.pasarRojo(h, w);
-
+                            afectadaPorDemonio = true;
+                            break;
                         }
                     }
-                    for (Particle p : blueParticles) {
-                        if (d.pasar(p)) {
-                            p.pasarBlue(h, w);
 
+                    for (Hole ho : holes) {
+                        if (ho.pasar(p)) {
+                            afectadaPorAgujero = true;
+                            break;
                         }
                     }
-                    if (esVisible) {
-                        makeVisible();
+
+                    if (!afectadaPorDemonio && !afectadaPorAgujero) {
+                        int xAnterior = p.getpX();
+                        int yAnterior = p.getpY();
+
+                        p.moveV();
+
+                        if (p.getpX() < 70 || p.getpX() > 70 + w || p.getpY() < 15 || p.getpY() > 15 + h) {
+                            p.setpX(xAnterior);
+                            p.setpY(yAnterior);
+                        }
+                    }
+                }
+
+                for (Particle p : blueParticles) {
+                    boolean afectadaPorDemonio = false;
+                    boolean afectadaPorAgujero = false;
+
+                    for (Demon d : demons) {
+                        if (d.pasar(p)) {
+                            afectadaPorDemonio = true;
+                            break;
+                        }
                     }
 
+                    for (Hole ho : holes) {
+                        if (ho.pasar(p)) {
+                            afectadaPorAgujero = true;
+                            break;
+                        }
+                    }
+
+                    if (!afectadaPorDemonio && !afectadaPorAgujero) {
+                        int xAnterior = p.getpX();
+                        int yAnterior = p.getpY();
+
+                        p.moveV();
+
+                        if (p.getpX() < 70 || p.getpX() > 70 + w || p.getpY() < 15 || p.getpY() > 15 + h) {
+                            p.setpX(xAnterior);
+                            p.setpY(yAnterior);
+                        }
+                    }
+                }
+
+                if (esVisible) {
+                    makeVisible();
                 }
             }
         }

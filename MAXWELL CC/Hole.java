@@ -27,6 +27,14 @@ public class Hole {
 
     }
 
+    public boolean pasar(Particle p) {
+        int posx = p.getpX();
+        int posy = p.getpY();
+        int posHX = grafico.getXposition();
+        int posHY = grafico.getYposition();
+        return (posx == posHX && posy == posHY);
+    }
+
     public void makeVisible() {
         grafico.makeVisible();
     }
@@ -43,6 +51,10 @@ public class Hole {
 
     public int getpX() {
         return grafico.getXposition();
+    }
+
+    public int getParticles() {
+        return particles;
     }
 
 }
