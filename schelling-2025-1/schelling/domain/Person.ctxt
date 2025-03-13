@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Person
+comment0.text=Information\ about\ a\ person<br>\n<b>(city,row,column,color)</b><br>\n<br>\n
+comment1.params=city\ row\ column
+comment1.target=Person(City,\ int,\ int)
+comment1.text=Create\ a\ new\ person\ (<b>row,column</b>)\ in\ the\ city\ <b>ac</b>..\n\ @param\ city\ \n\ @param\ row\ \n\ @param\ column\ \n
+comment2.params=
+comment2.target=int\ getRow()
+comment2.text=Returns\ the\ row\n\ \ \ \ @return\ \n
+comment3.params=
+comment3.target=int\ getColumn()
+comment3.text=Returns\ the\ column\n\ \ \ \ @return\ \n
+comment4.params=
+comment4.target=java.awt.Color\ getColor()
+comment4.text=Returns\ the\ color\n\ \ \ \ @return\ \n
+comment5.params=
+comment5.target=void\ decide()
+comment5.text=Act\n
+comment6.params=
+comment6.target=void\ change()
+comment6.text=Change\ its\ actual\ state\n
+numComments=7
