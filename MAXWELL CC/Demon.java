@@ -13,6 +13,7 @@ public class Demon {
      */
     public Demon(int pX, int pY, String color) {
         grafico = new Triangle();
+        grafico.changeSize(10, 10);
         grafico.changeColor(color);
         grafico.setXposition(pX);
         grafico.setYposition(pY);

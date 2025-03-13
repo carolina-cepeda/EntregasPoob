@@ -30,7 +30,7 @@ public class MaxwellContainer {
 
     public void addParticle(String color, boolean isRed, int px, int py, int vx, int vy) {
 
-        tablero.addParticle(color, px, py, vx, vy);
+        tablero.addParticle(color, isRed, px, py, vx, vy);
     }
 
     public void addHole(int px, int py, int particles) {
@@ -48,7 +48,7 @@ public class MaxwellContainer {
     }
 
     public void start(int ticks) {
-
+        tablero.start(ticks);
     }
 
     public boolean isGoal() {

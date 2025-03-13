@@ -15,10 +15,13 @@ public class Hole {
      * Constructor for objects of class Hole
      */
     public Hole(int px, int py, int particles) {
+        positionX = px;
+        positionY = py;
         grafico = new Circle();
+        grafico.changeSize(15);
         grafico.changeColor("black");
-        grafico.setXposition(positionX);
-        grafico.setYposition(positionY);
+        grafico.setXposition(px);
+        grafico.setYposition(py);
 
         this.particles = particles;
 
