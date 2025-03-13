@@ -176,6 +176,8 @@ public class Tablero {
         }
     }
 
+
+
     public void delParticle(String color) {
 
         if (color.equals("red")) {

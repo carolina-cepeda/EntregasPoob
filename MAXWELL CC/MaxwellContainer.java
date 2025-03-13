@@ -1,4 +1,6 @@
 
+import java.util.Random;
+
 /**
  * Write a description of class MaxwellContainer here.
  * 
@@ -22,11 +24,22 @@ public class MaxwellContainer {
         tablero = new Tablero(h, w);
 
         tablero.addDemon(d);
-        
-        
-        
 
+        for (int i = 0; i < particles.length; i++) {
+            int px = particles[i][0];
+            int py = particles[i][1];
 
+            Random random = new Random();
+            int vx = random.nextInt(10) + 1;
+            int vy = random.nextInt(10) + 1;
+
+            if (i < r) {
+                tablero.addParticle("red", true, px, py, vx, vy);
+            } else {
+                tablero.addParticle("blue", false, px, py, vx, vy);
+            }
+
+        }
     }
 
     public void addDemon(int d) {
