@@ -126,18 +126,35 @@ public class Tablero {
     }
 
     public void addDemon(int d) {
-        int px = separacion.getPositionX();
-        if (15 <= d && d <= 7 + h) {
-            Demon demonio = new Demon(px, d, "black");
-            demons.add(demonio);
+        if (!validarDemon(d)) {
+            int px = separacion.getPositionX();
+            if (15 <= d && d <= 7 + h) {
+                Demon demonio = new Demon(px, d, "black");
+                demons.add(demonio);
 
-            if (esVisible) {
-                makeVisible();
+                if (esVisible) {
+                    makeVisible();
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "La posición dada en y esta fuera del rango");
+
             }
+
         } else {
-            JOptionPane.showMessageDialog(null, "La posición dada en y esta fuera del rango");
+            JOptionPane.showMessageDialog(null, "Ya existe un demonio en esa posición");
 
         }
+    }
+
+    private boolean validarDemon(int d) {
+        for (Demon demon : demons) {
+            if (demon.getpY() == d) {
+                return true;
+            }
+        }
+        return false;
+
     }
 
     public void delDemon(int d) {
@@ -156,19 +173,23 @@ public class Tablero {
 
     public void addParticle(String Color, boolean isRed, int px, int py, int vx, int vy) {
 
-        if (70 <= px && px <= 62 + w && 15 <= py && py <= 7 + h) {
-            Particle p = new Particle(Color, px, py, vx, vy);
+        if (!validarParticle(px, py)) {
+            if (70 <= px && px <= 70 + w && 15 <= py && py <= 15 + h) {
+                Particle p = new Particle(Color, px, py, vx, vy);
 
-            if (isRed && !redParticles.isEmpty()) {
-                redParticles.add(p);
-            }
+                if (isRed && !redParticles.isEmpty()) {
+                    redParticles.add(p);
+                }
 
-            else {
-                blueParticles.add(p);
+                else {
+                    blueParticles.add(p);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "La posición dada  esta fuera del rango");
+
             }
         } else {
-            JOptionPane.showMessageDialog(null, "La posición dada  esta fuera del rango");
-
+            JOptionPane.showMessageDialog(null, "Ya existe una particula en esa posición");
         }
 
         if (esVisible) {
@@ -176,11 +197,24 @@ public class Tablero {
         }
     }
 
+    private boolean validarParticle(int px, int py) {
+        for (Particle red : redParticles) {
+            if (red.getpY() == py && red.getpX() == px) {
+                return true;
+            }
+        }
+        for (Particle blue : blueParticles) {
+            if (blue.getpY() == py && blue.getpX() == px) {
+                return true;
+            }
+        }
+        return false;
 
+    }
 
     public void delParticle(String color) {
 
-        if (color.equals("red")) {
+        if (color.equals("red") && !redParticles.isEmpty()) {
             redParticles.remove(0);
         } else if (!blueParticles.isEmpty()) {
             blueParticles.remove(0);
@@ -209,6 +243,10 @@ public class Tablero {
     }
 
     public boolean isGoal() {
+
+        if (redParticles.isEmpty() || blueParticles.isEmpty()) {
+            return false;
+        }
         for (Particle pr : redParticles) {
             if (!pr.isGoalR(h, w)) {
                 return false;
@@ -239,15 +277,20 @@ public class Tablero {
     }
 
     public int[][] particles() {
-        int[][] infoParticles = new int[redParticles.size() + blueParticles.size()][2];
+        int[][] infoParticles = new int[redParticles.size() + blueParticles.size()][4];
 
         for (int j = 0; j < redParticles.size(); j++) {
             infoParticles[j][0] = redParticles.get(j).getpX();
             infoParticles[j][1] = redParticles.get(j).getpY();
+            infoParticles[j][2] = redParticles.get(j).getvX();
+            infoParticles[j][3] = redParticles.get(j).getvY();
         }
-        for (int i = redParticles.size(); i < blueParticles.size(); i++) {
-            infoParticles[i][0] = blueParticles.get(i).getpX();
-            infoParticles[i][1] = blueParticles.get(i).getpY();
+        for (int i = 0; i < blueParticles.size(); i++) {
+            int index = redParticles.size() + i; // Se empieza después de las rojas
+            infoParticles[index][0] = blueParticles.get(i).getpX();
+            infoParticles[index][1] = blueParticles.get(i).getpY();
+            infoParticles[index][2] = blueParticles.get(i).getvX();
+            infoParticles[index][3] = blueParticles.get(i).getvY();
         }
 
         return infoParticles;

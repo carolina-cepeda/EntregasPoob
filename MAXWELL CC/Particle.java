@@ -45,8 +45,8 @@ public class Particle {
         int esperadoX = random.nextInt(((w + 62) - 69) / 2) + 70; // Rango [70, w+62 /2]
         int esperadoY = random.nextInt((h + 7) - 14) + 15;
 
-        grafico.moveHorizontal(esperadoX - x);
-        grafico.moveVertical(esperadoY - y);
+        grafico.slowMoveHorizontal(esperadoX - x);
+        grafico.slowMoveVertical(esperadoY - y);
         this.x = esperadoX - x;
         this.y = esperadoY - y;
 
@@ -58,8 +58,8 @@ public class Particle {
         int esperadoX = random.nextInt(w + 62) + (((w + 62) - 69) / 2); // Rango [70, w+62 /2]
         int esperadoY = random.nextInt((h + 7) - 14) + 15;
 
-        grafico.moveHorizontal(esperadoX - x);
-        grafico.moveVertical(esperadoY - y);
+        grafico.slowMoveHorizontal(esperadoX - x);
+        grafico.slowMoveVertical(esperadoY - y);
 
         this.x = esperadoX - x;
         this.y = esperadoY - y;
@@ -84,9 +84,21 @@ public class Particle {
         return this.y;
     }
 
+    public int getvX() {
+        return this.vX;
+    }
+
+    public int getvY() {
+        return this.vY;
+    }
+
     public void moveV() {
-        x += vX;
-        y += vY;
+        Random random = new Random();
+        int[] options = { -1, 0, 1 };
+        int multX = options[random.nextInt(options.length)];
+        int multY = options[random.nextInt(options.length)];
+        x += (vX * multX);
+        y += (vY * multY);
     }
 
     public void setpX(int dado) {
@@ -96,4 +108,5 @@ public class Particle {
     public void setpY(int dado) {
         this.y = dado;
     }
+
 }

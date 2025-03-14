@@ -1,5 +1,6 @@
 
 import java.util.Random;
+import java.util.ArrayList;
 
 /**
  * Write a description of class MaxwellContainer here.
@@ -12,10 +13,13 @@ public class MaxwellContainer {
     private Particle particle;
     private Tablero tablero;
     private boolean isOk;
+   
 
     public MaxwellContainer(int h, int w) {
 
         tablero = new Tablero(h, w);
+       
+        
 
     }
 
