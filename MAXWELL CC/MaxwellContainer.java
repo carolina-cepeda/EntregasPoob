@@ -1,7 +1,4 @@
 
-import java.util.Random;
-import java.util.ArrayList;
-
 /**
  * Write a description of class MaxwellContainer here.
  * 
@@ -13,16 +10,19 @@ public class MaxwellContainer {
     private Particle particle;
     private Tablero tablero;
     private boolean isOk;
-   
 
+    /*
+     * primer constructor
+     */
     public MaxwellContainer(int h, int w) {
 
         tablero = new Tablero(h, w);
-       
-        
 
     }
 
+    /*
+     * Segundo constructor
+     */
     public MaxwellContainer(int h, int w, int d, int b, int r, int[][] particles) {
 
         tablero = new Tablero(h, w);
@@ -32,11 +32,8 @@ public class MaxwellContainer {
         for (int i = 0; i < particles.length; i++) {
             int px = particles[i][0];
             int py = particles[i][1];
-
-            Random random = new Random();
-            int vx = random.nextInt(10) + 1;
-            int vy = random.nextInt(10) + 1;
-
+            int vx = particles[i][2];
+            int vy = particles[i][3];
             if (i < r) {
                 tablero.addParticle("red", true, px, py, vx, vy);
             } else {

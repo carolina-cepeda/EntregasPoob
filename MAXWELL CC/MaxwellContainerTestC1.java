@@ -84,8 +84,8 @@ public class MaxwellContainerTestC1 {
 
     @Test
     public void shouldRetornarTrueSiTodasLasParticulasEstanEnLaPosicionObjetivo() {
-        container.addParticle("red", true, 70, 100, 0, 0);
-        container.addParticle("blue", false, 85, 100, 0, 0);
+        container.addParticle("red", true, 75, 100, 0, 0);
+        container.addParticle("blue", false, 185, 100, 0, 0);
         assertTrue(container.isGoal(), "Debería retornar true cuando el juego termina.");
     }
 

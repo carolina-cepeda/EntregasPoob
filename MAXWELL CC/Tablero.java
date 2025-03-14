@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import java.util.List;
 
 /**
  * Tablero del juego
@@ -51,6 +52,9 @@ public class Tablero {
 
     }
 
+    /**
+     * Metodo para hacer visible el juego
+     */
     public void makeVisible() {
         esVisible = true;
 
@@ -102,6 +106,9 @@ public class Tablero {
 
     }
 
+    /*
+     * Metodo para hacer invisible el juego
+     */
     public void makeInvisible() {
         marco.makeInvisible();
         interior.makeInvisible();
@@ -125,6 +132,11 @@ public class Tablero {
 
     }
 
+    /*
+     * Metodo para añadir un demonio al juego
+     * 
+     * @param : entero d que se refiere a la posicion en y del demonio.
+     */
     public void addDemon(int d) {
         if (!validarDemon(d)) {
             int px = separacion.getPositionX();
@@ -157,6 +169,11 @@ public class Tablero {
 
     }
 
+    /*
+     * Metodo para eliminar un demonio al juego
+     * 
+     * @param : entero d que se refiere a la posicion en y del demonio.
+     */
     public void delDemon(int d) {
         for (int i = 0; i < demons.size(); i++) {
             Demon demonio = demons.get(i);
@@ -171,13 +188,16 @@ public class Tablero {
         }
     }
 
+    /*
+     * Metodo para añadir una particula al juego
+     */
     public void addParticle(String Color, boolean isRed, int px, int py, int vx, int vy) {
 
         if (!validarParticle(px, py)) {
             if (70 <= px && px <= 70 + w && 15 <= py && py <= 15 + h) {
                 Particle p = new Particle(Color, px, py, vx, vy);
 
-                if (isRed && !redParticles.isEmpty()) {
+                if (isRed) {
                     redParticles.add(p);
                 }
 
@@ -212,6 +232,9 @@ public class Tablero {
 
     }
 
+    /*
+     * metodo para eliminar una particula de un color dado.
+     */
     public void delParticle(String color) {
 
         if (color.equals("red") && !redParticles.isEmpty()) {
@@ -228,6 +251,11 @@ public class Tablero {
         }
     }
 
+    /*
+     * Metodo para añadir un agujero al juego
+     * 
+     * @param: posicion en x, posicion en y, cantidad de particulas maxima.
+     */
     public void addHole(int px, int py, int particles) {
         if (70 <= px && px <= 62 + w && 15 <= py && py <= 7 + h) {
             Hole ho = new Hole(px, py, particles);
@@ -242,11 +270,15 @@ public class Tablero {
         }
     }
 
+    /*
+     * Metodo para saber si el juego ha terminado.
+     */
     public boolean isGoal() {
 
-        if (redParticles.isEmpty() || blueParticles.isEmpty()) {
-            return false;
+        if (redParticles.isEmpty() && blueParticles.isEmpty()) {
+            return true;
         }
+
         for (Particle pr : redParticles) {
             if (!pr.isGoalR(h, w)) {
                 return false;
@@ -264,6 +296,9 @@ public class Tablero {
 
     }
 
+    /*
+     * Metodo para consultar los demonios y sus posiciones en y
+     */
     public int[] demons() {
         int[] infoDemons = new int[demons.size()];
 
@@ -276,6 +311,9 @@ public class Tablero {
 
     }
 
+    /*
+     * metodo para consultar las particulas ( su posicion y velocidad)
+     */
     public int[][] particles() {
         int[][] infoParticles = new int[redParticles.size() + blueParticles.size()][4];
 
@@ -296,6 +334,9 @@ public class Tablero {
         return infoParticles;
     }
 
+    /*
+     * Metodo para consultar los agujeros del juego
+     */
     public int[][] holes() {
         int[][] infoHoles = new int[holes.size()][2];
 
@@ -307,12 +348,20 @@ public class Tablero {
         return infoHoles;
     }
 
+    /*
+     * metodo para iniciar el juego
+     */
     public void start(int ticks) {
         for (int i = 0; i < ticks; i++) {
+            
             if (isGoal()) {
                 JOptionPane.showMessageDialog(null, "El juego ha terminado.");
-                return;
+                finish();
+                break;
             } else {
+                List<Particle> paraEliminarRojo = new ArrayList<>();
+                List<Particle> paraEliminarAzul = new ArrayList<>();
+                
                 for (Particle p : redParticles) {
                     boolean afectadaPorDemonio = false;
                     boolean afectadaPorAgujero = false;
@@ -320,6 +369,7 @@ public class Tablero {
                     for (Demon d : demons) {
                         if (d.pasar(p)) {
                             afectadaPorDemonio = true;
+                            p.pasarRojo(h, w);
                             break;
                         }
                     }
@@ -327,6 +377,7 @@ public class Tablero {
                     for (Hole ho : holes) {
                         if (ho.pasar(p)) {
                             afectadaPorAgujero = true;
+                            paraEliminarRojo.add(p);
                             break;
                         }
                     }
@@ -344,6 +395,8 @@ public class Tablero {
                     }
                 }
 
+                blueParticles.removeAll(paraEliminarAzul);
+                
                 for (Particle p : blueParticles) {
                     boolean afectadaPorDemonio = false;
                     boolean afectadaPorAgujero = false;
@@ -351,6 +404,8 @@ public class Tablero {
                     for (Demon d : demons) {
                         if (d.pasar(p)) {
                             afectadaPorDemonio = true;
+                            p.pasarBlue(h, w);
+
                             break;
                         }
                     }
@@ -358,9 +413,11 @@ public class Tablero {
                     for (Hole ho : holes) {
                         if (ho.pasar(p)) {
                             afectadaPorAgujero = true;
+                            paraEliminarAzul.add(p);
                             break;
                         }
                     }
+                    
 
                     if (!afectadaPorDemonio && !afectadaPorAgujero) {
                         int xAnterior = p.getpX();
@@ -374,7 +431,8 @@ public class Tablero {
                         }
                     }
                 }
-
+                blueParticles.removeAll(paraEliminarAzul);
+                
                 if (esVisible) {
                     makeVisible();
                 }
@@ -382,6 +440,9 @@ public class Tablero {
         }
     }
 
+    /*
+     * metodo para finalizar el juego
+     */
     public void finish() {
         makeInvisible();
         demons.clear();

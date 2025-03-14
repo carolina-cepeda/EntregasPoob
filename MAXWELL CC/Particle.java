@@ -32,14 +32,23 @@ public class Particle {
 
     }
 
+    /*
+     * metodo para hacer visible la particula
+     */
     public void makeVisible() {
         grafico.makeVisible();
     }
 
+    /*
+     * metodo para hacer invisible la particula
+     */
     public void makeInvisible() {
         grafico.makeInvisible();
     }
 
+    /*
+     * Metodo para pasar las particulas rojas al lado correcto.
+     */
     public void pasarRojo(int h, int w) {
         Random random = new Random();
         int esperadoX = random.nextInt(((w + 62) - 69) / 2) + 70; // Rango [70, w+62 /2]
@@ -51,6 +60,9 @@ public class Particle {
         this.y = esperadoY - y;
 
     }
+    /*
+     * Metodo para pasar las particulas azules al lado correcto.
+     */
 
     public void pasarBlue(int h, int w) {
 
@@ -65,13 +77,21 @@ public class Particle {
         this.y = esperadoY - y;
     }
 
+    /*
+     * metodo para verificar que las particulas rojas esten
+     * en el lado correcto del juego.
+     */
     public boolean isGoalR(int h, int w) {
-        int maxX = ((w + 70) / 2);
+        int maxX = (70 + (w / 2));
         return (70 <= x && x <= maxX);
     }
 
+    /*
+     * metodo para verificar que las particulas azules esten
+     * en el lado correcto del juego.
+     */
     public boolean isGoalB(int h, int w) {
-        int minX = ((w + 70) / 2);
+        int minX = (70 + (w / 2));
         int maxX = w + 70;
         return (minX <= x && x <= maxX);
     }
@@ -92,12 +112,22 @@ public class Particle {
         return this.vY;
     }
 
+    /*
+     * Metodo para mover en una direccion aleatoria en y a la particula
+     * basado en sus velocidades en x y y.
+     */
     public void moveV() {
         Random random = new Random();
         int[] options = { -1, 0, 1 };
-        int multX = options[random.nextInt(options.length)];
+        if ("red".equals(color)) {
+            x -= vX;
+        }
+
+        else {
+            x += vX;
+        }
+
         int multY = options[random.nextInt(options.length)];
-        x += (vX * multX);
         y += (vY * multY);
     }
 
