@@ -177,17 +177,20 @@ public class Tablero {
      * @param : entero d que se refiere a la posicion en y del demonio.
      */
     public void delDemon(int d) {
-        for (int i = 0; i < demons.size(); i++) {
-            Demon demonio = demons.get(i);
-            if (demonio.getpY() == d) {
-                demonio.makeInvisible();
-                demons.remove(i);
+        if (!demons.isEmpty()) {
+            for (int i = 0; i < demons.size(); i++) {
+                Demon demonio = demons.get(i);
+                if (demonio.getpY() == d) {
+                    demonio.makeInvisible();
+                    demons.remove(i);
+                }
+            }
+
+            if (esVisible) {
+                makeVisible();
             }
         }
 
-        if (esVisible) {
-            makeVisible();
-        }
     }
 
     /*
