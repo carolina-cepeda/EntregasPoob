@@ -21,14 +21,25 @@ public class MaxwellContainerTestC1 {
     }
 
     @Test
-    public void shouldAgregarUnDemonioALaLista() {
+    public void ShouldMC1(){
+        assertNotNull(container);
+    }
+    
+    @Test //mejorar
+    public void ShouldMC2(){
+        assertNotNull( container);
+    }
+    
+    
+    @Test
+    public void shouldaddDemon() {
         container.addDemon(30);
         int[] demons = container.demons();
         assertTrue(contains(demons, 30), "Debería agregar un demonio a la lista");
     }
 
     @Test
-    public void shouldNoAgregarDemoniosDuplicados() {
+    public void shouldNotaddDemon() {
         container.addDemon(80);
         container.addDemon(80);
         int[] demons = container.demons();
@@ -36,7 +47,7 @@ public class MaxwellContainerTestC1 {
     }
 
     @Test
-    public void shouldEliminarUnDemonioDeLaLista() {
+    public void shoulddelDemon() {
         container.addDemon(80);
         container.delDemon(80);
         int[] demons = container.demons();
@@ -44,14 +55,14 @@ public class MaxwellContainerTestC1 {
     }
 
     @Test
-    public void shouldNoFallarSiElDemonioNoExiste() {
+    public void shouldNotdelDemon() {
         container.delDemon(80);
         int[] demons = container.demons();
         assertFalse(contains(demons, 80), "debería fallar si el demonio no existe");
     }
 
     @Test
-    public void shouldAgregarUnaParticulaALaLista() {
+    public void shouldaddParticle() {
         container.addParticle("red", true, 100, 120, 3, 4);
 
         int[][] particles = container.particles();
@@ -60,7 +71,7 @@ public class MaxwellContainerTestC1 {
     }
 
     @Test
-    public void shouldNoAgregarParticulasDuplicadas() {
+    public void shouldNotAddParticle() {
         container.addParticle("red", true, 100, 120, 3, 4);
         container.addParticle("red", true, 100, 120, 3, 4);
         int[][] particles = container.particles();
@@ -68,7 +79,7 @@ public class MaxwellContainerTestC1 {
     }
 
     @Test
-    public void shouldEliminarUnaParticulaDeLaLista() {
+    public void shouldDelParticle() {
         container.addParticle("red", true, 100, 120, 3, 4);
         container.delParticle("red");
         int[][] particles = container.particles();
@@ -76,32 +87,85 @@ public class MaxwellContainerTestC1 {
     }
 
     @Test
-    public void shouldFallarSiLaParticulaNoExiste() {
+    public void shouldnotDelParticle() {
         container.delParticle("red");
         int[][] particles = container.particles();
         assertFalse(containsParticle(particles, 100, 120, 3, 4), "No debería fallar si la partícula no existe");
     }
 
     @Test
-    public void shouldRetornarTrueSiTodasLasParticulasEstanEnLaPosicionObjetivo() {
+    public void shouldAddHole(){
+        container.addHole(100,120,2);
+        int [][] holes = container.holes();
+        assertEquals(1,holes.length);
+        
+    }
+    
+    @Test
+    public void shouldNotAddHole(){
+        container.addHole(10,0,2);
+        int [][] holes = container.holes();
+        assertEquals(0,holes.length);
+        
+    }
+    
+    @Test
+    public void shouldisGoal() {
         container.addParticle("red", true, 75, 100, 0, 0);
         container.addParticle("blue", false, 185, 100, 0, 0);
         assertTrue(container.isGoal(), "Debería retornar true cuando el juego termina.");
     }
 
     @Test
-    public void shouldRetornarFalseSiNoTodasLasParticulasEstanEnLaPosicionObjetivo() {
+    public void shouldNotisGoalTrue() {
         container.addParticle("red", true, 100, 100, 0, 0);
         container.addParticle("blue", false, 85, 100, 0, 0);
         assertFalse(container.isGoal(), "Debería retornar false cuando el juego no haya terminado.");
     }
 
+    @Test
+    public void shouldDemons(){
+        container.addDemon(100);
+        assertEquals(1,container.demons().length);
+        
+    }
+    @Test
+    public void shouldNotDemons(){
+        container.addDemon(10000);
+        assertEquals(0,container.demons().length);
+        
+    }
+    @Test
+    public void shouldParticles(){
+        container.addParticle("blue",true,120,120,10,10);
+       assertEquals(1,container.particles().length);
+    }
+    
+    @Test
+    public void shouldNotParticles(){
+       assertEquals(0,container.particles().length);
+    }
+    
+    public void shouldHoles(){
+        container.addHole(80,130,2);
+        assertEquals(1, container.holes().length);
+    }
+    
+    public void shouldNotHoles(){
+        container.addHole(80,130,2);
+        assertEquals(1, container.holes().length);
+    }
+    
+    
     @AfterEach
     public void tearDown() {
         container = null;
     }
 
     // Métodos auxiliares
+    /*
+     * metodo que verifica que un valor este en un arreglo
+     */
     private boolean contains(int[] array, int value) {
         for (int i : array) {
             if (i == value) {
@@ -111,6 +175,9 @@ public class MaxwellContainerTestC1 {
         return false;
     }
 
+    /*
+     * metodo que verifica cuantas veces se encuentra un valor en un arreglo
+     */
     private int contadorOcurrencias(int[] array, int value) {
         int count = 0;
         for (int i : array) {
@@ -121,6 +188,9 @@ public class MaxwellContainerTestC1 {
         return count;
     }
 
+    /*
+     * metodo que verifica si una particula esta contenida en un arreglo de particulas
+     */
     private boolean containsParticle(int[][] particles, int px, int py, int vx, int vy) {
 
         for (int[] particle : particles) {
@@ -130,6 +200,10 @@ public class MaxwellContainerTestC1 {
         }
         return false;
     }
+    /*
+     * metodo que cuenta la cantidad de veces que se encuentra una particula en el arreglo
+
+     */
 
     private int contadorParticula(int[][] particles, int px, int py, int vx, int vy) {
         int count = 0;
