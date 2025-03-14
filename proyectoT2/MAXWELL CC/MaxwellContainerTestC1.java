@@ -21,16 +21,15 @@ public class MaxwellContainerTestC1 {
     }
 
     @Test
-    public void ShouldMC1(){
+    public void ShouldMC1() {
         assertNotNull(container);
     }
-    
-    @Test //mejorar
-    public void ShouldMC2(){
-        assertNotNull( container);
+
+    @Test // mejorar
+    public void ShouldMC2() {
+        assertNotNull(container);
     }
-    
-    
+
     @Test
     public void shouldaddDemon() {
         container.addDemon(30);
@@ -94,21 +93,21 @@ public class MaxwellContainerTestC1 {
     }
 
     @Test
-    public void shouldAddHole(){
-        container.addHole(100,120,2);
-        int [][] holes = container.holes();
-        assertEquals(1,holes.length);
-        
+    public void shouldAddHole() {
+        container.addHole(100, 120, 2);
+        int[][] holes = container.holes();
+        assertEquals(1, holes.length);
+
     }
-    
+
     @Test
-    public void shouldNotAddHole(){
-        container.addHole(10,0,2);
-        int [][] holes = container.holes();
-        assertEquals(0,holes.length);
-        
+    public void shouldNotAddHole() {
+        container.addHole(10, 0, 2);
+        int[][] holes = container.holes();
+        assertEquals(0, holes.length);
+
     }
-    
+
     @Test
     public void shouldisGoal() {
         container.addParticle("red", true, 75, 100, 0, 0);
@@ -124,40 +123,51 @@ public class MaxwellContainerTestC1 {
     }
 
     @Test
-    public void shouldDemons(){
+    public void shouldDemons() {
         container.addDemon(100);
-        assertEquals(1,container.demons().length);
-        
+        assertEquals(1, container.demons().length);
+
     }
+
     @Test
-    public void shouldNotDemons(){
+    public void shouldNotDemons() {
         container.addDemon(10000);
-        assertEquals(0,container.demons().length);
-        
+        assertEquals(0, container.demons().length);
+
     }
+
     @Test
-    public void shouldParticles(){
-        container.addParticle("blue",true,120,120,10,10);
-       assertEquals(1,container.particles().length);
+    public void shouldParticles() {
+        container.addParticle("blue", true, 120, 120, 10, 10);
+        assertEquals(1, container.particles().length);
     }
-    
+
     @Test
-    public void shouldNotParticles(){
-       assertEquals(0,container.particles().length);
+    public void shouldNotParticles() {
+        assertEquals(0, container.particles().length);
     }
-    
-    public void shouldHoles(){
-        container.addHole(80,130,2);
+
+    @Test
+    public void shouldHoles() {
+        container.addHole(80, 130, 2);
         assertEquals(1, container.holes().length);
     }
-    
-    public void shouldNotHoles(){
-        container.addHole(80,130,2);
+
+    @Test
+    public void shouldNotHoles() {
+        container.addHole(80, 130, 2);
         assertEquals(1, container.holes().length);
     }
-    
-    
-    @AfterEach
+
+    @Test
+    public void shouldStart() {
+        int ticks = 5;
+        container.addParticle("red", true, 100, 100, 20, 20);
+        container.addHole(100, 100, 2);
+        container.start(ticks);
+        assertTrue(container.particles().length == 0);
+    }
+
     public void tearDown() {
         container = null;
     }
@@ -189,7 +199,8 @@ public class MaxwellContainerTestC1 {
     }
 
     /*
-     * metodo que verifica si una particula esta contenida en un arreglo de particulas
+     * metodo que verifica si una particula esta contenida en un arreglo de
+     * particulas
      */
     private boolean containsParticle(int[][] particles, int px, int py, int vx, int vy) {
 
@@ -201,8 +212,9 @@ public class MaxwellContainerTestC1 {
         return false;
     }
     /*
-     * metodo que cuenta la cantidad de veces que se encuentra una particula en el arreglo
-
+     * metodo que cuenta la cantidad de veces que se encuentra una particula en el
+     * arreglo
+     * 
      */
 
     private int contadorParticula(int[][] particles, int px, int py, int vx, int vy) {

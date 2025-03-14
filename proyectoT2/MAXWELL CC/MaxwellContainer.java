@@ -67,7 +67,8 @@ public class MaxwellContainer {
     }
 
     public void start(int ticks) {
-        tablero.start(ticks);
+        tablero.startBlue(ticks);
+        tablero.startRed(ticks);
     }
 
     public boolean isGoal() {

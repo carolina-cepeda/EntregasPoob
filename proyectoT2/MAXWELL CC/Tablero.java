@@ -1,6 +1,6 @@
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  * Tablero del juego
@@ -57,6 +57,7 @@ public class Tablero {
      */
     public void makeVisible() {
         esVisible = true;
+        canvas.wait(20);
 
         if (marco != null) {
 
@@ -110,6 +111,7 @@ public class Tablero {
      * Metodo para hacer invisible el juego
      */
     public void makeInvisible() {
+        canvas.wait(20);
         marco.makeInvisible();
         interior.makeInvisible();
         separacion.makeInvisible();
@@ -349,19 +351,18 @@ public class Tablero {
     }
 
     /*
-     * metodo para iniciar el juego
+     * metodo para iniciar el juego en particulas rojas
      */
-    public void start(int ticks) {
+    public void startRed(int ticks) {
         for (int i = 0; i < ticks; i++) {
-            
+
             if (isGoal()) {
-                JOptionPane.showMessageDialog(null, "El juego ha terminado.");
                 finish();
+                JOptionPane.showMessageDialog(null, "El juego ha terminado.");
                 break;
             } else {
                 List<Particle> paraEliminarRojo = new ArrayList<>();
-                List<Particle> paraEliminarAzul = new ArrayList<>();
-                
+
                 for (Particle p : redParticles) {
                     boolean afectadaPorDemonio = false;
                     boolean afectadaPorAgujero = false;
@@ -393,10 +394,28 @@ public class Tablero {
                             p.setpY(yAnterior);
                         }
                     }
+
+                    if (esVisible) {
+                        makeVisible();
+                    }
                 }
 
-                blueParticles.removeAll(paraEliminarAzul);
-                
+                redParticles.removeAll(paraEliminarRojo);
+            }
+        }
+    }
+
+    public void startBlue(int ticks) {
+        for (int i = 0; i < ticks; i++) {
+
+            if (isGoal()) {
+                finish();
+                JOptionPane.showMessageDialog(null, "El juego ha terminado.");
+                break;
+            } else {
+
+                List<Particle> paraEliminarAzul = new ArrayList<>();
+
                 for (Particle p : blueParticles) {
                     boolean afectadaPorDemonio = false;
                     boolean afectadaPorAgujero = false;
@@ -417,7 +436,6 @@ public class Tablero {
                             break;
                         }
                     }
-                    
 
                     if (!afectadaPorDemonio && !afectadaPorAgujero) {
                         int xAnterior = p.getpX();
@@ -432,10 +450,10 @@ public class Tablero {
                     }
                 }
                 blueParticles.removeAll(paraEliminarAzul);
-                
-                if (esVisible) {
-                    makeVisible();
-                }
+            }
+
+            if (esVisible) {
+                makeVisible();
             }
         }
     }
