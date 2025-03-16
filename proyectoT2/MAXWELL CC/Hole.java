@@ -57,4 +57,15 @@ public class Hole {
         return particles;
     }
 
+    public boolean EstoyAhi(int px, int py) {
+        return (px == positionX && py == positionY);
+    }
+
+    public int[] format() {
+        int[] info = new int[2];
+        info[0] = positionX;
+        info[1] = positionY;
+        return info;
+    }
+
 }

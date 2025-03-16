@@ -7,11 +7,15 @@
  */
 public class Demon {
     private Triangle grafico;
+    private int pX;
+    private int pY;
 
     /**
      * Constructor for objects of class Demon
      */
     public Demon(int pX, int pY, String color) {
+        this.pX = pX;
+        this.pY = pY;
         grafico = new Triangle();
         grafico.changeSize(10, 10);
         grafico.changeColor(color);
@@ -24,12 +28,13 @@ public class Demon {
         grafico.makeInvisible();
     }
 
-    public boolean pasar(Particle p) {
+    public boolean pasar(Particle p, int h, int w) {
         int posx = p.getpX();
         int posy = p.getpY();
-        int posDX = grafico.getXposition();
-        int posDY = grafico.getYposition();
-        return (posx == posDX && posy == posDY);
+        if (posx == pX && posy == pY) {
+            p.pasar(h, w);
+        }
+        return (posx == pX && posy == pY);
     }
 
     public void makeVisible() {
@@ -42,5 +47,9 @@ public class Demon {
 
     public int getpY() {
         return grafico.getYposition();
+    }
+
+    public boolean EstoyAhi(int d) {
+        return d == pY;
     }
 }

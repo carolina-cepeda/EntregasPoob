@@ -9,21 +9,23 @@ import java.util.Random;
  */
 public class Particle {
     private String color;
+    @SuppressWarnings("unused")
     private int x;
     private int y;
     private int vX;
     private int vY;
     private Circle grafico;
+    private boolean isRed;
 
     /**
      * Constructor for objects of class Particle
      */
-    public Particle(String color, int x, int y, int vX, int vY) {
+    public Particle(String color, boolean isRed, int x, int y, int vX, int vY) {
         this.x = x;
         this.y = y;
         this.vX = vX;
         this.vY = vY;
-
+        this.isRed = isRed;
         grafico = new Circle();
         grafico.changeSize(8);
         grafico.changeColor(color);
@@ -44,37 +46,6 @@ public class Particle {
      */
     public void makeInvisible() {
         grafico.makeInvisible();
-    }
-
-    /*
-     * Metodo para pasar las particulas rojas al lado correcto.
-     */
-    public void pasarRojo(int h, int w) {
-        Random random = new Random();
-        int esperadoX = random.nextInt(((w + 62) - 69) / 2) + 70; // Rango [70, w+62 /2]
-        int esperadoY = random.nextInt((h + 7) - 14) + 15;
-
-        grafico.slowMoveHorizontal(esperadoX - x);
-        grafico.slowMoveVertical(esperadoY - y);
-        this.x = esperadoX - x;
-        this.y = esperadoY - y;
-
-    }
-    /*
-     * Metodo para pasar las particulas azules al lado correcto.
-     */
-
-    public void pasarBlue(int h, int w) {
-
-        Random random = new Random();
-        int esperadoX = random.nextInt(w + 62) + (((w + 62) - 69) / 2); // Rango [70, w+62 /2]
-        int esperadoY = random.nextInt((h + 7) - 14) + 15;
-
-        grafico.slowMoveHorizontal(esperadoX - x);
-        grafico.slowMoveVertical(esperadoY - y);
-
-        this.x = esperadoX - x;
-        this.y = esperadoY - y;
     }
 
     /*
@@ -137,6 +108,58 @@ public class Particle {
 
     public void setpY(int dado) {
         this.y = dado;
+    }
+
+    public boolean EstoyAhi(int px, int py) {
+        return (x == px && y == py);
+    }
+
+    public int[] format() {
+        int[] info = new int[4];
+        info[0] = x;
+        info[1] = y;
+        info[2] = vX;
+        info[3] = vY;
+        return info;
+    }
+
+    public void pasar(int h, int w) {
+        if (isRed) {
+            pasarRojo(h, w);
+        } else {
+            pasarBlue(h, w);
+        }
+    }
+
+    /*
+     * Metodo para pasar las particulas rojas al lado correcto.
+     */
+    public void pasarRojo(int h, int w) {
+        Random random = new Random();
+        int esperadoX = random.nextInt(((w + 62) - 69) / 2) + 70; // Rango [70, w+62 /2]
+        int esperadoY = random.nextInt((h + 7) - 14) + 15;
+
+        grafico.slowMoveHorizontal(esperadoX - x);
+        grafico.slowMoveVertical(esperadoY - y);
+        this.x = esperadoX - x;
+        this.y = esperadoY - y;
+
+    }
+    /*
+     * Metodo para pasar las particulas azules al lado correcto.
+     */
+
+    public void pasarBlue(int h, int w) {
+
+        Random random = new Random();
+        int esperadoX = random.nextInt(w + 62) + (((w + 62) - 69) / 2); // Rango [70, w+62 /2]
+        int esperadoY = random.nextInt((h + 7) - 14) + 15;
+
+        grafico.slowMoveHorizontal(esperadoX - x);
+        grafico.slowMoveVertical(esperadoY - y);
+
+        this.x = esperadoX - x;
+        this.y = esperadoY - y;
     }
 
 }
