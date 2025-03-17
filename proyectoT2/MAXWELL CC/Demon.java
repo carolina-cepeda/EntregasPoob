@@ -9,6 +9,7 @@ public class Demon {
     private Triangle grafico;
     private int pX;
     private int pY;
+    private boolean esVisible = false;
 
     /**
      * Constructor for objects of class Demon
@@ -39,10 +40,12 @@ public class Demon {
 
     public void makeVisible() {
         grafico.makeVisible();
+        esVisible = true;
     }
 
     public void makeInvisible() {
         grafico.makeInvisible();
+        esVisible = false;
     }
 
     public int getpY() {

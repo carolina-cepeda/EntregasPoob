@@ -9,18 +9,19 @@ import java.util.Random;
  */
 public class Particle {
     private String color;
-    @SuppressWarnings("unused")
     private int x;
     private int y;
     private int vX;
     private int vY;
     private Circle grafico;
     private boolean isRed;
+    private boolean esVisible;
 
     /**
      * Constructor for objects of class Particle
      */
     public Particle(String color, boolean isRed, int x, int y, int vX, int vY) {
+        this.esVisible = MaxwellContainer.getVisible();
         this.x = x;
         this.y = y;
         this.vX = vX;
@@ -39,6 +40,7 @@ public class Particle {
      */
     public void makeVisible() {
         grafico.makeVisible();
+        esVisible = true;
     }
 
     /*
@@ -46,6 +48,7 @@ public class Particle {
      */
     public void makeInvisible() {
         grafico.makeInvisible();
+        esVisible = false;
     }
 
     /*
@@ -90,16 +93,29 @@ public class Particle {
     public void moveV() {
         Random random = new Random();
         int[] options = { -1, 0, 1 };
+        y += vY;
+
         if ("red".equals(color)) {
             x -= vX;
+            moveSlow(-vX, vY);
         }
 
         else {
             x += vX;
+            moveSlow(vX, vY);
         }
 
-        int multY = options[random.nextInt(options.length)];
-        y += (vY * multY);
+        if (esVisible) {
+            makeVisible();
+        }
+
+    }
+
+    public void moveSlow(int vx, int vy) {
+        makeInvisible();
+        grafico.moveHorizontal(vX);
+        grafico.moveVertical(vy);
+        makeVisible();
     }
 
     public void setpX(int dado) {
@@ -128,6 +144,9 @@ public class Particle {
             pasarRojo(h, w);
         } else {
             pasarBlue(h, w);
+        }
+        if (esVisible) {
+            makeVisible();
         }
     }
 

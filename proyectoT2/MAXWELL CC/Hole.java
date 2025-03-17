@@ -10,6 +10,7 @@ public class Hole {
     private int positionY;
     private Circle grafico;
     private int particles;
+    private boolean esVisible = false;
 
     /**
      * Constructor for objects of class Hole
@@ -37,10 +38,12 @@ public class Hole {
 
     public void makeVisible() {
         grafico.makeVisible();
+        esVisible = true;
     }
 
     public void makeInvisible() {
         grafico.makeInvisible();
+        esVisible = false;
     }
 
     // getPosition

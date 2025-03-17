@@ -19,17 +19,19 @@ public class MaxwellContainer {
     private ArrayList<Demon> demons;
     private int h;
     private int w;
-    private boolean esVisible;
-    private boolean isOk;
+    private static boolean esVisible = false;
+    private boolean isOk = false;
 
     /*
      * primer constructor
      */
     public MaxwellContainer(int h, int w) {
-
+        isOk = validarDimension(h, w);
+        if (!isOk) {
+            return;
+        }
         this.h = h;
         this.w = w;
-        this.esVisible = false;
 
         holes = new ArrayList<>();
         redParticles = new ArrayList<>();
@@ -60,9 +62,15 @@ public class MaxwellContainer {
      */
     public MaxwellContainer(int h, int w, int d, int b, int r, int[][] particles) {
 
+        isOk = validarDimension(h, w);
+
+        if (!isOk) {
+            return;
+        }
+
         this.h = h;
         this.w = w;
-        this.esVisible = false;
+        esVisible = false;
 
         holes = new ArrayList<>();
         redParticles = new ArrayList<>();
@@ -320,52 +328,22 @@ public class MaxwellContainer {
      */
     public void makeVisible() {
         esVisible = true;
-        canvas.wait(20);
+        marco.makeVisible();
+        interior.makeVisible();
+        separacion.makeVisible();
 
-        if (marco != null) {
-
-            marco.makeVisible();
+        for (Demon d : demons) {
+            d.makeVisible();
+        }
+        for (Hole ho : holes) {
+            ho.makeVisible();
+        }
+        for (Particle red : redParticles) {
+            red.makeVisible();
         }
 
-        if (interior != null) {
-            interior.makeVisible();
-        }
-        if (separacion != null) {
-
-            separacion.makeVisible();
-        }
-
-        if (demons != null) {
-            for (Demon d : demons) {
-                if (d != null) {
-                    d.makeVisible();
-                }
-            }
-        }
-
-        if (holes != null) {
-
-            for (Hole ho : holes) {
-                if (ho != null) {
-                    ho.makeVisible();
-                }
-            }
-        }
-
-        if (redParticles != null) {
-            for (Particle p : redParticles) {
-                if (p != null) {
-                    p.makeVisible();
-                }
-            }
-        }
-
-        if (blueParticles != null) {
-            for (Particle p : blueParticles) {
-                if (p != null) {
-                    p.makeVisible();
-                }
-            }
+        for (Particle blue : blueParticles) {
+            blue.makeVisible();
         }
 
     }
@@ -374,7 +352,6 @@ public class MaxwellContainer {
      * Metodo para hacer invisible el juego
      */
     public void makeInvisible() {
-        canvas.wait(20);
         marco.makeInvisible();
         interior.makeInvisible();
         separacion.makeInvisible();
@@ -401,11 +378,11 @@ public class MaxwellContainer {
      * metodo para finalizar el juego
      */
     public void finish() {
-        makeInvisible();
         demons.clear();
         holes.clear();
         redParticles.clear();
         blueParticles.clear();
+        makeInvisible();
     }
 
     public boolean ok() {
@@ -450,4 +427,15 @@ public class MaxwellContainer {
         }
     }
 
+    public boolean isOk() {
+        return isOk;
+    }
+
+    private boolean validarDimension(int h, int w) {
+        return (20 < h && h <= 300 && 20 < w && w < 300);
+    }
+
+    public static boolean getVisible() {
+        return esVisible;
+    }
 }
