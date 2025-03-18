@@ -26,6 +26,16 @@ public class Fleet {
 		}
 	}
 
+	public ArrayList<Machine> weakMachines() {
+		ArrayList<Machine> weak = new ArrayList<>();
+		for (Machine m : machines) {
+			if (m.weakMachines()) {
+				weak.add(m);
+			}
+		}
+		return weak;
+	}
+
 	public ArrayList<Machine> willBeDestroyed(int longitude, int latitude) {
 		ArrayList<Machine> destruidas = new ArrayList<>();
 		for (Machine m : machines) {
@@ -36,4 +46,38 @@ public class Fleet {
 		return destruidas;
 	}
 
+	public boolean isGoodAttack(int longitude, int latitude) {
+		for (Machine m : machines) {
+			if (m.estoyAhi(longitude, latitude)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void attack(int lon, int lat) {
+		for (Machine m : machines) {
+			if (!m.weakMachines()) {
+				int x = 0;
+				int y = 0;
+
+				while (x != lon || y != lat) {
+					if (x < lon) {
+						m.advance(1, 0);
+						x++;
+					} else if (x > lon) {
+						x--;
+						m.advance(-1, 0);
+					}
+					if (y < lat) {
+						y++;
+						m.advance(0, 1);
+					} else if (y > lat) {
+						y--;
+						m.advance(0, -1);
+					}
+				}
+			}
+		}
+	}
 }

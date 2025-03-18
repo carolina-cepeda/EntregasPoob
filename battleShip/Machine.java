@@ -15,10 +15,16 @@ public class Machine {
 	}
 
 	public boolean willBeDestroyed(int longitude, int latitude) {
+		return estoyAhi(longitude, latitude);
+	}
+
+	public boolean estoyAhi(int longitude, int latitude) {
 		return location.estoyAhi(longitude, latitude);
 	}
 
-	public Position getLocation() {
-		return this.location;
+	public boolean weakMachines() {
+		return false;
 	}
+
+	
 }

@@ -11,11 +11,18 @@ public class Plane extends Machine {
 
 	@Override
 	public boolean willBeDestroyed(int longitude, int latitude) {
-		Position location = getLocation();
 		if (inAir) {
 			return false;
 		} else {
-			return location.estoyAhi(longitude, latitude);
+			return this.estoyAhi(longitude, latitude);
 		}
+	}
+
+	@Override
+	public boolean weakMachines() {
+		if (pilot != null) {
+			return false;
+		}
+		return true;
 	}
 }
