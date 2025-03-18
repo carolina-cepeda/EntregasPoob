@@ -12,7 +12,18 @@ public class capsulaSubmarina extends Machine {
      * Constructor for objects of class capsulaSubmarina
      */
     public capsulaSubmarina() {
+        super();
 
+    }
+
+    @Override
+    public boolean weakMachines() {
+        return false;
+    }
+
+    @Override
+    public boolean estoyAhi(int longitude, int latitude) {
+        return false;
     }
 
 }
