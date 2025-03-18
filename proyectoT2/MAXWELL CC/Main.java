@@ -9,6 +9,6 @@ public class Main {
         MaxwellContainer container = new MaxwellContainer(150, 150, 45, 1, 1, particlesData);
         container.makeVisible();
         container.addHole(85,80,1);
-        container.start(10);
+        container.start(40);
     }
 }
