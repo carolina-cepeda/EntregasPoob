@@ -16,6 +16,8 @@ public class Hole {
      * Constructor for objects of class Hole
      */
     public Hole(int px, int py, int particles) {
+        this.esVisible = MaxwellContainer.getVisible();
+
         positionX = px;
         positionY = py;
         grafico = new Circle();

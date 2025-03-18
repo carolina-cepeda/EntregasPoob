@@ -15,6 +15,7 @@ public class Demon {
      * Constructor for objects of class Demon
      */
     public Demon(int pX, int pY, String color) {
+        this.esVisible = MaxwellContainer.getVisible();
         this.pX = pX;
         this.pY = pY;
         grafico = new Triangle();

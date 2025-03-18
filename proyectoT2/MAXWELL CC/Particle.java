@@ -56,8 +56,8 @@ public class Particle {
      * en el lado correcto del juego.
      */
     public boolean isGoalR(int h, int w) {
-        int maxX = (70 + (w / 2));
-        return (70 <= x && x <= maxX);
+        int maxX = (70 + (w / 2)) - 1;
+        return (x >= 70 && x < maxX);
     }
 
     /*
@@ -66,8 +66,7 @@ public class Particle {
      */
     public boolean isGoalB(int h, int w) {
         int minX = (70 + (w / 2));
-        int maxX = w + 70;
-        return (minX <= x && x <= maxX);
+        return (x >= minX && x <= (70 + w));
     }
 
     public int getpX() {
@@ -87,35 +86,53 @@ public class Particle {
     }
 
     /*
-     * Metodo para mover en una direccion aleatoria en y a la particula
+     * Metodo para mover las particulas
      * basado en sus velocidades en x y y.
      */
-    public void moveV() {
-        Random random = new Random();
-        int[] options = { -1, 0, 1 };
-        y += vY;
+    public void moveV(int w, int h) {
+        for (int i = 0; i < 3; i++) {
+            choque(w, h);
+            y += vY;
 
-        if ("red".equals(color)) {
-            x -= vX;
-            moveSlow(-vX, vY);
+            if ("red".equals(color)) {
+                x -= vX;
+                moveSlow(-vX, vY);
+            } else {
+                x += vX;
+                moveSlow(vX, vY);
+            }
+
+            if (esVisible) {
+                makeVisible();
+            }
         }
-
-        else {
-            x += vX;
-            moveSlow(vX, vY);
-        }
-
-        if (esVisible) {
-            makeVisible();
-        }
-
     }
 
-    public void moveSlow(int vx, int vy) {
+    private void moveSlow(int vx, int vy) {
         makeInvisible();
-        grafico.moveHorizontal(vX);
-        grafico.moveVertical(vy);
+        grafico.slowMoveHorizontal(vx);
+        grafico.slowMoveVertical(vy);
         makeVisible();
+    }
+
+    private void choque(int w, int h) {
+        boolean choqueX = EnmuroX(w);
+        boolean choqueY = EnmuroY(h);
+
+        if (choqueX) {
+            this.vX = -vX;
+        }
+        if (choqueY) {
+            this.vY = -vY;
+        }
+    }
+
+    private boolean EnmuroX(int w) {
+        return (x <= 70 || x >= 70 + w || x == 70 + w / 2);
+    }
+
+    private boolean EnmuroY(int h) {
+        return (y <= 15 || y >= 15 + h);
     }
 
     public void setpX(int dado) {

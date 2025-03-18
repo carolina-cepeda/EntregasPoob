@@ -1,6 +1,7 @@
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 import javax.swing.JOptionPane;
+import java.util.List;
 
 /**
  * Write a description of class MaxwellContainer here.
@@ -13,10 +14,10 @@ public class MaxwellContainer {
     private Particle particle;
     private Canvas canvas;
     private Rectangle marco, separacion, interior;
-    private ArrayList<Hole> holes;
-    private ArrayList<Particle> redParticles;
-    private ArrayList<Particle> blueParticles;
-    private ArrayList<Demon> demons;
+    private ArrayList<Hole> holes = new ArrayList<>();
+    private ArrayList<Particle> redParticles = new ArrayList<>();
+    private ArrayList<Particle> blueParticles = new ArrayList<>();
+    private ArrayList<Demon> demons = new ArrayList<>();
     private int h;
     private int w;
     private static boolean esVisible = false;
@@ -26,34 +27,19 @@ public class MaxwellContainer {
      * primer constructor
      */
     public MaxwellContainer(int h, int w) {
+
         isOk = validarDimension(h, w);
-        if (!isOk) {
+        if (!isOk)
             return;
-        }
+
         this.h = h;
         this.w = w;
-
-        holes = new ArrayList<>();
-        redParticles = new ArrayList<>();
-        blueParticles = new ArrayList<>();
-        demons = new ArrayList<>();
-
+        esVisible = false;
         canvas = Canvas.getCanvas();
 
-        marco = new Rectangle();
-        marco.changeSize(h, w);
-        marco.changeColor("magenta");
-
-        interior = new Rectangle();
-        interior.changeSize(h - 8, w - 8);
-        interior.moveHorizontal(4);
-        interior.moveVertical(4);
-        interior.changeColor("yellow");
-
-        separacion = new Rectangle();
-        separacion.changeSize(h, 2);
-        separacion.changeColor("magenta");
-        separacion.moveHorizontal(w / 2);
+        marco = createRectangle(h, w, "magenta", 0, 0);
+        interior = createRectangle(h - 8, w - 8, "yellow", 4, 4);
+        separacion = createRectangle(h, 2, "magenta", w / 2, 0);
 
     }
 
@@ -63,36 +49,17 @@ public class MaxwellContainer {
     public MaxwellContainer(int h, int w, int d, int b, int r, int[][] particles) {
 
         isOk = validarDimension(h, w);
-
-        if (!isOk) {
+        if (!isOk)
             return;
-        }
 
         this.h = h;
         this.w = w;
         esVisible = false;
-
-        holes = new ArrayList<>();
-        redParticles = new ArrayList<>();
-        blueParticles = new ArrayList<>();
-        demons = new ArrayList<>();
-
         canvas = Canvas.getCanvas();
 
-        marco = new Rectangle();
-        marco.changeSize(h, w);
-        marco.changeColor("magenta");
-
-        interior = new Rectangle();
-        interior.changeSize(h - 8, w - 8);
-        interior.moveHorizontal(4);
-        interior.moveVertical(4);
-        interior.changeColor("yellow");
-
-        separacion = new Rectangle();
-        separacion.changeSize(h, 2);
-        separacion.changeColor("magenta");
-        separacion.moveHorizontal(w / 2);
+        marco = createRectangle(h, w, "magenta", 0, 0);
+        interior = createRectangle(h - 8, w - 8, "yellow", 4, 4);
+        separacion = createRectangle(h, 2, "magenta", w / 2, 0);
 
         addDemon(d);
 
@@ -101,16 +68,21 @@ public class MaxwellContainer {
             int py = particles[i][1];
             int vx = particles[i][2];
             int vy = particles[i][3];
-            if (i < r) {
-                particle = new Particle("red", true, px, py, vx, vy);
-                redParticles.add(particle);
-            } else {
-                particle = new Particle("blue", false, px, py, vx, vy);
 
-                blueParticles.add(particle);
-            }
+            boolean isRed = (i < r);
+            String color = isRed ? "red" : "blue";
 
+            addParticle(color, isRed, px, py, vx, vy);
         }
+    }
+
+    private Rectangle createRectangle(int height, int width, String color, int moveX, int moveY) {
+        Rectangle rect = new Rectangle();
+        rect.changeSize(height, width);
+        rect.changeColor(color);
+        rect.moveHorizontal(moveX);
+        rect.moveVertical(moveY);
+        return rect;
     }
 
     /*
@@ -378,11 +350,11 @@ public class MaxwellContainer {
      * metodo para finalizar el juego
      */
     public void finish() {
+        makeInvisible();
         demons.clear();
         holes.clear();
         redParticles.clear();
         blueParticles.clear();
-        makeInvisible();
     }
 
     public boolean ok() {
@@ -395,37 +367,38 @@ public class MaxwellContainer {
     }
 
     private void startGame(ArrayList<Particle> particles, int ticks) {
-        for (int i = 0; i < ticks; i++) {
+    for (int i = 0; i < ticks; i++) {
+        if (isGoal()) {
+            finish();
+            JOptionPane.showMessageDialog(null, "El juego ha terminado.");
+            break;
+        } else {
+            List<Particle> paraEliminar = new ArrayList<>();
 
-            if (isGoal()) {
-                finish();
-                JOptionPane.showMessageDialog(null, "El juego ha terminado.");
-                break;
-            } else {
-                List<Particle> paraEliminar = new ArrayList<>();
+            for (Particle p : particles) {
+                boolean afectadaPorDemonio = false;
+                boolean afectadaPorAgujero = false;
 
-                for (Particle p : particles) {
-                    boolean afectadaPorDemonio = false;
-                    boolean afectadaPorAgujero = false;
-
-                    for (Demon d : demons) {
-                        afectadaPorDemonio = d.pasar(p, h, w);
-                    }
-
-                    for (Hole ho : holes) {
-                        afectadaPorAgujero = ho.pasar(p);
-                        paraEliminar.add(p);
-                    }
-
-                    if (!afectadaPorDemonio && !afectadaPorAgujero) {
-                        p.moveV();
-                    }
+                for (Demon d : demons) {
+                    afectadaPorDemonio |= d.pasar(p, h, w);
                 }
 
-                particles.removeAll(paraEliminar);
+                for (Hole ho : holes) {
+                    afectadaPorAgujero |= ho.pasar(p);
+                }
+
+                if (afectadaPorAgujero) {
+                    paraEliminar.add(p);
+                } else if (!afectadaPorDemonio) {
+                    p.moveV(w, h);
+                }
             }
+
+            particles.removeAll(paraEliminar);
         }
     }
+}
+
 
     public boolean isOk() {
         return isOk;
