@@ -20,9 +20,6 @@ public class Plane extends Machine {
 
 	@Override
 	public boolean weakMachines() {
-		if (pilot != null) {
-			return false;
-		}
-		return true;
+		return (pilot == null);
 	}
 }

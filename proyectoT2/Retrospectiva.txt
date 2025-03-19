@@ -44,3 +44,8 @@ The Canvas Component. (s. f.). appinventor.org. http://www.appinventor.org/canv
 
 Irfan, M. (2023, 12 octubre). Genere un número aleatorio dentro de un rango especificado en Java. Delft Stack.
 https://www.delftstack.com/es/howto/java/java-random-number-in-range/ 
+
+ciclo 2
+How to assign Infinity in Java | Java Hungry. (s. f.). https://javahungry.blogspot.com/2022/03/java-infinity.html
+W3Schools.com. (s. f.-b). https://www.w3schools.com/java/java_ref_math.asp
+
