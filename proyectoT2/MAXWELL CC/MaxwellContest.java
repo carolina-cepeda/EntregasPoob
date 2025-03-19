@@ -1,141 +1,98 @@
+import javax.swing.JOptionPane;
+
 public class MaxwellContest extends MaxwellContainer {
+
+    static final double EPSILON = 1e-9;
+    static final int MAXIMO_ITERACIONES = 10000;
 
     public MaxwellContest(int h, int w) {
         super(h, w);
     }
 
-    public class Contest {
+    /**
+     * Calcula la posición reflejada de una partícula en un contenedor de altura h.
+     */
+    static double reflejo(double u, double h) {
+        double mod = u % (2 * h);
+        if (mod < 0) mod += 2 * h;
+        return (mod <= h + EPSILON) ? mod : 2 * h - mod;
+    }
 
-        static final double E = 1e-9;
-        static final int maximoIteraciones = 10000;
+    /**
+     * Calcula el tiempo mínimo en el que una partícula alcanza la altura d.
+     */
+    static double minTiempo(int px, int py, double vx, double vy, int w, int h, int d) {
+        double mejorTiempo = Double.POSITIVE_INFINITY;
+        
+        if (vx == 0) return mejorTiempo; 
 
-        static double reflejo(double u, double h) {
-            double mod = u % (2 * h);
-            if (mod < 0)
-                mod += 2 * h;
-            if (mod <= h + E)
-                return mod;
-            else
-                return 2 * h - mod;
+
+        int pStart = (vx > 0) ? (int) Math.ceil((double) px / (2 * w)) 
+                              : (int) Math.floor((double) px / (2 * w));
+
+        int incremento = (vx > 0) ? 1 : -1;
+
+        for (int k = pStart; k != pStart + (incremento * MAXIMO_ITERACIONES); k += incremento) {
+            double tiempo = (2 * w * k - px) / vx;
+            if (tiempo < 0) continue;
+
+            double y = (Math.abs(vy) < EPSILON) ? py : reflejo(py + vy * tiempo, h);
+
+            if (Math.abs(y - d) < EPSILON) {
+                mejorTiempo = Math.min(mejorTiempo, tiempo);
+                break;
+            }
         }
+        
+        return mejorTiempo;
+    }
 
-        // Para una partícula que necesita cambiar de lado, retorna el mínimo tiempo t
-        // >= 0 para hacerlo
-        static double minTiempo(int px, int py, double vx, double vy, int w, int h, int d) {
-            double mejor = Double.POSITIVE_INFINITY;
+    /**
+     * Resuelve el problema y retorna el tiempo necesario o "imposible".
+     */
+    public static double solve(int h, int w, int d, int r, int b, int[][] particles) {
+        int totalParticulas = r + b;
+        double tiempoTotal = 0.0;
+        boolean esPosible = true;
 
-            if (vx > 0) {
-                int pStart = (int) Math.ceil(px / (2 * w));
-                for (int k = pStart; k < pStart + maximoIteraciones; k++) {
+        for (int i = 0; i < totalParticulas; i++) {
+            int px = (int) particles[i][0];
+            int py = (int) particles[i][1];
+            int vx = (int) particles[i][2];
+            double vy = particles[i][3];
 
-                    double tiempo = (2 * w * k - px) / vx;
-                    if (tiempo < 0)
-                        continue;
+            boolean enLaIzquierda = (px < 0);
+            boolean necesitaReflejo = (i < r) ? !enLaIzquierda : enLaIzquierda;
 
-                    if (Math.abs(vy) < E) {
-                        if (Math.abs(py - d) < E) {
-                            mejor = Math.min(mejor, tiempo);
-                            break;
-                        }
-                    } else {
-                        double y = reflejo(py + vy * tiempo, h);
-                        if (Math.abs(y - d) < E) {
-                            mejor = Math.min(mejor, tiempo);
-                            break;
-                        }
-                    }
-                }
-            } else {
-                int pStart = (int) Math.floor(px / (2 * w));
-                for (int k = pStart; k > pStart - maximoIteraciones; k--) {
-                    double t = (2 * w * k - px) / vx;
-                    if (t < 0)
-                        continue;
-
-                    if (Math.abs(vy) < E) {
-                        if (Math.abs(py - d) < E) {
-                            mejor = Math.min(mejor, t);
-                            break;
-                        }
-                    } else {
-                        double y = reflejo(py + vy * t, h);
-                        if (Math.abs(y - d) < E) {
-                            mejor = Math.min(mejor, t);
-                            break;
-                        }
-                    }
+            if (necesitaReflejo) {
+                double posibleTiempo = minTiempo(px, py, vx, vy, w, h, d);
+                if (posibleTiempo == Double.POSITIVE_INFINITY) {
+                    esPosible = false;
+                    break;
+                } else {
+                    tiempoTotal = Math.max(tiempoTotal, posibleTiempo);
                 }
             }
-
-            return mejor;
         }
 
-        public static String solve(int w, int h, int d, int r, int b, int[][] particles) {
-            int total = r + b;
-            double tiempoTotal = 0.0;
-            boolean posible = true;
+        return Math.round(tiempoTotal * 10.0) / 10.0;
+    }
+    
+    public void simulate(int h, int w, int d, int b, int r, int[][] particles) {
+    double tiempoTotal = solve(h, w, d, r, b, particles);
 
-            for (int i = 0; i < total; i++) {
-                int px = particles[i][0];
-                int py = particles[i][1];
-                int vx = particles[i][2];
-                double vy = particles[i][3];
+    if (tiempoTotal == -1) { 
+        System.out.println("no es posible hacer la simulación");
+        return;
+    }
 
-                boolean Izq = (px < 0);
-                boolean necesitaReflejo = false;
+    int ticks = (int) Math.ceil(tiempoTotal);
+    this.makeVisible();
+    this.start(ticks);
 
-                if (i < r) { // red
-                    if (!Izq)
-                        necesitaReflejo = true;
-                } else {
-                    if (Izq)
-                        necesitaReflejo = true;
-
-                    if (necesitaReflejo) {
-                        double posibleTiempo = minTiempo(px, py, vx, vy, w, h, d);
-                        if (posibleTiempo == Double.POSITIVE_INFINITY) {
-                            posible = false;
-                        } else {
-                            tiempoTotal = Math.max(tiempoTotal, posibleTiempo);
-                        }
-                    }
-                }
-
-                if (!posible) {
-                    return "imposible";
-                } else {
-                    return String.format("%.6f", tiempoTotal);
-                }
-            }
-
-        }
-
-    public static void main(String[] args) {
-        // Ejemplo 1
-        int w = 7;
-        int h = 4;
-        int d = 1;
-        int r = 1;
-        int b = 1;
-        int[][] particles1 = {
-            {2, 1, 4, 1}, // Partícula roja
-            {-3, 1, 2, 0} // Partícula azul
-        };
-        System.out.println(solve(w, h, d, r, b, particles1)); // Salida: 24.000000
-
-        // Ejemplo 2
-        w = 4;
-        h = 4;
-        d = 1;
-        r = 2;
-        b = 2;
-        int[][] particles2 = {
-            {3, 1, 2, 2},   // Partícula roja
-            {-2, 3, -2, -1}, // Partícula roja
-            {3, 2, 1, -2},  // Partícula azul
-            {-2, 2, 2, 2}   // Partícula azul
-        };
-        System.out.println(solve(w, h, d, r, b, particles2)); // Salida: impossible
-    }
-
+    if (this.isGoal()) {
+        this.finish();
+        JOptionPane.showMessageDialog(null, "El juego ha terminado.");
+    }
+}
 }
