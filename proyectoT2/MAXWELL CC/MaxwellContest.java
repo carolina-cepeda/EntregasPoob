@@ -1,59 +1,64 @@
-public class maxwellContest extends maxwellContainer{
+public class MaxwellContest extends MaxwellContainer {
 
-    public maxwellContest(){
-        super();
+    public MaxwellContest(int h, int w) {
+        super(h, w);
     }
+
     public class Contest {
 
         static final double E = 1e-9;
-        static final int maximoIteraciones = 10000; 
-    
-    
-        static double reflejo(int u, int h) {
+        static final int maximoIteraciones = 10000;
+
+        static double reflejo(double u, double h) {
             double mod = u % (2 * h);
-            if (mod < 0) mod += 2 * h;
-            if (mod <= h + E) return mod;
-            else return 2 * h - mod;
+            if (mod < 0)
+                mod += 2 * h;
+            if (mod <= h + E)
+                return mod;
+            else
+                return 2 * h - mod;
         }
-    
-        // Para una partícula que necesita cambiar de lado, retorna el mínimo tiempo t >= 0 para hacerlo
-        static double minTiempo(int px, int py, int vx, int vy, int w, int h, int d) {
+
+        // Para una partícula que necesita cambiar de lado, retorna el mínimo tiempo t
+        // >= 0 para hacerlo
+        static double minTiempo(int px, int py, double vx, double vy, int w, int h, int d) {
             double mejor = Double.POSITIVE_INFINITY;
-    
+
             if (vx > 0) {
                 int pStart = (int) Math.ceil(px / (2 * w));
                 for (int k = pStart; k < pStart + maximoIteraciones; k++) {
 
                     double tiempo = (2 * w * k - px) / vx;
-                    if (tiempo < 0) continue;
-    
-   
+                    if (tiempo < 0)
+                        continue;
+
                     if (Math.abs(vy) < E) {
                         if (Math.abs(py - d) < E) {
-                            mejor = Math.min(mejor, t);
-                            break; 
+                            mejor = Math.min(mejor, tiempo);
+                            break;
                         }
                     } else {
-                        double y = reflect(py + vy * t, h);
+                        double y = reflejo(py + vy * tiempo, h);
                         if (Math.abs(y - d) < E) {
-                            mejor = Math.min(mejor, t);
-                            break; 
+                            mejor = Math.min(mejor, tiempo);
+                            break;
                         }
                     }
                 }
-            } else { 
+            } else {
                 int pStart = (int) Math.floor(px / (2 * w));
                 for (int k = pStart; k > pStart - maximoIteraciones; k--) {
                     double t = (2 * w * k - px) / vx;
-                    if (t < 0) continue;
-    
+                    if (t < 0)
+                        continue;
+
                     if (Math.abs(vy) < E) {
                         if (Math.abs(py - d) < E) {
                             mejor = Math.min(mejor, t);
                             break;
                         }
                     } else {
-                        double y = reflect(py + vy * t, h);
+                        double y = reflejo(py + vy * t, h);
                         if (Math.abs(y - d) < E) {
                             mejor = Math.min(mejor, t);
                             break;
@@ -61,56 +66,58 @@ public class maxwellContest extends maxwellContainer{
                     }
                 }
             }
-    
+
             return mejor;
         }
-    
+
         public static String solve(int w, int h, int d, int r, int b, int[][] particles) {
             int total = r + b;
             double tiempoTotal = 0.0;
             boolean posible = true;
-    
+
             for (int i = 0; i < total; i++) {
                 int px = particles[i][0];
                 int py = particles[i][1];
                 int vx = particles[i][2];
                 double vy = particles[i][3];
-    
+
                 boolean Izq = (px < 0);
                 boolean necesitaReflejo = false;
-    
+
                 if (i < r) { // red
-                    if (!Izq) necesitaReflejo = true;
-                } else { /
-                    if (Izq) necesitaReflejo = true;
-                }
-    
-                if (necesitaReflejo) {
-                    double posibleTiempo = minTiempo(px, py, vx, vy, w, h, d);
-                    if (posibleTiempo== Double.POSITIVE_INFINITY) {
-                        posible = false;
-                    } else {
-                        tiempoTotal = Math.max(tiempoTotal, posibleTiempo);
+                    if (!Izq)
+                        necesitaReflejo = true;
+                } else {
+                    if (Izq)
+                        necesitaReflejo = true;
+
+                    if (necesitaReflejo) {
+                        double posibleTiempo = minTiempo(px, py, vx, vy, w, h, d);
+                        if (posibleTiempo == Double.POSITIVE_INFINITY) {
+                            posible = false;
+                        } else {
+                            tiempoTotal = Math.max(tiempoTotal, posibleTiempo);
+                        }
                     }
                 }
+
+                if (!posible) {
+                    return "imposible";
+                } else {
+                    return String.format("%.6f", tiempoTotal);
+                }
             }
-    
-            if (!posible) {
-                return "imposible";
-            } else {
-                return String.format("%.6f", tiempoTotal);
-            }
+
         }
-    
-    }
+
     public static void main(String[] args) {
         // Ejemplo 1
         int w = 7;
         int h = 4;
-        double d = 1;
+        int d = 1;
         int r = 1;
         int b = 1;
-        double[][] particles1 = {
+        int[][] particles1 = {
             {2, 1, 4, 1}, // Partícula roja
             {-3, 1, 2, 0} // Partícula azul
         };
@@ -122,7 +129,7 @@ public class maxwellContest extends maxwellContainer{
         d = 1;
         r = 2;
         b = 2;
-        double[][] particles2 = {
+        int[][] particles2 = {
             {3, 1, 2, 2},   // Partícula roja
             {-2, 3, -2, -1}, // Partícula roja
             {3, 2, 1, -2},  // Partícula azul
