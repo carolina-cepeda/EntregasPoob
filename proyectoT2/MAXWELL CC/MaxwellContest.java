@@ -5,8 +5,8 @@ public class MaxwellContest extends MaxwellContainer {
     static final double EPSILON = 1e-9;
     static final int MAXIMO_ITERACIONES = 10000;
 
-    public MaxwellContest(int h, int w) {
-        super(h, w);
+    public MaxwellContest(int h, int w, int d, int b, int r, int[][] particles) {
+        super(h,w,d,b,r,particles);
     }
 
     /**
@@ -53,7 +53,6 @@ public class MaxwellContest extends MaxwellContainer {
     public static double solve(int h, int w, int d, int r, int b, int[][] particles) {
         int totalParticulas = r + b;
         double tiempoTotal = 0.0;
-        boolean esPosible = true;
 
         for (int i = 0; i < totalParticulas; i++) {
             int px = (int) particles[i][0];
@@ -67,8 +66,7 @@ public class MaxwellContest extends MaxwellContainer {
             if (necesitaReflejo) {
                 double posibleTiempo = minTiempo(px, py, vx, vy, w, h, d);
                 if (posibleTiempo == Double.POSITIVE_INFINITY) {
-                    esPosible = false;
-                    break;
+                    return -1.0 ;
                 } else {
                     tiempoTotal = Math.max(tiempoTotal, posibleTiempo);
                 }

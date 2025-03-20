@@ -1,7 +1,6 @@
 import java.util.ArrayList;
-import java.util.Iterator;
-import javax.swing.JOptionPane;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  * Write a description of class MaxwellContainer here.
@@ -76,7 +75,7 @@ public class MaxwellContainer {
         }
     }
 
-    private Rectangle createRectangle(int height, int width, String color, int moveX, int moveY) {
+    private static Rectangle createRectangle(int height, int width, String color, int moveX, int moveY) {
         Rectangle rect = new Rectangle();
         rect.changeSize(height, width);
         rect.changeColor(color);
@@ -89,7 +88,7 @@ public class MaxwellContainer {
      * Método para validar la posicion de los elementos
      */
     public boolean validarPosition(int px, int py) {
-        return (70 <= px && px <= 70 + w && 15 <= py && py <= 15 + h);
+        return (-w/2 <= px && px <=  w/2  && 0 <= py && py <= h);
     }
 
     /*
@@ -98,11 +97,11 @@ public class MaxwellContainer {
      * @param : entero d que se refiere a la posicion en y del demonio.
      */
     public void addDemon(int d) {
-        int px = 70 + w / 2;
+        int px = 0;
 
         if (!validarDemon(d) && validarPosition(px, d)) {
 
-            Demon demonio = new Demon(px, d, "black");
+            Demon demonio = new Demon(px, d, "black",h,w);
             demons.add(demonio);
 
         } else {
@@ -148,7 +147,7 @@ public class MaxwellContainer {
     public void addParticle(String Color, boolean isRed, int px, int py, int vx, int vy) {
 
         if (!validarParticle(px, py) && validarPosition(px, py)) {
-            Particle p = new Particle(Color, isRed, px, py, vx, vy);
+            Particle p = new Particle(Color, isRed, px, py, vx, vy,h,w);
 
             if (isRed) {
                 redParticles.add(p);
@@ -188,7 +187,7 @@ public class MaxwellContainer {
      */
     public void addHole(int px, int py, int particles) {
         if (validarPosition(px, py) && !validarHole(px, py)) {
-            Hole ho = new Hole(px, py, particles);
+            Hole ho = new Hole(px, py, particles,h,w);
             holes.add(ho);
 
         } else {
@@ -289,7 +288,7 @@ public class MaxwellContainer {
         int[][] infoHoles = new int[holes.size()][2];
 
         for (int j = 0; j < holes.size(); j++) {
-            infoHoles[j] = holes.get(j).format();
+            infoHoles[j] = holes.get(j).format(h,w);
         }
 
         return infoHoles;
@@ -380,7 +379,7 @@ public class MaxwellContainer {
                 boolean afectadaPorAgujero = false;
 
                 for (Demon d : demons) {
-                    afectadaPorDemonio |= d.pasar(p, h, w);
+                    afectadaPorDemonio |= d.pasar(p);
                 }
 
                 for (Hole ho : holes) {
@@ -390,7 +389,7 @@ public class MaxwellContainer {
                 if (afectadaPorAgujero) {
                     paraEliminar.add(p);
                 } else if (!afectadaPorDemonio) {
-                    p.moveV(w, h);
+                    p.moveV();
                 }
             }
 
@@ -405,7 +404,7 @@ public class MaxwellContainer {
     }
 
     private boolean validarDimension(int h, int w) {
-        return (20 < h && h <= 300 && 20 < w && w < 300);
+        return (0 < h && h <= 300 && 0 < w && w < 300);
     }
 
     public static boolean getVisible() {

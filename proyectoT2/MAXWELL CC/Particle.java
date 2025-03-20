@@ -16,17 +16,22 @@ public class Particle {
     private Circle grafico;
     private boolean isRed;
     private boolean esVisible;
+    private int h;
+    private int w;
 
     /**
      * Constructor for objects of class Particle
      */
-    public Particle(String color, boolean isRed, int x, int y, int vX, int vY) {
+    public Particle(String color, boolean isRed, int x, int y, int vX, int vY,int h,int w) {
         this.esVisible = MaxwellContainer.getVisible();
         this.x = x;
         this.y = y;
         this.vX = vX;
         this.vY = vY;
         this.isRed = isRed;
+        this.h = h;
+        this.w = w;
+        transformarDimensionACanvas();
         grafico = new Circle();
         grafico.changeSize(8);
         grafico.changeColor(color);
@@ -70,6 +75,7 @@ public class Particle {
     }
 
     public int getpX() {
+        transformarDimensionACanvas();
         return this.x;
     }
 
@@ -89,24 +95,27 @@ public class Particle {
      * Metodo para mover las particulas
      * basado en sus velocidades en x y y.
      */
-    public void moveV(int w, int h) {
+    public void moveV() {
+        transformarDimensionACanvas();
         for (int i = 0; i < 3; i++) {
-            choque(w, h);
+            choque();
             y += vY;
-
+    
             if ("red".equals(color)) {
                 x -= vX;
-                moveSlow(-vX, vY);
             } else {
                 x += vX;
-                moveSlow(vX, vY);
             }
-
+    
+            moveSlow(vX, vY);
+    
             if (esVisible) {
                 makeVisible();
             }
         }
+        TransformarDimensionAJuego();
     }
+    
 
     private void moveSlow(int vx, int vy) {
         makeInvisible();
@@ -115,7 +124,7 @@ public class Particle {
         makeVisible();
     }
 
-    private void choque(int w, int h) {
+    private void choque() {
         boolean choqueX = EnmuroX(w);
         boolean choqueY = EnmuroY(h);
 
@@ -144,6 +153,7 @@ public class Particle {
     }
 
     public boolean EstoyAhi(int px, int py) {
+        
         return (x == px && y == py);
     }
 
@@ -156,11 +166,11 @@ public class Particle {
         return info;
     }
 
-    public void pasar(int h, int w) {
+    public void pasar() {
         if (isRed) {
-            pasarRojo(h, w);
+            pasarRojo();
         } else {
-            pasarBlue(h, w);
+            pasarBlue();
         }
         if (esVisible) {
             makeVisible();
@@ -170,23 +180,29 @@ public class Particle {
     /*
      * Metodo para pasar las particulas rojas al lado correcto.
      */
-    public void pasarRojo(int h, int w) {
+    public void pasarRojo() {
+        transformarDimensionACanvas();
         Random random = new Random();
-        int esperadoX = random.nextInt(((w + 62) - 69) / 2) + 70; // Rango [70, w+62 /2]
+        int esperadoX = random.nextInt(((w + 62) - 69) / 2) + 70;  
         int esperadoY = random.nextInt((h + 7) - 14) + 15;
-
+    
         grafico.slowMoveHorizontal(esperadoX - x);
         grafico.slowMoveVertical(esperadoY - y);
-        this.x = esperadoX - x;
-        this.y = esperadoY - y;
-
+    
+        this.x = esperadoX;  
+        this.y = esperadoY;  
+    
+        TransformarDimensionAJuego();
     }
+    
+    
     /*
      * Metodo para pasar las particulas azules al lado correcto.
      */
 
-    public void pasarBlue(int h, int w) {
+    public void pasarBlue() {
 
+        transformarDimensionACanvas();
         Random random = new Random();
         int esperadoX = random.nextInt(w + 62) + (((w + 62) - 69) / 2); // Rango [70, w+62 /2]
         int esperadoY = random.nextInt((h + 7) - 14) + 15;
@@ -194,8 +210,19 @@ public class Particle {
         grafico.slowMoveHorizontal(esperadoX - x);
         grafico.slowMoveVertical(esperadoY - y);
 
-        this.x = esperadoX - x;
-        this.y = esperadoY - y;
+        this.x = esperadoX;
+        this.y = esperadoY;
+        TransformarDimensionAJuego();
     }
 
+    public void transformarDimensionACanvas(){
+        this.x += 70 + w/2 ;
+        this.y += 15 + h;
+
+    }
+
+    public void TransformarDimensionAJuego(){
+        this.x -= (70 + w/2);
+        this.y -= (15+h); 
+    }
 }
