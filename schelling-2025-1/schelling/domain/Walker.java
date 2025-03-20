@@ -37,6 +37,7 @@ public class Walker extends Person{
     public int shape(){
         return SQUARE;
     }
+    
 
 
     /*
