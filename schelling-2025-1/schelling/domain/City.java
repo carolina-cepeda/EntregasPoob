@@ -59,7 +59,7 @@ public class City{
         for(int i= 0; i < SIZE; i++){
 
             for (int j=0; j < SIZE; j++){
-                if (locations != null){
+                if (locations[i][j] != null){
                     locations[i][j].decide();
                 }
             }
@@ -68,7 +68,7 @@ public class City{
         for(int i= 0; i < SIZE; i++){
 
             for (int j=0; j < SIZE; j++){
-                if (locations != null){
+                if (locations[i][j] != null){
                     locations[i][j].change();
                 }
             }
