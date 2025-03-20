@@ -32,18 +32,24 @@ public class City{
         Person Eva = new Person(this,15, 15);
     }
     
-    public int neighborsEquals(int r, int c){
-        int num=0;
-        if (inLocations(r,c) && locations[r][c]!=null){
-            for(int dr=-1; dr<2;dr++){
-                for (int dc=-1; dc<2;dc++){
-                    if ((dr!=0 || dc!=0) && inLocations(r+dr,c+dc) && 
-                    (locations[r+dr][c+dc]!=null) &&  (locations[r][c].getClass()==locations[r+dr][c+dc].getClass())) num++;
+public int neighborsEquals(int r, int c, Person person) {
+    int num = 0;
+
+    if (inLocations(r, c)) {
+        for (int dr = -1; dr <= 1; dr++) {
+            for (int dc = -1; dc <= 1; dc++) {
+                if ((dr != 0 || dc != 0) && inLocations(r + dr, c + dc)) {
+                    Item neighbor = locations[r + dr][c + dc];
+                    if (neighbor instanceof Person && ((Person) neighbor).getColor().equals(person.getColor())) {
+                        num++;
+                    }
                 }
             }
         }
-        return num;
     }
+    return num;
+}
+
    
 
     public boolean isEmpty(int r, int c){

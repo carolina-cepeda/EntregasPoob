@@ -88,7 +88,7 @@ public int[] getAEmptyLocation() {
         int newCol = column + dir[1];
 
         if (city.isEmpty(newRow, newCol)) {
-            int vecinosSimilares = city.neighborsEquals(newRow, newCol);
+            int vecinosSimilares = city.neighborsEquals(newRow, newCol,this);
 
             if (vecinosSimilares > maxvecinosSimilares) {
                 maxvecinosSimilares = vecinosSimilares;
