@@ -30,6 +30,8 @@ public class City{
     public void someItems(){   
         Person Adam = new Person(this,10, 10);
         Person Eva = new Person(this,15, 15);
+        Walker messner = new Walker(this,20,15);
+        Walker kukuczka = new Walker (this,21,15);
     }
     
   

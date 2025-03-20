@@ -10,8 +10,8 @@ import java.util.Random;
 <br>
  */
 public class Person extends Agent implements Item{
-    private City city;
-    private int row,column;    
+    protected City city;
+    protected int row,column;    
     protected Color color;
     
     /**Create a new person (<b>row,column</b>) in the city <b>ac</b>..
