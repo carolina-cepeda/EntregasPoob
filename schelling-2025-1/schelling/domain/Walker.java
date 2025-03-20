@@ -33,6 +33,11 @@ public class Walker extends Person{
         }
     }
 
+    @Override
+    public int shape(){
+        return SQUARE;
+    }
+
 
     /*
      * Método para intentar mover al caminante hacia el norte
