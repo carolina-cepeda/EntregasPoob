@@ -29,10 +29,18 @@ public class City{
 
     public void someItems(){   
         Person Adam = new Person(this,10, 10);
+        setItem(10, 10, Adam);  
+    
         Person Eva = new Person(this,15, 15);
-        Walker messner = new Walker(this,20,15);
-        Walker kukuczka = new Walker (this,21,15);
+        setItem(15, 15, Eva);  
+    
+        Walker messner = new Walker(this,10,15);
+        setItem(10, 15, messner);  
+    
+        Walker kukuczka = new Walker (this,10,7);
+        setItem(10, 7, kukuczka);  
     }
+    
     
   
     public int neighborsEquals(int r, int c){
