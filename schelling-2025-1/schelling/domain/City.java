@@ -32,23 +32,42 @@ public class City{
         Person Eva = new Person(this,15, 15);
     }
     
-public int neighborsEquals(int r, int c, Person person) {
-    int num = 0;
+  
+    public int neighborsEquals(int r, int c){
+            int num=0;
+            if (inLocations(r,c) && locations[r][c]!=null){
+                for(int dr=-1; dr<2;dr++){
+                    for (int dc=-1; dc<2;dc++){
+                        if ((dr!=0 || dc!=0) && inLocations(r+dr,c+dc) && 
+                        (locations[r+dr][c+dc]!=null) &&  (locations[r][c].getClass()==locations[r+dr][c+dc].getClass())) num++;
+                    }
+                }
+            }
+            return num;
 
-    if (inLocations(r, c)) {
+    }
+
+    /**
+     * Cuenta cuántos vecinos en la posición (r, c) tienen el mismo estado de ánimo que la persona dada.
+     */
+    public int neighborsSameMood(int r, int c, Person p) {
+        int num = 0;
+
         for (int dr = -1; dr <= 1; dr++) {
             for (int dc = -1; dc <= 1; dc++) {
-                if ((dr != 0 || dc != 0) && inLocations(r + dr, c + dc)) {
-                    Item neighbor = locations[r + dr][c + dc];
-                    if (neighbor instanceof Person && ((Person) neighbor).getColor().equals(person.getColor())) {
+                int newRow = r + dr;
+                int newCol = c + dc;
+
+                if ((dr != 0 || dc != 0) && inLocations(newRow, newCol) && locations[newRow][newCol] instanceof Person) {
+                    Person vecino = (Person) locations[newRow][newCol];
+                    if (vecino.getState() == p.getState()) {  
                         num++;
                     }
                 }
             }
         }
+        return num;
     }
-    return num;
-}
 
    
 

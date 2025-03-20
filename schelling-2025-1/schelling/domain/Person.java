@@ -60,49 +60,77 @@ public class Person extends Agent implements Item{
     /**Change its actual state
      */
     @Override
-public void change() {
-    step();
+    public void change() {
+        step(); // Aumentar el contador de pasos
 
-    if (state == Agent.DISSATISFIED) {
-        int[] newPos = getAEmptyLocation();
-        if (newPos != null) {
-            city.setItem(row, column, null);
-            row = newPos[0];
-            column = newPos[1];
-            city.setItem(row, column, this);
+        if (state == Agent.DISSATISFIED) { 
+            int[] newPos = getAEmptyLocation();
+            if (newPos != null) {
+                city.setItem(row, column, null); 
+                row = newPos[0];
+                column = newPos[1];
+                city.setItem(row, column, this);
+            }
         }
     }
-}
 
-public int[] getAEmptyLocation() {
+    public int[] getAEmptyLocation() {
     int[][] direcciones = {
         {-1, 0}, {1, 0}, 
-        {0, -1}, {0, 1}
+        {0, -1}, {0, 1}, 
+        {-1, -1}, {-1, 1}, 
+        {1, -1}, {1, 1}
     };
 
-    List<int[]> posiciones = new ArrayList<>();
-    int maxvecinosSimilares = -1;
+    List<int[]> mejoresPosiciones = new ArrayList<>();
+    int maxVecinosSimilares = -1;
 
     for (int[] dir : direcciones) {
         int newRow = row + dir[0];
         int newCol = column + dir[1];
 
         if (city.isEmpty(newRow, newCol)) {
-            int vecinosSimilares = city.neighborsEquals(newRow, newCol,this);
+            int vecinosSimilares = city.neighborsSameMood(newRow, newCol, this);
 
-            if (vecinosSimilares > maxvecinosSimilares) {
-                maxvecinosSimilares = vecinosSimilares;
-                posiciones.clear();
-                posiciones.add(new int[]{newRow, newCol});
-            } else if (vecinosSimilares == maxvecinosSimilares) {
-                posiciones.add(new int[]{newRow, newCol});
+            if (vecinosSimilares > maxVecinosSimilares) {
+                maxVecinosSimilares = vecinosSimilares;
+                mejoresPosiciones.clear();
+                mejoresPosiciones.add(new int[]{newRow, newCol});
+            } else if (vecinosSimilares == maxVecinosSimilares) {
+                mejoresPosiciones.add(new int[]{newRow, newCol});
             }
         }
     }
-    if (!posiciones.isEmpty()){
-        return posiciones.get(new Random().nextInt(posiciones.size()));
+
+    if (!mejoresPosiciones.isEmpty()) {
+        return mejoresPosiciones.get(new Random().nextInt(mejoresPosiciones.size()));
     }
+
     return null; 
 }
+public int neighborsSameMood(int r, int c, Person p) {
+    int num = 0;
+
+    for (int dr = -1; dr <= 1; dr++) {
+        for (int dc = -1; dc <= 1; dc++) {
+            int newRow = r + dr;
+            int newCol = c + dc;
+
+            if ((dr != 0 || dc != 0) && inLocations(newRow, newCol) && locations[newRow][newCol] instanceof Person) {
+                Person vecino = (Person) locations[newRow][newCol];
+                if (vecino.getState() == p.getState()) {  
+                    num++;
+                }
+            }
+        }
+    }
+
+    return num;
+}
+public char getState(){
+    return this.state ;
+}
+
+
         
 }
