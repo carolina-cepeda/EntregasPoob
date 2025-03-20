@@ -59,8 +59,18 @@ public class City{
         for(int i= 0; i < SIZE; i++){
 
             for (int j=0; j < SIZE; j++){
+                if (locations != null){
+                    locations[i][j].decide();
+                }
+            }
+        }
 
-                locations[i][j].change();
+        for(int i= 0; i < SIZE; i++){
+
+            for (int j=0; j < SIZE; j++){
+                if (locations != null){
+                    locations[i][j].change();
+                }
             }
         }
     }
