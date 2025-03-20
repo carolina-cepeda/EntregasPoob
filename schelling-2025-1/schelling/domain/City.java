@@ -1,5 +1,4 @@
 package domain;
-import java.util.*;
 
 /*No olviden adicionar la documentacion*/
 public class City{
@@ -29,7 +28,8 @@ public class City{
     }
 
     public void someItems(){   
-  
+        Person Adam = new Person(this,10, 10);
+        Person Eva = new Person(this,15, 15);
     }
     
     public int neighborsEquals(int r, int c){
@@ -56,7 +56,13 @@ public class City{
     
    
     public void ticTac(){
-        
+        for(int i= 0; i < SIZE; i++){
+
+            for (int j=0; j < SIZE; j++){
+
+                locations[i][j].change();
+            }
+        }
     }
 
 }

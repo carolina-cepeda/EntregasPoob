@@ -1,5 +1,4 @@
 package domain;
-import java.awt.Color;
 
 
 public abstract class Agent{
