@@ -69,6 +69,6 @@ public class Walker extends Person{
      * Verificar si tiene vecinos
      */
     private boolean hasNeighbors(){
-        return city.neighborsSameMood(row, column, this) >0 ;
+        return city.neighborsEquals(row, column) >0 ;
     }
 }
