@@ -39,6 +39,13 @@ public class City{
     
         Walker kukuczka = new Walker (this,10,7);
         setItem(10,7,kukuczka);
+
+        TrafficLight alarm = new TrafficLight(this, 0, 0);
+        setItem(0, 0, alarm);
+
+        TrafficLight alert = new TrafficLight(this, 0, 24);
+        setItem(24, 0, alert);
+
     }
     
     
