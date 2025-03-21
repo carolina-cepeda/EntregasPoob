@@ -1,4 +1,3 @@
-import javax.swing.JOptionPane;
 
 public class MaxwellContest extends MaxwellContainer {
 
@@ -50,7 +49,7 @@ public class MaxwellContest extends MaxwellContainer {
     }
 
     /**
-     * Resuelve el problema y retorna el tiempo necesario o "imposible".
+     * Resuelve el problema y retorna el tiempo necesario o "-1".
      */
     public static double solve(int h, int w, int d, int r, int b, int[][] particles) {
         int totalParticulas = r + b;
@@ -90,10 +89,5 @@ public class MaxwellContest extends MaxwellContainer {
         int ticks = (int) Math.ceil(tiempoTotal);
         this.makeVisible();
         this.start(ticks);
-
-        if (this.isGoal()) {
-            this.finish();
-            JOptionPane.showMessageDialog(null, "El juego ha terminado.");
-        }
     }
 }
