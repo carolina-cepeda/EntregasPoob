@@ -40,12 +40,11 @@ public class City{
         Walker kukuczka = new Walker (this,10,7);
         setItem(10,7,kukuczka);
 
-        TrafficLight alarm = new TrafficLight(this, 0, 0);
-        setItem(1, 1, alarm);
+        Solitaria Cepeda = new Solitaria(this, 6, 6);
+        setItem(6, 6, Cepeda);
 
-        TrafficLight alert = new TrafficLight(this, 0, 24);
-        setItem(24, 1, alert);
-
+        Solitaria Victoria = new Solitaria(this,6,10);
+        setItem(6, 7, Victoria);
     }
     
     
