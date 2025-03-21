@@ -3,7 +3,9 @@ package domain;
 import java.awt.Color;
 
 public class Walker extends Person{
-    
+    /*
+     * constructor de la persona caminante
+     */
     public Walker(City city,int row, int column){
 
         super(city,row,column);
@@ -12,6 +14,9 @@ public class Walker extends Person{
     }
 
     @Override
+    /*
+     * Actua
+     */
     public void decide(){
         if (hasNeighbors()){
             state = Agent.HAPPY;
@@ -21,6 +26,9 @@ public class Walker extends Person{
         }
     }
     @Override
+    /*
+     * cambia su estado actual
+     */
     public void change(){
         step();
         if (state == Agent.INDIFFERENT || state == Agent.DISSATISFIED){
@@ -34,6 +42,9 @@ public class Walker extends Person{
     }
 
     @Override
+    /*
+     * retorna la forma del caminante
+     */
     public int shape(){
         return SQUARE;
     }

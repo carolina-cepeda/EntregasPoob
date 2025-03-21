@@ -41,15 +41,17 @@ public class City{
         setItem(10,7,kukuczka);
 
         TrafficLight alarm = new TrafficLight(this, 0, 0);
-        setItem(0, 0, alarm);
+        setItem(1, 1, alarm);
 
         TrafficLight alert = new TrafficLight(this, 0, 24);
-        setItem(24, 0, alert);
+        setItem(24, 1, alert);
 
     }
     
     
-  
+  /*
+   * metodo para revisar cuantos vecinos hay
+   */
     public int neighborsEquals(int r, int c){
             int num=0;
             if (inLocations(r,c) && locations[r][c]!=null){
@@ -95,13 +97,16 @@ public class City{
         return ((0<=r) && (r<SIZE) && (0<=c) && (c<SIZE));
     }
     
-   
+   /*
+    * Cambia de estado la simulación
+    */
     public void ticTac(){
         for(int i= 0; i < SIZE; i++){
 
             for (int j=0; j < SIZE; j++){
                 if (locations[i][j] != null){
                     locations[i][j].decide();
+                    locations[i][j].getColor();
                 }
             }
         }

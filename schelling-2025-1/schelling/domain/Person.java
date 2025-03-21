@@ -72,7 +72,10 @@ public class Person extends Agent implements Item{
             }
         }
     }
-
+    /*
+    * metodo para devolver una ubicacion vacía en base a las preferencias
+    * de la persona
+    */
     public int[] getAEmptyLocation() {
     int[][] direcciones = {
         {-1, 0}, {1, 0}, 
@@ -107,6 +110,9 @@ public class Person extends Agent implements Item{
 
     return null; 
 }
+/*
+ * retorna el estado de la persona
+ */
 public char getState(){
     return this.state ;
 }
