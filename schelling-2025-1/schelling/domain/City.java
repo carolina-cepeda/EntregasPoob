@@ -32,13 +32,13 @@ public class City{
         setItem(10, 10, Adam);  
     
         Person Eva = new Person(this,15, 15);
-        setItem(15, 15, Eva);  
-    
+        setItem(15, 15, Eva); 
+        
         Walker messner = new Walker(this,10,15);
-        setItem(10, 15, messner);  
+        setItem(10,15, messner);  
     
         Walker kukuczka = new Walker (this,10,7);
-        setItem(10, 7, kukuczka);  
+        setItem(10,7,kukuczka);
     }
     
     

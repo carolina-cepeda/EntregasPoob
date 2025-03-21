@@ -61,8 +61,7 @@ public class Person extends Agent implements Item{
      */
     @Override
     public void change() {
-        step(); // Aumentar el contador de pasos
-
+        step(); 
         if (state == Agent.DISSATISFIED) { 
             int[] newPos = getAEmptyLocation();
             if (newPos != null) {

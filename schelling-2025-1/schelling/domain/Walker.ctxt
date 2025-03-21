@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=Walker
+comment1.params=city\ row\ column
+comment1.target=Walker(City,\ int,\ int)
+comment2.params=
+comment2.target=void\ decide()
+comment3.params=
+comment3.target=void\ change()
+comment4.params=
+comment4.target=int\ shape()
+comment5.params=
+comment5.target=boolean\ moveNorth()
+comment5.text=\r\n\ M\u00E9todo\ para\ intentar\ mover\ al\ caminante\ hacia\ el\ norte\r\n
+comment6.params=
+comment6.target=boolean\ hasNeighbors()
+comment6.text=\r\n\ Verificar\ si\ tiene\ vecinos\r\n
+numComments=7
