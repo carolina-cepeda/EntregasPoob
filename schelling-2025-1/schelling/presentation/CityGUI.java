@@ -17,7 +17,7 @@ public class CityGUI extends JFrame{
    
     
     private CityGUI() {
-        theCity=new City();
+        theCity = new City();
         SIZE=theCity.getSize();
         prepareElements();
         prepareActions();
