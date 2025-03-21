@@ -12,8 +12,8 @@ public class MaxwellContest extends MaxwellContainer {
     /**
      * Calcula la posición reflejada de una partícula en un contenedor de altura h.
      */
-    static double reflejo(double w, double h) {
-        double mod = w % (2 * h);
+    static double reflejo(double ps, double h) {
+        double mod = ps % (2 * h);
         if (mod < 0)
             mod += 2 * h;
         return (mod <= h + EPSILON) ? mod : 2 * h - mod;
@@ -63,6 +63,7 @@ public class MaxwellContest extends MaxwellContainer {
             double vy = particles[i][3];
 
             boolean enLaIzquierda = (px < 0);
+
             boolean necesitaReflejo = (i < r) ? !enLaIzquierda : enLaIzquierda;
 
             if (necesitaReflejo) {
