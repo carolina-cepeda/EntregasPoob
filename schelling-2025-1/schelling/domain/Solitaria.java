@@ -61,4 +61,9 @@ public class Solitaria extends Person{
 
     return null; 
 }
+@Override
+public int shape(){
+    return ROUND;
+}
+
 }
