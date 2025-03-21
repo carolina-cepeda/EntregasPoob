@@ -1,13 +1,13 @@
 #BlueJ class context
 comment0.target=Demon
 comment0.text=\r\n\ Write\ a\ description\ of\ class\ Demon\ here.\r\n\ \r\n\ @author\ Carolina\ Cepeda\r\n\ @version\ 10/03/25\r\n
-comment1.params=pX\ pY\ color
-comment1.target=Demon(int,\ int,\ java.lang.String)
+comment1.params=pX\ pY\ color\ h\ w
+comment1.target=Demon(int,\ int,\ java.lang.String,\ int,\ int)
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Demon\r\n
 comment2.params=
 comment2.target=void\ deleteDemon()
-comment3.params=p\ h\ w
-comment3.target=boolean\ pasar(Particle,\ int,\ int)
+comment3.params=p
+comment3.target=boolean\ pasar(Particle)
 comment4.params=
 comment4.target=void\ makeVisible()
 comment5.params=
@@ -16,4 +16,8 @@ comment6.params=
 comment6.target=int\ getpY()
 comment7.params=d
 comment7.target=boolean\ EstoyAhi(int)
-numComments=8
+comment8.params=
+comment8.target=void\ transformarDimensionACanvas()
+comment9.params=
+comment9.target=void\ TransformarDimensionAJuego()
+numComments=10

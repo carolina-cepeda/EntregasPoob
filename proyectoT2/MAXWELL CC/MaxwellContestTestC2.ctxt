@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=MaxwellContestTestC2
+comment0.text=\r\n\ The\ test\ class\ MaxwellContainerC2Test.\r\n\r\n\ @author\ Carolina\ cepeda\r\n\ @version\ 21/03/25\r\n
+comment1.params=
+comment1.target=void\ shouldSolve()
+comment2.params=
+comment2.target=void\ shouldNotSolve()
+numComments=3

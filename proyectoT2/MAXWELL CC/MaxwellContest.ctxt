@@ -1,8 +1,8 @@
 #BlueJ class context
 comment0.target=MaxwellContest
-comment1.params=h\ w
-comment1.target=MaxwellContest(int,\ int)
-comment2.params=u\ h
+comment1.params=h\ w\ d\ b\ r\ particles
+comment1.target=MaxwellContest(int,\ int,\ int,\ int,\ int,\ int[][])
+comment2.params=w\ h
 comment2.target=double\ reflejo(double,\ double)
 comment2.text=\r\n\ Calcula\ la\ posici\u00F3n\ reflejada\ de\ una\ part\u00EDcula\ en\ un\ contenedor\ de\ altura\ h.\r\n
 comment3.params=px\ py\ vx\ vy\ w\ h\ d
