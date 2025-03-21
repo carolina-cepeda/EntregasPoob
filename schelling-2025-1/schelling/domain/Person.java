@@ -108,29 +108,8 @@ public class Person extends Agent implements Item{
 
     return null; 
 }
-public int neighborsSameMood(int r, int c, Person p) {
-    int num = 0;
-
-    for (int dr = -1; dr <= 1; dr++) {
-        for (int dc = -1; dc <= 1; dc++) {
-            int newRow = r + dr;
-            int newCol = c + dc;
-
-            if ((dr != 0 || dc != 0) && inLocations(newRow, newCol) && locations[newRow][newCol] instanceof Person) {
-                Person vecino = (Person) locations[newRow][newCol];
-                if (vecino.getState() == p.getState()) {  
-                    num++;
-                }
-            }
-        }
-    }
-
-    return num;
-}
 public char getState(){
     return this.state ;
 }
-
-
         
 }

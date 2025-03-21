@@ -12,7 +12,7 @@ public class TrafficLight extends Agent implements Item {
 
     @Override
     public void decide() {
-        l = (luz + 1) % 4;
+        luz = (luz + 1) % 4;
     }
 
     @Override

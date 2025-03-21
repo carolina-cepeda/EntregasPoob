@@ -78,8 +78,7 @@ public class City{
         }
         return num;
     }
-
-   
+    
 
     public boolean isEmpty(int r, int c){
         return (inLocations(r,c) && locations[r][c]==null);
