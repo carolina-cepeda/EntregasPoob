@@ -33,11 +33,11 @@ public class TrafficLight extends Agent implements Item {
      */
     public Color getColor() {
         return switch (this.luz) {
-            case 0 -> Color.RED;
-            case 1 -> Color.YELLOW;
-            case 2 -> Color.GREEN;
-            case 3 -> Color.YELLOW;
-            default -> Color.BLACK;
+            case 0 -> Color.red;
+            case 1 -> Color.yellow;
+            case 2 -> Color.green;
+            case 3 -> Color.yellow;
+            default -> Color.red;
         };
     }
 

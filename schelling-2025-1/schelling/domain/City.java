@@ -44,7 +44,7 @@ public class City{
         setItem(6, 6, Cepeda);
 
         Solitaria Victoria = new Solitaria(this,6,10);
-        setItem(6, 7, Victoria);
+        setItem(6, 10, Victoria);
     }
     
     

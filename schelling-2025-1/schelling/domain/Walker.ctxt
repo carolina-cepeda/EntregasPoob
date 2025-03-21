@@ -2,6 +2,7 @@
 comment0.target=Walker
 comment1.params=city\ row\ column
 comment1.target=Walker(City,\ int,\ int)
+comment1.text=\r\n\ constructor\ de\ la\ persona\ caminante\r\n
 comment2.params=
 comment2.target=void\ decide()
 comment3.params=

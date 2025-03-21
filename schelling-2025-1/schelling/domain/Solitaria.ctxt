@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Solitaria
+comment1.params=city\ row\ col
+comment1.target=Solitaria(City,\ int,\ int)
+comment2.params=
+comment2.target=void\ decide()
+comment3.params=
+comment3.target=int[]\ getAEmptyLocation()
+numComments=4

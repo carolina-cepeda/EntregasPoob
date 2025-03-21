@@ -9,7 +9,7 @@ public class Solitaria extends Person{
     
     public Solitaria(City city, int row, int col){
         super(city, row, col);
-        this.color = Color.PINK ;
+        this.color = Color.pink ;
     }
 
     @Override
@@ -61,9 +61,4 @@ public class Solitaria extends Person{
 
     return null; 
 }
-@Override
-public int shape(){
-    return ROUND;
-}
-
 }

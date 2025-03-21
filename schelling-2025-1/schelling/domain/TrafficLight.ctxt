@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=TrafficLight
+comment1.params=city\ row\ column
+comment1.target=TrafficLight(City,\ int,\ int)
+comment1.text=\r\n\ constructor\r\n
+comment2.params=
+comment2.target=void\ decide()
+comment3.params=
+comment3.target=java.awt.Color\ getColor()
+comment4.params=
+comment4.target=int\ shape()
+numComments=5
