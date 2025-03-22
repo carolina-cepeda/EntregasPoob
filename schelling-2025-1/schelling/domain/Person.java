@@ -1,9 +1,6 @@
 package domain;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**Information about a person<br>
 <b>(city,row,column,color)</b><br>
@@ -62,54 +59,7 @@ public class Person extends Agent implements Item{
     @Override
     public void change() {
         step(); 
-        if (state == Agent.DISSATISFIED || state == Agent.INDIFFERENT) { 
-            int[] newPos = getAEmptyLocation();
-            if (newPos != null) {
-                city.setItem(row, column, null); 
-                row = newPos[0];
-                column = newPos[1];
-                city.setItem(row, column, this);
-            }
-        }
     }
-    /*
-    * metodo para devolver una ubicacion vacía en base a las preferencias
-    * de la persona
-    */
-    public int[] getAEmptyLocation() {
-    int[][] direcciones = {
-        {-1, 0}, {1, 0}, 
-        {0, -1}, {0, 1}, 
-        {-1, -1}, {-1, 1}, 
-        {1, -1}, {1, 1}
-    };
-
-    List<int[]> mejoresPosiciones = new ArrayList<>();
-    int maxVecinosSimilares = -1;
-
-    for (int[] dir : direcciones) {
-        int newRow = row + dir[0];
-        int newCol = column + dir[1];
-
-        if (city.isEmpty(newRow, newCol)) {
-            int vecinosSimilares = city.neighborsSameMood(newRow, newCol, this);
-
-            if (vecinosSimilares > maxVecinosSimilares) {
-                maxVecinosSimilares = vecinosSimilares;
-                mejoresPosiciones.clear();
-                mejoresPosiciones.add(new int[]{newRow, newCol});
-            } else if (vecinosSimilares == maxVecinosSimilares) {
-                mejoresPosiciones.add(new int[]{newRow, newCol});
-            }
-        }
-    }
-
-    if (!mejoresPosiciones.isEmpty()) {
-        return mejoresPosiciones.get(new Random().nextInt(mejoresPosiciones.size()));
-    }
-
-    return null; 
-}
 /*
  * retorna el estado de la persona
  */

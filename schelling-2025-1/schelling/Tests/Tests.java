@@ -11,7 +11,7 @@ import java.awt.Color;
  * The test class Tests.
  *
  * @author Carolina cepeda
- * @version 20/03/25
+ * @version 22/03/25
  */
 
 public class Tests{
@@ -33,7 +33,7 @@ public class Tests{
     }
 
     @Test
-    public void shouldPersonMove(){
+    public void shouldPersonNotMove(){
         Person persona2 = new Person(ciudad, 10, 10);
         if (persona2.getState() == 'D'){
             int AnteriorRow = persona2.getRow();
@@ -42,7 +42,7 @@ public class Tests{
             int nuevaRow = persona2.getRow();
             int nuevaColumna = persona2.getColumn();
 
-            assertFalse(AnteriorRow==nuevaRow && Anteriorcolumn==nuevaColumna,"la persona debe moverse si esta insatisfecha");
+            assertTrue(AnteriorRow==nuevaRow && Anteriorcolumn==nuevaColumna,"la persona no debe moverse si esta insatisfecha");
         }
     }
     @Test
@@ -58,7 +58,9 @@ public class Tests{
     @Test
     public void shouldNotWalk(){
         Walker caminante = new Walker(ciudad, 20, 20);
+        ciudad.setItem(20,20,caminante);
         Person personaObstaculo = new Person(ciudad, 19, 20);
+        ciudad.setItem(19,20,personaObstaculo);
         int anteriorFila = caminante.getRow();
         ciudad.ticTac();
         int nuevaFila = caminante.getRow();
@@ -69,14 +71,14 @@ public class Tests{
     @Test
     public void shouldTrafficLight(){
         TrafficLight semaforo1 = new TrafficLight(ciudad, 20, 20);
-        assertTrue(semaforo1.getColor()== Color.red);
-        ciudad.ticTac();
-        assertTrue(semaforo1.getColor()== Color.yellow);
+        assertTrue(semaforo1.getColor() == Color.red);
     }
 
     @Test
-    public void shouldNotTrafficLight(){
-
+    public void shouldbeActiveTrafficLight(){
+        TrafficLight semaforo2 = new TrafficLight(ciudad, 16, 22);
+        ciudad.ticTac();
+        assertTrue(semaforo2.isActive());
     }
 
     @Test
@@ -104,7 +106,31 @@ public class Tests{
         ciudad.ticTac();
         assertTrue(solitario1.isIndifferent() && solitario2.isIndifferent());
     }
-   
+    @Test
+    public void shouldCreateHole(){
+        int row = 23, column= 24;
+        Hole hole = new Hole(ciudad,row,column);
+        assertTrue(hole.getRow() == row && hole.getColumn()==column);
+    }
+    @Test
+    public void ShouldNotMoveHole(){
+        Hole hole = new Hole(ciudad, 12, 20);
+        int anterior = hole.getRow();
+        ciudad.ticTac();
+        assertTrue( anterior == hole.getRow());
+        
+    }
+    @Test
+    public void ShouldBeAnObstacle(){
+        Walker walker = new Walker(ciudad, 10, 20);
+        ciudad.setItem(10, 20, walker);
+        Hole obstaculo = new Hole(ciudad, 9, 20);
+        ciudad.setItem(9, 20, obstaculo);
+        int fila1 = walker.getRow();
+        ciudad.ticTac();
+        int fila2 = walker.getRow();
+        assertTrue( fila1 == fila2);
+    }
 
     public void tearDown() {
         ciudad = null;

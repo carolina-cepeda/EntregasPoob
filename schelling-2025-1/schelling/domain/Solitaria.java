@@ -25,8 +25,19 @@ public class Solitaria extends Person{
             this.state = Agent.DISSATISFIED;
         }
     }
-
     @Override
+    public void change() {
+        step(); 
+        if (state == Agent.DISSATISFIED || state == Agent.INDIFFERENT) { 
+            int[] newPos = getAEmptyLocation();
+            if (newPos != null) {
+                city.setItem(row, column, null); 
+                row = newPos[0];
+                column = newPos[1];
+                city.setItem(row, column, this);
+            }
+        }
+    }
     public int[] getAEmptyLocation(){
         int[][] direcciones = {
         {-1, 0}, {1, 0}, 

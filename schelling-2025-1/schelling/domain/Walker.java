@@ -49,8 +49,6 @@ public class Walker extends Person{
         return SQUARE;
     }
     
-
-
     /*
      * Método para intentar mover al caminante hacia el norte
      */

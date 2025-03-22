@@ -7,6 +7,4 @@ comment2.params=
 comment2.target=void\ decide()
 comment3.params=
 comment3.target=java.awt.Color\ getColor()
-comment4.params=
-comment4.target=int\ shape()
-numComments=5
+numComments=4

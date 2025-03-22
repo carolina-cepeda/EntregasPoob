@@ -4,7 +4,7 @@ package domain;
 public class City{
     static private int SIZE=25;
     private Item[][] locations;
-    
+
     public City() {
         locations=new Item[SIZE][SIZE];
         for (int r=0;r<SIZE;r++){
@@ -28,7 +28,7 @@ public class City{
     }
 
     public void someItems(){   
-        Person Adam = new Person(this,10, 10);
+      Person Adam = new Person(this,10, 10);
         setItem(10, 10, Adam);  
     
         Person Eva = new Person(this,15, 15);
@@ -39,6 +39,12 @@ public class City{
     
         Walker kukuczka = new Walker (this,10,7);
         setItem(10,7,kukuczka);
+        
+        TrafficLight alarm = new TrafficLight(this,0,0);
+        setItem(0,0,alarm);
+        
+        TrafficLight alert = new TrafficLight(this,0,24);
+        setItem(0,24,alarm);
 
         Solitaria Cepeda = new Solitaria(this, 24, 15);
         setItem(24, 15, Cepeda);
@@ -51,23 +57,34 @@ public class City{
 
         Solitaria persona2 = new Solitaria(this, 23, 15);
         setItem(23, 15,persona2);
+
+        Hole agujero = new Hole(this, 12, 13);
+        setItem(12, 13,agujero);
+
+        Hole objeto2 = new Hole(this, 15, 10);
+        setItem(15,10,objeto2) ;
+
+        Walker walker = new Walker(this, 10, 20);
+        setItem(10, 20, walker);
+
+        Hole obstaculo = new Hole(this, 9, 20);
+        setItem(9, 20, obstaculo);
     }
-    
-    
-  /*
-   * metodo para revisar cuantos vecinos hay
-   */
+
+    /*
+     * metodo para revisar cuantos vecinos hay
+     */
     public int neighborsEquals(int r, int c){
-            int num=0;
-            if (inLocations(r,c) && locations[r][c]!=null){
-                for(int dr=-1; dr<2;dr++){
-                    for (int dc=-1; dc<2;dc++){
-                        if ((dr!=0 || dc!=0) && inLocations(r+dr,c+dc) && 
-                        (locations[r+dr][c+dc]!=null) &&  (locations[r][c].getClass()==locations[r+dr][c+dc].getClass())) num++;
-                    }
+        int num=0;
+        if (inLocations(r,c) && locations[r][c]!=null){
+            for(int dr=-1; dr<2;dr++){
+                for (int dc=-1; dc<2;dc++){
+                    if ((dr!=0 || dc!=0) && inLocations(r+dr,c+dc) && 
+                    (locations[r+dr][c+dc]!=null) &&  (locations[r][c].getClass()==locations[r+dr][c+dc].getClass())) num++;
                 }
             }
-            return num;
+        }
+        return num;
 
     }
 
@@ -92,19 +109,18 @@ public class City{
         }
         return num;
     }
-    
 
     public boolean isEmpty(int r, int c){
         return (inLocations(r,c) && locations[r][c]==null);
     }    
-        
+
     private boolean inLocations(int r, int c){
         return ((0<=r) && (r<SIZE) && (0<=c) && (c<SIZE));
     }
-    
-   /*
-    * Cambia de estado la simulación
-    */
+
+    /*
+     * Cambia de estado la simulación
+     */
     public void ticTac(){
         for(int i= 0; i < SIZE; i++){
 
