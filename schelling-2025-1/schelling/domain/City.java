@@ -40,11 +40,18 @@ public class City{
         Walker kukuczka = new Walker (this,10,7);
         setItem(10,7,kukuczka);
 
-        Solitaria Cepeda = new Solitaria(this, 6, 6);
-        setItem(6, 6, Cepeda);
+        Solitaria Cepeda = new Solitaria(this, 24, 15);
+        setItem(24, 15, Cepeda);
 
-        Solitaria Victoria = new Solitaria(this,6,10);
-        setItem(6, 10, Victoria);
+        Solitaria Victoria = new Solitaria(this,24,14);
+        setItem(24,14,Victoria);
+        
+        Solitaria persona1 = new Solitaria(this, 23, 14);
+        setItem(23,14,persona1);
+
+        Solitaria persona2 = new Solitaria(this, 23, 15);
+        setItem(23, 15,persona2);
+        this.ticTac();
     }
     
     

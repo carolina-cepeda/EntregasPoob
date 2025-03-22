@@ -90,17 +90,19 @@ public class Tests{
 
     @Test
     public void shouldBeHappySolitaria(){
-        Solitaria solitario = new Solitaria(ciudad, 23, 15);
+        Solitaria solitario = new Solitaria(ciudad, 12, 15);
         ciudad.ticTac();
-        assertTrue(solitario.getState()=='h');
+        assertTrue(solitario.isHappy());
     }
 
     @Test
-    public void shouldBeHappySolitarios(){
+    public void shouldNotBeHappySolitarios(){
         Solitaria solitario1 = new Solitaria(ciudad, 23, 15);
-        Solitaria solitario2= new Solitaria(ciudad, 23, 14);
+        Solitaria solitario2= new Solitaria(ciudad, 24, 14);
+        Solitaria persona1 = new Solitaria(ciudad, 23, 14);
+        Solitaria persona2 = new Solitaria(ciudad, 24, 15);
         ciudad.ticTac();
-        assertTrue(solitario1.getState()=='h' && solitario2.getState()=='h');
+        assertTrue(solitario1.isIndifferent() && solitario2.isIndifferent());
     }
    
 
