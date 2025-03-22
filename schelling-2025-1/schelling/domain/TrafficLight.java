@@ -36,4 +36,9 @@ public class TrafficLight implements Item {
         color = colores[estado];
         return colores[estado];
     }
+
+    @Override
+    public void change(){
+        getColor();
+    }
 }
