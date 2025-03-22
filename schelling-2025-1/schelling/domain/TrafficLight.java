@@ -24,7 +24,8 @@ public class TrafficLight implements Item {
      * en que estado de luz está
      */
     public void decide() {
-        estado =(estado+1) % 4;
+        estado =(estado+1);
+        if (estado == 4) estado=0;
     }
 
     @Override
