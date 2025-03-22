@@ -94,6 +94,14 @@ public class Tests{
         ciudad.ticTac();
         assertTrue(solitario.getState()=='h');
     }
+
+    @Test
+    public void shouldBeHappySolitarios(){
+        Solitaria solitario1 = new Solitaria(ciudad, 23, 15);
+        Solitaria solitario2= new Solitaria(ciudad, 23, 14);
+        ciudad.ticTac();
+        assertTrue(solitario1.getState()=='h' && solitario2.getState()=='h');
+    }
    
 
     public void tearDown() {
