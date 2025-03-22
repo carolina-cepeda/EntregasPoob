@@ -1,10 +1,12 @@
 package Tests;
 
+import com.sun.source.tree.AssertTree;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import domain.* ;
+import java.awt.Color;
 /**
  * The test class Tests.
  *
@@ -33,7 +35,6 @@ public class Tests{
     @Test
     public void shouldPersonMove(){
         Person persona2 = new Person(ciudad, 10, 10);
-        persona2.decide();
         if (persona2.getState() == 'D'){
             int AnteriorRow = persona2.getRow();
             int Anteriorcolumn = persona2.getColumn();
@@ -47,7 +48,6 @@ public class Tests{
     @Test
     public void shouldWalk(){
         Walker caminante = new Walker(ciudad, 20, 10);
-        caminante.decide();
         int anteriorFila = caminante.getRow();
         ciudad.ticTac();
         int nuevaFila = caminante.getRow();
@@ -59,7 +59,6 @@ public class Tests{
     public void shouldNotWalk(){
         Walker caminante = new Walker(ciudad, 20, 20);
         Person personaObstaculo = new Person(ciudad, 19, 20);
-        caminante.decide();
         int anteriorFila = caminante.getRow();
         ciudad.ticTac();
         int nuevaFila = caminante.getRow();
@@ -69,7 +68,10 @@ public class Tests{
     
     @Test
     public void shouldTrafficLight(){
-
+        TrafficLight semaforo1 = new TrafficLight(ciudad, 20, 20);
+        assertTrue(semaforo1.getColor()== Color.red);
+        ciudad.ticTac();
+        assertTrue(semaforo1.getColor()== Color.yellow);
     }
 
     @Test
