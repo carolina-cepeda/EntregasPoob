@@ -10,10 +10,11 @@ public interface Item{
    
   public default void change(){
   };
-  
+
   public default int shape(){
       return ROUND;
   }
+ 
   
   public default Color getColor(){
       return Color.black;

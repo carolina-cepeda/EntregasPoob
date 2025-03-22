@@ -26,14 +26,14 @@ public class Person extends Agent implements Item{
     
 
     /**Returns the row
-    @return 
+    @return int
      */
     public final int getRow(){
         return row;
     }
 
     /**Returns the column
-    @return 
+    @return int
      */
     public final int getColumn(){
         return column;
@@ -41,8 +41,8 @@ public class Person extends Agent implements Item{
 
     
     /**Returns the color
-    @return 
-     */
+    @return Color
+    */
     public final Color getColor(){
         return color;
     }
@@ -62,6 +62,7 @@ public class Person extends Agent implements Item{
     }
 /*
  * retorna el estado de la persona
+ @return char
  */
 public char getState(){
     return this.state ;

@@ -6,12 +6,18 @@ import java.util.List;
 import java.util.Random;
 
 public class Solitaria extends Person{
-    
+    /*
+     * Constructor persona Solitaria
+     * @param City city, int row, int column
+     */
     public Solitaria(City city, int row, int col){
         super(city, row, col);
         this.color = Color.pink ;
     }
 
+    /*
+     * Metodo que decide el estado de la persona solitaria
+     */
     @Override
     public void decide(){
         int vecinos = city.neighborsEquals(row, column);
@@ -25,6 +31,9 @@ public class Solitaria extends Person{
             this.state = Agent.DISSATISFIED;
         }
     }
+    /*
+     * Metodo que cambia la posición de la persona si no está feliz
+     */
     @Override
     public void change() {
         step(); 
@@ -38,6 +47,10 @@ public class Solitaria extends Person{
             }
         }
     }
+    /*
+     * metodo que retorna un arreglo de posiciones vacias al rededor de la persona a las
+     * que se puede mover.
+     */
     public int[] getAEmptyLocation(){
         int[][] direcciones = {
         {-1, 0}, {1, 0}, 

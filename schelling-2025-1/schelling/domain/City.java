@@ -14,18 +14,29 @@ public class City{
         }
         someItems();
     }
-
+    /*
+    * Retorna el tamaño de la ciudad
+    */
     public int  getSize(){
         return SIZE;
     }
 
+    /*
+     * retorna el item que este en la fila r y columna c
+     */
     public Item getItem(int r,int c){
         return locations[r][c];
     }
+    /*
+     * Asigna un intem e a la fila r y columna c
+     */
 
     public void setItem(int r, int c, Item e){
         locations[r][c]=e;
     }
+    /*
+     * funcion para añadir items
+     */
 
     public void someItems(){   
       Person Adam = new Person(this,10, 10);
@@ -109,11 +120,15 @@ public class City{
         }
         return num;
     }
-
+    /*
+    * Revisa si la posición está vacía
+    */
     public boolean isEmpty(int r, int c){
         return (inLocations(r,c) && locations[r][c]==null);
     }    
-
+    /*
+    * revisa que la posición esté en los rangos de la ciudad
+    */
     private boolean inLocations(int r, int c){
         return ((0<=r) && (r<SIZE) && (0<=c) && (c<SIZE));
     }
