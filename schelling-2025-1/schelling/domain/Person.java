@@ -62,7 +62,7 @@ public class Person extends Agent implements Item{
     @Override
     public void change() {
         step(); 
-        if (state == Agent.DISSATISFIED) { 
+        if (state == Agent.DISSATISFIED || state == Agent.INDIFFERENT) { 
             int[] newPos = getAEmptyLocation();
             if (newPos != null) {
                 city.setItem(row, column, null); 

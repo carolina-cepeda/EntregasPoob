@@ -51,7 +51,6 @@ public class City{
 
         Solitaria persona2 = new Solitaria(this, 23, 15);
         setItem(23, 15,persona2);
-        this.ticTac();
     }
     
     
