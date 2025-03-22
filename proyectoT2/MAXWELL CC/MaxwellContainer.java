@@ -75,7 +75,7 @@ public class MaxwellContainer {
         }
     }
 
-    private static Rectangle createRectangle(int height, int width, String color, int moveX, int moveY) {
+    private Rectangle createRectangle(int height, int width, String color, int moveX, int moveY) {
         Rectangle rect = new Rectangle();
         rect.changeSize(height, width);
         rect.changeColor(color);
