@@ -11,19 +11,15 @@ public class Hole {
     private Circle grafico;
     private int particles;
     private boolean esVisible = false;
-    private int h;
-    private int w;
 
     /**
      * Constructor for objects of class Hole
      */
-    public Hole(int px, int py, int particles,int h, int w) {
+    public Hole(int px, int py, int particles) {
         this.esVisible = MaxwellContainer.getVisible();
 
         positionX = px;
         positionY = py;
-        transformarDimensionACanvas();
-        
         grafico = new Circle();
         grafico.changeSize(15);
         grafico.changeColor("black");
@@ -35,11 +31,10 @@ public class Hole {
     }
 
     public boolean pasar(Particle p) {
-        p.transformarDimensionACanvas();
         int posx = p.getpX();
         int posy = p.getpY();
-        int posHX = grafico.getXposition();
-        int posHY = grafico.getYposition();
+        int posHX = positionX;
+        int posHY = positionY;
         return (posx == posHX && posy == posHY);
     }
 
@@ -68,27 +63,14 @@ public class Hole {
     }
 
     public boolean EstoyAhi(int px, int py) {
-
         return (px == positionX && py == positionY);
     }
 
-    public int[] format(int h, int w) {
+    public int[] format() {
         int[] info = new int[2];
-        TransformarDimensionAJuego();
         info[0] = positionX;
         info[1] = positionY;
         return info;
-    }
-
-    public void transformarDimensionACanvas(){
-        this.positionX += 70 + w/2 ;
-        this.positionY+= 15 + h;
-
-    }
-
-    public void TransformarDimensionAJuego(){
-        this.positionX -= (70 + w/2);
-        this.positionY -= (15+h); 
     }
 
 }

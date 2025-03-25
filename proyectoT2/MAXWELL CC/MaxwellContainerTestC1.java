@@ -1,5 +1,8 @@
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Arrays;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,7 +11,7 @@ import org.junit.jupiter.api.Test;
  * The test class MaxwellContainerC1Test.
  *
  * @author Carolina cepeda
- * @version 25/03/25
+ * @version 13/03/25
  */
 
 public class MaxwellContainerTestC1 {
@@ -16,6 +19,7 @@ public class MaxwellContainerTestC1 {
 
     @BeforeEach
     public void setUp() {
+        // Inicializa un objeto MaxwellContainer antes de cada prueba
         container = new MaxwellContainer(200, 200);
     }
 
@@ -69,7 +73,7 @@ public class MaxwellContainerTestC1 {
     }
 
     @Test
-    public void shouldNotAddParticle() {
+    public void shouldNotAddDuplicateParticle() {
         container.addParticle("red", true, 100, 120, 3, 4);
         container.addParticle("red", true, 100, 120, 3, 4);
         int[][] particles = container.particles();
@@ -79,8 +83,10 @@ public class MaxwellContainerTestC1 {
     @Test
     public void shouldDelParticle() {
         container.addParticle("red", true, 100, 120, 3, 4);
+        System.out.println(Arrays.deepToString(container.particles()));
         container.delParticle("red");
         int[][] particles = container.particles();
+        System.out.println(Arrays.deepToString(container.particles()));
         assertFalse(containsParticle(particles, 100, 120, 3, 4), "Debería eliminar la partícula de la lista");
     }
 

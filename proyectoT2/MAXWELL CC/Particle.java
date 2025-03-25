@@ -1,5 +1,4 @@
 
-import java.util.Random;
 
 /**
  * Write a description of class Particle here.
@@ -16,22 +15,18 @@ public class Particle {
     private Circle grafico;
     private boolean isRed;
     private boolean esVisible;
-    private int h;
-    private int w;
 
     /**
      * Constructor for objects of class Particle
      */
-    public Particle(String color, boolean isRed, int x, int y, int vX, int vY,int h,int w) {
+    public Particle(String color, boolean isRed, int x, int y, int vX, int vY) {
         this.esVisible = MaxwellContainer.getVisible();
         this.x = x;
         this.y = y;
         this.vX = vX;
         this.vY = vY;
         this.isRed = isRed;
-        this.h = h;
-        this.w = w;
-        transformarDimensionACanvas();
+        this.color = color ;
         grafico = new Circle();
         grafico.changeSize(8);
         grafico.changeColor(color);
@@ -75,7 +70,6 @@ public class Particle {
     }
 
     public int getpX() {
-        transformarDimensionACanvas();
         return this.x;
     }
 
@@ -95,27 +89,24 @@ public class Particle {
      * Metodo para mover las particulas
      * basado en sus velocidades en x y y.
      */
-    public void moveV() {
-        transformarDimensionACanvas();
+    public void moveV(int w, int h) {
         for (int i = 0; i < 3; i++) {
-            choque();
+            choque(w, h);
             y += vY;
-    
+
             if ("red".equals(color)) {
                 x -= vX;
+                moveSlow(-vX, vY);
             } else {
                 x += vX;
+                moveSlow(vX, vY);
             }
-    
-            moveSlow(vX, vY);
-    
+
             if (esVisible) {
                 makeVisible();
             }
         }
-        TransformarDimensionAJuego();
     }
-    
 
     private void moveSlow(int vx, int vy) {
         makeInvisible();
@@ -124,7 +115,7 @@ public class Particle {
         makeVisible();
     }
 
-    private void choque() {
+    private void choque(int w, int h) {
         boolean choqueX = EnmuroX(w);
         boolean choqueY = EnmuroY(h);
 
@@ -153,7 +144,6 @@ public class Particle {
     }
 
     public boolean EstoyAhi(int px, int py) {
-        
         return (x == px && y == py);
     }
 
@@ -166,6 +156,9 @@ public class Particle {
         return info;
     }
 
+    /*
+     * metodo para pasar las particulas al otro lado si es necesario.
+     */
     public void pasar() {
         if (isRed) {
             pasarRojo();
@@ -181,48 +174,26 @@ public class Particle {
      * Metodo para pasar las particulas rojas al lado correcto.
      */
     public void pasarRojo() {
-        transformarDimensionACanvas();
-        Random random = new Random();
-        int esperadoX = random.nextInt(((w + 62) - 69) / 2) + 70;  
-        int esperadoY = random.nextInt((h + 7) - 14) + 15;
-    
-        grafico.slowMoveHorizontal(esperadoX - x);
-        grafico.slowMoveVertical(esperadoY - y);
-    
-        this.x = esperadoX;  
-        this.y = esperadoY;  
-    
-        TransformarDimensionAJuego();
+        this.x += vX;
+        this.y += vY;
+        this.moveSlow(vX,vY);
+
     }
-    
-    
     /*
      * Metodo para pasar las particulas azules al lado correcto.
      */
 
     public void pasarBlue() {
-
-        transformarDimensionACanvas();
-        Random random = new Random();
-        int esperadoX = random.nextInt(w + 62) + (((w + 62) - 69) / 2); // Rango [70, w+62 /2]
-        int esperadoY = random.nextInt((h + 7) - 14) + 15;
-
-        grafico.slowMoveHorizontal(esperadoX - x);
-        grafico.slowMoveVertical(esperadoY - y);
-
-        this.x = esperadoX;
-        this.y = esperadoY;
-        TransformarDimensionAJuego();
+        this.x += vX;
+        this.y += vY;
+        this.moveSlow(vX, vY);
     }
 
-    public void transformarDimensionACanvas(){
-        this.x += 70 + w/2 ;
-        this.y += 15 + h;
-
+    public boolean isRed(){
+        return isRed ;
+    }
+    public String getColor(){
+        return color;
     }
 
-    public void TransformarDimensionAJuego(){
-        this.x -= (70 + w/2);
-        this.y -= (15+h); 
-    }
 }

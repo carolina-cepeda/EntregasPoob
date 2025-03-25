@@ -14,8 +14,7 @@ public class MaxwellContainer {
     private Canvas canvas;
     private Rectangle marco, separacion, interior;
     private ArrayList<Hole> holes = new ArrayList<>();
-    private ArrayList<Particle> redParticles = new ArrayList<>();
-    private ArrayList<Particle> blueParticles = new ArrayList<>();
+    private ArrayList<Particle> particles = new ArrayList<>();
     private ArrayList<Demon> demons = new ArrayList<>();
     private int h;
     private int w;
@@ -88,7 +87,7 @@ public class MaxwellContainer {
      * Método para validar la posicion de los elementos
      */
     public boolean validarPosition(int px, int py) {
-        return (-w/2 <= px && px <=  w/2  && 0 <= py && py <= h);
+        return (70 <= px && px <= 70 + w && 15 <= py && py <= 15 + h);
     }
 
     /*
@@ -97,11 +96,11 @@ public class MaxwellContainer {
      * @param : entero d que se refiere a la posicion en y del demonio.
      */
     public void addDemon(int d) {
-        int px = 0;
+        int px = 70 + w / 2;
+ 
+        if(isOk() && !validarDemon(d) && validarPosition(px, d)) {
 
-        if (!validarDemon(d) && validarPosition(px, d)) {
-
-            Demon demonio = new Demon(px, d, "black",h,w);
+            Demon demonio = new Demon(px, d, "black");
             demons.add(demonio);
 
         } else {
@@ -116,7 +115,7 @@ public class MaxwellContainer {
      * @param : entero d que se refiere a la posicion en y del demonio.
      */
     public void delDemon(int d) {
-        if (!demons.isEmpty()) {
+        if ( isOk() && !demons.isEmpty()){
             for (int i = 0; i < demons.size(); i++) {
                 Demon demonio = demons.get(i);
 
@@ -132,51 +131,43 @@ public class MaxwellContainer {
      * método para revisar si un demonio ya existe basado en su posición en y.
      */
     private boolean validarDemon(int d) {
-        for (Demon demon : demons) {
-            if (demon.EstoyAhi(d)) {
-                return true;
+        if(isOk){
+            for (Demon demon : demons) {
+                if (demon.EstoyAhi(d)) {
+                    return true;
+                }
             }
+            return false;
         }
         return false;
-
     }
 
     /*
      * Metodo para añadir una particula al juego
      */
     public void addParticle(String Color, boolean isRed, int px, int py, int vx, int vy) {
+        if(isOk()){
+            if (!validarParticle(px, py) && validarPosition(px, py)) {
+                Particle p = new Particle(Color, isRed, px, py, vx, vy);
 
-        if (!validarParticle(px, py) && validarPosition(px, py)) {
-            Particle p = new Particle(Color, isRed, px, py, vx, vy,h,w);
+            particles.add(p);
 
-            if (isRed) {
-                redParticles.add(p);
+            } else {
+                JOptionPane.showMessageDialog(null, "La partícula no está en una posición válida");
             }
-
-            else {
-                blueParticles.add(p);
-            }
-
-        } else {
-            JOptionPane.showMessageDialog(null, "La partícula no está en una posición válida");
         }
-
     }
 
     private boolean validarParticle(int px, int py) {
-
-        for (Particle red : redParticles) {
-            if (red.EstoyAhi(px, py)) {
-                return true;
+        if(isOk()){
+            for (Particle p : particles) {
+                if (p.EstoyAhi(px, py)) {
+                    return true;
+                }
             }
-        }
 
-        for (Particle blue : blueParticles) {
-            if (blue.EstoyAhi(px, py)) {
-                return true;
-            }
+            return false;
         }
-
         return false;
     }
 
@@ -186,21 +177,26 @@ public class MaxwellContainer {
      * @param: posicion en x, posicion en y, cantidad de particulas maxima.
      */
     public void addHole(int px, int py, int particles) {
-        if (validarPosition(px, py) && !validarHole(px, py)) {
-            Hole ho = new Hole(px, py, particles,h,w);
-            holes.add(ho);
+        if(isOk()){
+            if (validarPosition(px, py) && !validarHole(px, py)) {
+                Hole ho = new Hole(px, py, particles);
+                holes.add(ho);
 
-        } else {
-            JOptionPane.showMessageDialog(null, "La posición dada  esta fuera del rango");
+            } else {
+                JOptionPane.showMessageDialog(null, "La posición dada  esta fuera del rango");
 
+            }
         }
     }
 
     private boolean validarHole(int px, int py) {
-        for (Hole hole : holes) {
-            if (hole.EstoyAhi(px, py)) {
-                return true;
+        if(isOk()){
+            for (Hole hole : holes) {
+                if (hole.EstoyAhi(px, py)) {
+                    return true;
+                }
             }
+            return false;
         }
         return false;
     }
@@ -209,16 +205,13 @@ public class MaxwellContainer {
      * metodo para eliminar una particula de un color dado
      */
     public void delParticle(String color) {
-
-        if (color.equals("red") && !redParticles.isEmpty()) {
-            redParticles.get(0).makeInvisible();
-            redParticles.remove(0);
-        } else if (!blueParticles.isEmpty()) {
-            blueParticles.get(0).makeInvisible();
-            blueParticles.remove(0);
-        } else {
-            JOptionPane.showMessageDialog(null, "No hay particulas validas para eliminación.");
-
+        if(isOk()){
+            for(Particle p : particles){
+            if (p.getColor()!= null && p.getColor().equals(color)){
+                p.makeInvisible();
+                particles.remove(p);
+            }
+            }
         }
     }
 
@@ -226,143 +219,135 @@ public class MaxwellContainer {
      * Metodo para saber si el juego ha terminado.
      */
     public boolean isGoal() {
-
-        if (redParticles.isEmpty() && blueParticles.isEmpty()) {
-            return true;
-        }
-
-        for (Particle pr : redParticles) {
-            if (!pr.isGoalR(h, w)) {
-                return false;
+        if (isOk()){
+            for (Particle p : particles) {
+                if (p.isRed()) {
+                    if (!p.isGoalR(h, w)) {
+                        return false;
+                    }
+                } else {
+                    if (!p.isGoalB(h, w)) {
+                        return false;
+                    }
+                }
             }
-
-        }
-        for (Particle pb : blueParticles) {
-            if (!pb.isGoalB(h, w)) {
-                return false;
-            }
-
-        }
 
         return true;
-
+    }
+        return false;
     }
 
     /*
      * Metodo para consultar los demonios y sus posiciones en y
      */
     public int[] demons() {
-        int[] infoDemons = new int[demons.size()];
+        if(isOk()){
+            int[] infoDemons = new int[demons.size()];
 
-        for (int j = 0; j < demons.size(); j++) {
-            infoDemons[j] = demons.get(j).getpY();
+            for (int j = 0; j < demons.size(); j++) {
+                infoDemons[j] = demons.get(j).getpY();
 
+            }
+
+            return infoDemons;
         }
-
-        return infoDemons;
-
+        return null;
     }
 
     /*
      * metodo para consultar las particulas ( su posicion y velocidad)
      */
     public int[][] particles() {
-        int[][] infoParticles = new int[redParticles.size() + blueParticles.size()][4];
+        if(isOk()){
+        int[][] infoParticles = new int[particles.size()][4];
 
-        for (int j = 0; j < redParticles.size(); j++) {
-            infoParticles[j] = redParticles.get(j).format();
-        }
-        for (int i = 0; i < blueParticles.size(); i++) {
-            int index = redParticles.size() + i; // Se empieza después de las rojas
-            infoParticles[index] = blueParticles.get(index).format();
-
+        for (int j = 0; j < particles.size(); j++) {
+            infoParticles[j] = particles.get(j).format();
         }
 
         return infoParticles;
+        }
+        return null;
     }
 
     /*
      * Metodo para consultar los agujeros del juego
      */
     public int[][] holes() {
-        int[][] infoHoles = new int[holes.size()][2];
+            if (isOk()){
+            int[][] infoHoles = new int[holes.size()][2];
 
-        for (int j = 0; j < holes.size(); j++) {
-            infoHoles[j] = holes.get(j).format(h,w);
+            for (int j = 0; j < holes.size(); j++) {
+                infoHoles[j] = holes.get(j).format();
+            }
+
+            return infoHoles;
         }
-
-        return infoHoles;
+        return null;
     }
 
     /**
      * Metodo para hacer visible el juego
      */
     public void makeVisible() {
-        esVisible = true;
-        marco.makeVisible();
-        interior.makeVisible();
-        separacion.makeVisible();
+        if (isOk()){
+            esVisible = true;
+            marco.makeVisible();
+            interior.makeVisible();
+            separacion.makeVisible();
 
-        for (Demon d : demons) {
-            d.makeVisible();
+            for (Demon d : demons) {
+                d.makeVisible();
+            }
+            for (Hole ho : holes) {
+                ho.makeVisible();
+            }
+            for (Particle p : particles) {
+                p.makeVisible();
+            }
         }
-        for (Hole ho : holes) {
-            ho.makeVisible();
-        }
-        for (Particle red : redParticles) {
-            red.makeVisible();
-        }
-
-        for (Particle blue : blueParticles) {
-            blue.makeVisible();
-        }
-
     }
 
     /*
      * Metodo para hacer invisible el juego
      */
     public void makeInvisible() {
-        marco.makeInvisible();
-        interior.makeInvisible();
-        separacion.makeInvisible();
-        esVisible = false;
+        if (isOk()){
+            marco.makeInvisible();
+            interior.makeInvisible();
+            separacion.makeInvisible();
+            esVisible = false;
 
-        for (Demon d : demons) {
-            d.makeInvisible();
-        }
+            for (Demon d : demons) {
+                d.makeInvisible();
+            }
 
-        for (Hole ho : holes) {
+            for (Hole ho : holes) {
 
-            ho.makeInvisible();
+                ho.makeInvisible();
+            }
+            for (Particle p : particles) {
+                p.makeInvisible();
+            }
         }
-        for (Particle p : redParticles) {
-            p.makeInvisible();
-        }
-        for (Particle p : blueParticles) {
-            p.makeInvisible();
-        }
-
     }
 
     /*
      * metodo para finalizar el juego
      */
     public void finish() {
+        if (isOk()){
         makeInvisible();
         demons.clear();
         holes.clear();
-        redParticles.clear();
-        blueParticles.clear();
-    }
-
-    public boolean ok() {
-        return false;
+        particles.clear();
+        }
     }
 
     public void start(int ticks) {
-        startGame(redParticles, ticks);
-        startGame(blueParticles, ticks);
+        if (isOk()){
+            startGame(particles, ticks);
+        }
     }
 
     private void startGame(ArrayList<Particle> particles, int ticks) {
@@ -389,7 +374,7 @@ public class MaxwellContainer {
                 if (afectadaPorAgujero) {
                     paraEliminar.add(p);
                 } else if (!afectadaPorDemonio) {
-                    p.moveV();
+                    p.moveV(w, h);
                 }
             }
 
@@ -404,7 +389,7 @@ public class MaxwellContainer {
     }
 
     private boolean validarDimension(int h, int w) {
-        return (0 < h && h <= 300 && 0 < w && w < 300);
+        return (20 < h && h <= 300 && 20 < w && w < 300);
     }
 
     public static boolean getVisible() {

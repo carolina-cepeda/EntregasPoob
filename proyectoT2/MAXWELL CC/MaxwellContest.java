@@ -1,20 +1,20 @@
+import javax.swing.JOptionPane;
 
 public class MaxwellContest extends MaxwellContainer {
 
     static final double EPSILON = 1e-9;
     static final int MAXIMO_ITERACIONES = 10000;
 
-    public MaxwellContest(int h, int w, int d, int b, int r, int[][] particles) {
-        super(h, w, d, b, r, particles);
+    public MaxwellContest(int h, int w) {
+        super(h, w);
     }
 
     /**
      * Calcula la posición reflejada de una partícula en un contenedor de altura h.
      */
-    static double reflejo(double ps, double h) {
-        double mod = ps % (2 * h);
-        if (mod < 0)
-            mod += 2 * h;
+    static double reflejo(double u, double h) {
+        double mod = u % (2 * h);
+        if (mod < 0) mod += 2 * h;
         return (mod <= h + EPSILON) ? mod : 2 * h - mod;
     }
 
@@ -23,19 +23,18 @@ public class MaxwellContest extends MaxwellContainer {
      */
     static double minTiempo(int px, int py, double vx, double vy, int w, int h, int d) {
         double mejorTiempo = Double.POSITIVE_INFINITY;
+        
+        if (vx == 0) return mejorTiempo; 
 
-        if (vx == 0)
-            return mejorTiempo;
 
-        int pStart = (vx > 0) ? (int) Math.ceil((double) px / (2 * w))
-                : (int) Math.floor((double) px / (2 * w));
+        int pStart = (vx > 0) ? (int) Math.ceil((double) px / (2 * w)) 
+                              : (int) Math.floor((double) px / (2 * w));
 
         int incremento = (vx > 0) ? 1 : -1;
 
         for (int k = pStart; k != pStart + (incremento * MAXIMO_ITERACIONES); k += incremento) {
             double tiempo = (2 * w * k - px) / vx;
-            if (tiempo < 0)
-                continue;
+            if (tiempo < 0) continue;
 
             double y = (Math.abs(vy) < EPSILON) ? py : reflejo(py + vy * tiempo, h);
 
@@ -44,12 +43,12 @@ public class MaxwellContest extends MaxwellContainer {
                 break;
             }
         }
-
+        
         return mejorTiempo;
     }
 
     /**
-     * Resuelve el problema y retorna el tiempo necesario o "-1".
+     * Resuelve el problema y retorna el tiempo necesario o "imposible".
      */
     public static double solve(int h, int w, int d, int r, int b, int[][] particles) {
         int totalParticulas = r + b;
@@ -62,13 +61,13 @@ public class MaxwellContest extends MaxwellContainer {
             double vy = particles[i][3];
 
             boolean enLaIzquierda = (px < 0);
-
             boolean necesitaReflejo = (i < r) ? !enLaIzquierda : enLaIzquierda;
 
             if (necesitaReflejo) {
                 double posibleTiempo = minTiempo(px, py, vx, vy, w, h, d);
                 if (posibleTiempo == Double.POSITIVE_INFINITY) {
-                    return -1.0;
+                    return -1 ;
+
                 } else {
                     tiempoTotal = Math.max(tiempoTotal, posibleTiempo);
                 }
@@ -77,17 +76,22 @@ public class MaxwellContest extends MaxwellContainer {
 
         return Math.round(tiempoTotal * 10.0) / 10.0;
     }
-
+    
     public void simulate(int h, int w, int d, int b, int r, int[][] particles) {
-        double tiempoTotal = solve(h, w, d, r, b, particles);
+    double tiempoTotal = solve(h, w, d, r, b, particles);
 
-        if (tiempoTotal == -1) {
-            System.out.println("no es posible hacer la simulación");
-            return;
-        }
-
-        int ticks = (int) Math.ceil(tiempoTotal);
-        this.makeVisible();
-        this.start(ticks);
+    if (tiempoTotal == -1) { 
+        System.out.println("no es posible hacer la simulación");
+        return;
     }
+
+    int ticks = (int) Math.ceil(tiempoTotal);
+    this.makeVisible();
+    this.start(ticks);
+
+    if (this.isGoal()) {
+        this.finish();
+        JOptionPane.showMessageDialog(null, "El juego ha terminado.");
+    }
+}
 }
