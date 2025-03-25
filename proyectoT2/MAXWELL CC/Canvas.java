@@ -114,23 +114,53 @@ public class Canvas{
      * @param  newColour   the new colour for the foreground of the Canvas 
      */
     public void setForegroundColor(String colorString){
-        if(colorString.equals("red"))
-            graphic.setColor(Color.red);
-        else if(colorString.equals("black"))
-            graphic.setColor(Color.black);
-        else if(colorString.equals("blue"))
-            graphic.setColor(Color.blue);
-        else if(colorString.equals("yellow"))
-            graphic.setColor(Color.yellow);
-        else if(colorString.equals("green"))
-            graphic.setColor(Color.green);
-        else if(colorString.equals("magenta"))
-            graphic.setColor(Color.magenta);
-        else if(colorString.equals("white"))
-            graphic.setColor(Color.white);
-        else
-            graphic.setColor(Color.black);
+        switch (colorString.toLowerCase()) {
+            case "red": graphic.setColor(Color.red); break;
+            case "black": graphic.setColor(Color.black); break;
+            case "blue": graphic.setColor(Color.blue); break;
+            case "yellow": graphic.setColor(Color.yellow); break;
+            case "green": graphic.setColor(Color.green); break;
+            case "magenta": graphic.setColor(Color.magenta); break;
+            case "white": graphic.setColor(Color.white); break;
+            case "orange": graphic.setColor(Color.orange); break;
+            case "cyan": graphic.setColor(Color.cyan); break;
+            case "pink": graphic.setColor(Color.pink); break;
+            case "gray": graphic.setColor(Color.gray); break;
+            case "darkgray": graphic.setColor(Color.darkGray); break;
+            case "lightgray": graphic.setColor(Color.lightGray); break;
+            case "brown": graphic.setColor(new Color(139, 69, 19)); break;
+            case "purple": graphic.setColor(new Color(128, 0, 128)); break;
+            case "violet": graphic.setColor(new Color(238, 130, 238)); break;
+            case "gold": graphic.setColor(new Color(255, 215, 0)); break;
+            case "silver": graphic.setColor(new Color(192, 192, 192)); break;
+            case "beige": graphic.setColor(new Color(245, 245, 220)); break;
+            case "turquoise": graphic.setColor(new Color(64, 224, 208)); break;
+            case "indigo": graphic.setColor(new Color(75, 0, 130)); break;
+            case "maroon": graphic.setColor(new Color(128, 0, 0)); break;
+            case "navy": graphic.setColor(new Color(0, 0, 128)); break;
+            case "olive": graphic.setColor(new Color(128, 128, 0)); break;
+            case "teal": graphic.setColor(new Color(0, 128, 128)); break;
+            case "salmon": graphic.setColor(new Color(250, 128, 114)); break;
+            case "coral": graphic.setColor(new Color(255, 127, 80)); break;
+            case "khaki": graphic.setColor(new Color(240, 230, 140)); break;
+            case "lavender": graphic.setColor(new Color(230, 230, 250)); break;
+            case "orchid": graphic.setColor(new Color(218, 112, 214)); break;
+            case "plum": graphic.setColor(new Color(221, 160, 221)); break;
+            case "crimson": graphic.setColor(new Color(220, 20, 60)); break;
+            case "chartreuse": graphic.setColor(new Color(127, 255, 0)); break;
+            case "lime": graphic.setColor(new Color(0, 255, 0)); break;
+            case "aquamarine": graphic.setColor(new Color(127, 255, 212)); break;
+            case "peru": graphic.setColor(new Color(205, 133, 63)); break;
+            case "seagreen": graphic.setColor(new Color(46, 139, 87)); break;
+            case "slategray": graphic.setColor(new Color(112, 128, 144)); break;
+            case "dodgerblue": graphic.setColor(new Color(30, 144, 255)); break;
+            case "firebrick": graphic.setColor(new Color(178, 34, 34)); break;
+            case "deeppink": graphic.setColor(new Color(255, 20, 147)); break;
+            case "hotpink": graphic.setColor(new Color(255, 105, 180)); break;
+            default: graphic.setColor(Color.black); break;
+        }
     }
+    
 
     /**
      * Wait for a specified number of milliseconds before finishing.

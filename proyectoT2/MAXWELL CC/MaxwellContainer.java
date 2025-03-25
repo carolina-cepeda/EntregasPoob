@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -20,6 +21,7 @@ public class MaxwellContainer {
     private int w;
     private static boolean esVisible = false;
     private boolean isOk = false;
+    private List<String> coloresUsados = new ArrayList<>();
 
     /*
      * primer constructor
@@ -68,9 +70,10 @@ public class MaxwellContainer {
             int vy = particles[i][3];
 
             boolean isRed = (i < r);
-            String color = isRed ? "red" : "blue";
-
-            addParticle(color, isRed, px, py, vx, vy);
+            String color = getColor();
+            if (color!=null){
+                addParticle(color, isRed, px, py, vx, vy);
+            }
         }
     }
 
@@ -109,7 +112,7 @@ public class MaxwellContainer {
         }
     }
 
-    /*
+   /*
      * Metodo para eliminar un demonio al juego
      * 
      * @param : entero d que se refiere a la posicion en y del demonio.
@@ -126,6 +129,7 @@ public class MaxwellContainer {
             }
         }
     }
+    
 
     /*
      * método para revisar si un demonio ya existe basado en su posición en y.
@@ -147,10 +151,11 @@ public class MaxwellContainer {
      */
     public void addParticle(String Color, boolean isRed, int px, int py, int vx, int vy) {
         if(isOk()){
-            if (!validarParticle(px, py) && validarPosition(px, py)) {
+            if (!validarParticle(px, py,Color) && validarPosition(px, py)) {
                 Particle p = new Particle(Color, isRed, px, py, vx, vy);
 
             particles.add(p);
+            coloresUsados.add(Color);
 
             } else {
                 JOptionPane.showMessageDialog(null, "La partícula no está en una posición válida");
@@ -158,10 +163,10 @@ public class MaxwellContainer {
         }
     }
 
-    private boolean validarParticle(int px, int py) {
+    private boolean validarParticle(int px, int py, String color) {
         if(isOk()){
             for (Particle p : particles) {
-                if (p.EstoyAhi(px, py)) {
+                if (p.EstoyAhi(px, py) || p.esMiColor(color)) {
                     return true;
                 }
             }
@@ -373,10 +378,10 @@ public class MaxwellContainer {
 
                 if (afectadaPorAgujero) {
                     paraEliminar.add(p);
-                } else if (!afectadaPorDemonio) {
+                } else if (!afectadaPorDemonio)
                     p.moveV(w, h);
                 }
-            }
+            
 
             particles.removeAll(paraEliminar);
         }
@@ -395,4 +400,22 @@ public class MaxwellContainer {
     public static boolean getVisible() {
         return esVisible;
     }
-}
+
+
+    private String getColor() {
+        List<String> colores = Arrays.asList("red", "blue", "yellow", "green", "magenta", "white", "orange", "cyan", "pink", "gray",
+        "darkgray", "lightgray", "brown", "purple", "violet", "gold", "silver", "beige", "turquoise",
+        "indigo", "maroon", "navy", "olive", "teal", "salmon", "coral", "khaki", "lavender", "orchid",
+        "plum", "crimson", "chartreuse", "lime", "aquamarine", "peru", "seagreen", "slategray", "dodgerblue",
+        "firebrick", "deeppink", "hotpink");
+        List<String> coloresDisponibles = new ArrayList<>(colores);
+        coloresDisponibles.removeAll(coloresUsados);
+        if (coloresDisponibles.isEmpty()){
+            return null;
+        }
+        else{
+            return coloresDisponibles.get(0);
+        }
+            
+        }
+    }

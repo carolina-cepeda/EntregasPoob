@@ -91,7 +91,6 @@ public class Particle {
      */
     public void moveV(int w, int h) {
         for (int i = 0; i < 3; i++) {
-            choque(w, h);
             y += vY;
 
             if ("red".equals(color)) {
@@ -101,14 +100,15 @@ public class Particle {
                 x += vX;
                 moveSlow(vX, vY);
             }
-
             if (esVisible) {
                 makeVisible();
             }
+            choque(w, h);
         }
     }
 
     private void moveSlow(int vx, int vy) {
+
         makeInvisible();
         grafico.slowMoveHorizontal(vx);
         grafico.slowMoveVertical(vy);
@@ -194,6 +194,9 @@ public class Particle {
     }
     public String getColor(){
         return color;
+    }
+    public boolean esMiColor(String color){
+        return this.color.equals(color);
     }
 
 }
