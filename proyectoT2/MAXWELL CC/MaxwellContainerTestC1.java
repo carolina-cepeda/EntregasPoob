@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
  * The test class MaxwellContainerC1Test.
  *
  * @author Carolina cepeda
- * @version 13/03/25
+ * @version 25/03/25
  */
 
 public class MaxwellContainerTestC1 {
@@ -16,7 +16,6 @@ public class MaxwellContainerTestC1 {
 
     @BeforeEach
     public void setUp() {
-        // Inicializa un objeto MaxwellContainer antes de cada prueba
         container = new MaxwellContainer(200, 200);
     }
 
