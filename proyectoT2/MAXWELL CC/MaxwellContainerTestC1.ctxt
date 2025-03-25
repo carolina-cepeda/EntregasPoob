@@ -58,5 +58,5 @@ comment7.target=void\ shouldNotdelDemon()
 comment8.params=
 comment8.target=void\ shouldaddParticle()
 comment9.params=
-comment9.target=void\ shouldNotAddParticle()
+comment9.target=void\ shouldNotAddDuplicateParticle()
 numComments=28
