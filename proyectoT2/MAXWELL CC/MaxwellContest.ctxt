@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=MaxwellContest
+comment0.text=\r\n\ @author\ \:\ Carolina\ Cepeda\r\n\ @version\:\ 22/03/25\r\n
 comment1.params=h\ w
 comment1.target=MaxwellContest(int,\ int)
 comment2.params=u\ h

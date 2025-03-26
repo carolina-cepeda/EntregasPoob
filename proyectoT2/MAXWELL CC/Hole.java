@@ -3,7 +3,7 @@
  * Write a description of class Hole here.
  * 
  * @author Carolina Cepeda
- * @version 10 de marzo
+ * @version 25 de marzo
  */
 public class Hole {
     private int positionX;

@@ -1,5 +1,8 @@
 import javax.swing.JOptionPane;
-
+/*
+ * @author : Carolina Cepeda
+ * @version: 22/03/25
+ */
 public class MaxwellContest extends MaxwellContainer {
 
     static final double EPSILON = 1e-9;

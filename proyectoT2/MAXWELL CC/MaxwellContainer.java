@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
  * Write a description of class MaxwellContainer here.
  * 
  * @author Carolina Cepeda
- * @version 4/03/2025
+ * @version 25/03/2025
  */
 public class MaxwellContainer {
     private int demon;

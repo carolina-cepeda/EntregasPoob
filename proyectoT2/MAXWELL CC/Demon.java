@@ -1,9 +1,9 @@
 
 /**
- * Write a description of class Demon here.
+ * Demon of the maxwell container
  * 
  * @author Carolina Cepeda
- * @version 10/03/25
+ * @version 25/03/25
  */
 public class Demon {
     private Triangle grafico;

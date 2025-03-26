@@ -4,7 +4,7 @@
  * Write a description of class Particle here.
  * 
  * @author Carolina Cepeda
- * @version 10/03/25
+ * @version 20/03/25
  */
 public class Particle {
     private String color;
