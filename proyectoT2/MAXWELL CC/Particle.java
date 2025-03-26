@@ -173,7 +173,7 @@ public class Particle {
     /*
      * Metodo para pasar las particulas rojas al lado correcto.
      */
-    public void pasarRojo() {
+    private void pasarRojo() {
         this.x += vX;
         this.y += vY;
         this.moveSlow(vX,vY);
@@ -183,7 +183,7 @@ public class Particle {
      * Metodo para pasar las particulas azules al lado correcto.
      */
 
-    public void pasarBlue() {
+    private void pasarBlue() {
         this.x += vX;
         this.y += vY;
         this.moveSlow(vX, vY);

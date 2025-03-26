@@ -31,12 +31,10 @@ public class Demon {
     }
 
     public boolean pasar(Particle p) {
-        int posx = p.getpX();
-        int posy = p.getpY();
-        if (posx == pX && posy == pY) {
+        if (p.EstoyAhi(this.pX,this.pY)) {
             p.pasar();
         }
-        return (posx == pX && posy == pY);
+        return (p.EstoyAhi(this.pX, this.pY));
     }
 
     public void makeVisible() {

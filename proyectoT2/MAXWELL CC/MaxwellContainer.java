@@ -349,43 +349,42 @@ public class MaxwellContainer {
         }
     }
 
-    public void start(int ticks) {
+    /*
+    * metodo para iniciar el juego con un numero de ticks dado
+    */
+    public void start( int ticks) {
         if (isOk()){
-            startGame(particles, ticks);
+            for (int i = 0; i < ticks; i++) {
+                if (isGoal()) {
+                    finish();
+                    JOptionPane.showMessageDialog(null, "El juego ha terminado.");
+                    break;
+                } else {
+                    List<Particle> paraEliminar = new ArrayList<>();
+
+                    for (Particle p : particles) {
+                        boolean afectadaPorDemonio = false;
+                        boolean afectadaPorAgujero = false;
+
+                        for (Demon d : demons) {
+                            afectadaPorDemonio |= d.pasar(p);
+                        }
+
+                        for (Hole ho : holes) {
+                            afectadaPorAgujero |= ho.pasar(p);
+                        }
+
+                        if (afectadaPorAgujero) {
+                            paraEliminar.add(p);
+                        } else if (!afectadaPorDemonio)
+                            p.moveV(w, h);
+                        }
+                    
+
+                    particles.removeAll(paraEliminar);
+                }
+            }
         }
-    }
-
-    private void startGame(ArrayList<Particle> particles, int ticks) {
-    for (int i = 0; i < ticks; i++) {
-        if (isGoal()) {
-            finish();
-            JOptionPane.showMessageDialog(null, "El juego ha terminado.");
-            break;
-        } else {
-            List<Particle> paraEliminar = new ArrayList<>();
-
-            for (Particle p : particles) {
-                boolean afectadaPorDemonio = false;
-                boolean afectadaPorAgujero = false;
-
-                for (Demon d : demons) {
-                    afectadaPorDemonio |= d.pasar(p);
-                }
-
-                for (Hole ho : holes) {
-                    afectadaPorAgujero |= ho.pasar(p);
-                }
-
-                if (afectadaPorAgujero) {
-                    paraEliminar.add(p);
-                } else if (!afectadaPorDemonio)
-                    p.moveV(w, h);
-                }
-            
-
-            particles.removeAll(paraEliminar);
-        }
-    }
 }
 
 

@@ -31,11 +31,7 @@ public class Hole {
     }
 
     public boolean pasar(Particle p) {
-        int posx = p.getpX();
-        int posy = p.getpY();
-        int posHX = positionX;
-        int posHY = positionY;
-        return (posx == posHX && posy == posHY);
+        return (p.EstoyAhi(positionX, positionY));
     }
 
     public void makeVisible() {
