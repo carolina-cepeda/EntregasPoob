@@ -5,7 +5,7 @@
  * @author Carolina Cepeda
  * @version 18/03
  */
-public class capsulaSubmarina extends Machine {
+public class capsulaSubmarina extends Ship {
     private int profundidad;
 
     /**
