@@ -4,7 +4,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
- * Write a description of class MaxwellContainer here.
+ * Clase del contenedor MaxwellContainer
  * 
  * @author Carolina Cepeda
  * @version 25/03/2025

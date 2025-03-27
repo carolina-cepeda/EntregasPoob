@@ -83,11 +83,9 @@ public class MaxwellContainerTestC1 {
     @Test
     public void shouldDelParticle() {
         container.addParticle("red", true, 100, 120, 3, 4);
-        System.out.println(Arrays.deepToString(container.particles()));
         container.delParticle("red");
         int[][] particles = container.particles();
-        System.out.println(Arrays.deepToString(container.particles()));
-        assertFalse(containsParticle(particles, 100, 120, 3, 4), "Debería eliminar la partícula de la lista");
+        assertEquals(0,particles.length);
     }
 
     @Test
@@ -216,6 +214,7 @@ public class MaxwellContainerTestC1 {
         }
         return false;
     }
+
     /*
      * metodo que cuenta la cantidad de veces que se encuentra una particula en el
      * arreglo

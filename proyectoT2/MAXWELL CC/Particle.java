@@ -1,10 +1,10 @@
 
 
 /**
- * Write a description of class Particle here.
+ *Particula del contenedor
  * 
  * @author Carolina Cepeda
- * @version 20/03/25
+ * @version 26/03/25
  */
 public class Particle {
     private String color;
