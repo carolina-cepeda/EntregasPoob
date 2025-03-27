@@ -6,6 +6,8 @@ public class Fleet {
 	private ArrayList<Machine> machines;
 	private ArrayList<Sailor> sailors;
 	private Board board;
+	private ArrayList<Machine> machinesDestruidas = new ArrayList<>();
+	private ArrayList<Sailor> sailorsDestruidos = new ArrayList<>();
 
 	public Fleet(int name) {
 		this.name = name;
@@ -78,6 +80,28 @@ public class Fleet {
 					}
 				}
 			}
+		}
+	}
+
+	public void registrarDestruccion(Machine machine) {
+		machinesDestruidas.add(machine);
+		System.out.println("Registrado en la flota: " + machine.getName() + " se auto-destruyó.");
+	}
+
+	public void registrarDestruccion(Sailor sailor) {
+		sailorsDestruidos.add(sailor);
+		System.out.println("Registrado en la flota: " + sailor.getName() + " se auto-destruyó.");
+	}
+
+	public void mostrarDestruidos() {
+		System.out.println("\n **Resumen de elementos auto-destruidos en la flota:**");
+
+		for (Machine m : machinesDestruidas) {
+			System.out.println("- " + m.getName() + ": " + m.getCausaDestruccion());
+		}
+
+		for (Sailor s : sailorsDestruidos) {
+			System.out.println("- " + s.getName() + ": " + s.getCausaDestruccion());
 		}
 	}
 }

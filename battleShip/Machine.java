@@ -1,9 +1,11 @@
 public class Machine {
-
+	private int name;
 	private Position location;
+	private String causaDestruccion;
 
-	public Machine() {
-
+	public Machine(int name) {
+		this.name = name;
+		this.causaDestruccion = null;
 	}
 
 	public void moveNorth() {
@@ -26,5 +28,17 @@ public class Machine {
 		return false;
 	}
 
-	
+	public void autoDestruir(String causa) {
+		this.causaDestruccion = causa;
+		System.out.println(name + "se ha auto-destruido porqué" + causa);
+	}
+
+	public String getCausaDestruccion() {
+		return this.causaDestruccion;
+	}
+
+	public int getName() {
+		return this.name;
+	}
+
 }
