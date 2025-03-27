@@ -1,0 +1,23 @@
+#BlueJ class context
+comment0.target=Unit
+comment1.params=code\ name
+comment1.target=Unit(java.lang.String,\ java.lang.String)
+comment2.params=
+comment2.target=java.lang.String\ code()
+comment2.text=\n\ Return\ the\ code\n\ @return\n
+comment3.params=
+comment3.target=java.lang.String\ name()
+comment3.text=\n\ Return\ the\ name\n\ @return\n
+comment4.params=
+comment4.target=int\ credits()
+comment4.text=\n\ Return\ the\ credits\n\ @return\n\ @throws\ Plan15Exception,\ if\ the\ credits\ is\ unknown\ or\ has\ an\ error\n
+comment5.params=
+comment5.target=int\ inPerson()
+comment5.text=\n\ Return\ in_person\ hours\n\ @return\n\ @throws\ Plan15Exception,\ if\ inPerson\ hours\n
+comment6.params=
+comment6.target=int\ independent()
+comment6.text=\n\ Return\ independent\ hours\n\ @return\n\ @throws\ Plan15Exception,\ if\ it\ is\ not\ available\ or\ has\ a\ miscalculation\n
+comment7.params=
+comment7.target=java.lang.String\ data()
+comment7.text=\n\ Return\ the\ representation\ as\ string\n\ @return\n\ @throws\ Plan15Exception,\ if\ the\ data\ is\ not\ complete\ or\ has\ an\ error\ (credits\ or\ in_person)\n
+numComments=8
