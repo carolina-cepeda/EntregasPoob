@@ -28,7 +28,7 @@ public class MaxwellContainerTestC1 {
         assertNotNull(container);
     }
 
-    @Test // mejorar
+    @Test //mejorar
     public void ShouldMC2() {
         assertNotNull(container);
     }
@@ -53,14 +53,15 @@ public class MaxwellContainerTestC1 {
         container.addDemon(80);
         container.delDemon(80);
         int[] demons = container.demons();
-        assertFalse(contains(demons, 80), "Debería eliminar el demonio de la lista");
+        assertTrue(demons ==null, "Debería eliminar el demonio de la lista");
     }
 
     @Test
     public void shouldNotdelDemon() {
         container.delDemon(80);
+        container.addDemon(100);
         int[] demons = container.demons();
-        assertFalse(contains(demons, 80), "debería fallar si el demonio no existe");
+        assertTrue(demons.length == 1 && demons[0]==100 , "debería fallar si el demonio no existe");
     }
 
     @Test
@@ -77,7 +78,7 @@ public class MaxwellContainerTestC1 {
         container.addParticle("red", true, 100, 120, 3, 4);
         container.addParticle("red", true, 100, 120, 3, 4);
         int[][] particles = container.particles();
-        assertEquals(1, contadorParticula(particles, 100, 120, 3, 4), "No debería agregar partículas duplicadas");
+        assertTrue(particles.length == 1, "No debería agregar partículas duplicadas");
     }
 
     @Test
@@ -105,9 +106,9 @@ public class MaxwellContainerTestC1 {
 
     @Test
     public void shouldNotAddHole() {
-        container.addHole(10, 0, 2);
+        container.addHole(-5000, 0, 2);
         int[][] holes = container.holes();
-        assertEquals(0, holes.length);
+        assertEquals(null, holes);
 
     }
 
@@ -135,7 +136,7 @@ public class MaxwellContainerTestC1 {
     @Test
     public void shouldNotDemons() {
         container.addDemon(10000);
-        assertEquals(0, container.demons().length);
+        assertEquals(null, container.demons());
 
     }
 
