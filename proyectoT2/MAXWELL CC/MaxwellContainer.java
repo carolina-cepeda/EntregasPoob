@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -252,6 +253,7 @@ public class MaxwellContainer {
                 infoDemons[j] = demons.get(j).getpY();
 
             }
+            Arrays.sort(infoDemons);
             isOk = true;
 
             return infoDemons;
@@ -262,6 +264,8 @@ public class MaxwellContainer {
 
     /*
      * metodo para consultar las particulas ( su posicion y velocidad)
+     *@return: un arreglo de enteros que contiene la posicion y velocidad de las
+     * particulas
      */
     public int[][] particles() {
 
@@ -270,6 +274,11 @@ public class MaxwellContainer {
             for (int j = 0; j < particles.size(); j++) {
                 infoParticles[j] = particles.get(j).format();
             }
+
+            Arrays.sort(infoParticles,Comparator.comparingInt((int[] p)-> p[0])
+                    .thenComparingInt(p -> p[1])
+                    .thenComparingInt(p -> p[2])
+                    .thenComparingInt(p -> p[3]));
             isOk = true;
             return infoParticles;
 
@@ -285,6 +294,8 @@ public class MaxwellContainer {
             for (int j = 0; j < holes.size(); j++) {
                 infoHoles[j] = holes.get(j).format();
             }
+            Arrays.sort(infoHoles,Comparator.comparingInt((int[] h)-> h[0])
+                    .thenComparingInt(h -> h[1]));
 
             return infoHoles;
         }

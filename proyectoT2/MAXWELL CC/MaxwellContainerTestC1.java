@@ -147,6 +147,18 @@ public class MaxwellContainerTestC1 {
     }
 
     @Test
+    public void shouldSortParticles(){
+        container.addParticle("blue", true, 120, 120, 10, 10);
+        container.addParticle("red", true, 100, 100, 20, 20);
+        container.addParticle("green", true, 80, 80, 30, 30);
+
+        int[][] particles = container.particles();
+        int[][] expectedParticles = { { 80, 80, 30, 30 }, { 100, 100, 20, 20 }, { 120, 120, 10, 10 } };
+
+        assertTrue(Arrays.deepEquals(particles, expectedParticles), "Las partículas deberían estar ordenadas por posición.");
+    }
+
+    @Test
     public void shouldNotParticles() {
         assertEquals(0, container.particles().length);
     }
