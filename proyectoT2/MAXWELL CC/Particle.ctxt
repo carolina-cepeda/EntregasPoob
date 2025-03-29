@@ -1,8 +1,8 @@
 #BlueJ class context
 comment0.target=Particle
 comment0.text=\r\nParticula\ del\ contenedor\r\n\ \r\n\ @author\ Carolina\ Cepeda\r\n\ @version\ 26/03/25\r\n
-comment1.params=color\ isRed\ x\ y\ vX\ vY
-comment1.target=Particle(java.lang.String,\ boolean,\ int,\ int,\ int,\ int)
+comment1.params=color\ isRed\ x\ y\ vX\ vY\ w\ h
+comment1.target=Particle(java.lang.String,\ boolean,\ int,\ int,\ int,\ int,\ int,\ int)
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Particle\r\n
 comment10.params=w\ h
 comment10.target=void\ moveV(int,\ int)

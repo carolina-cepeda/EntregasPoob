@@ -1,5 +1,4 @@
 
-
 /**
  *Particula del contenedor
  * 
@@ -8,6 +7,8 @@
  */
 public class Particle {
     private String color;
+    private int originalX;
+    private int originalY;
     private int x;
     private int y;
     private int vX;
@@ -19,10 +20,13 @@ public class Particle {
     /**
      * Constructor for objects of class Particle
      */
-    public Particle(String color, boolean isRed, int x, int y, int vX, int vY) {
+    public Particle(String color, boolean isRed, int x, int y, int vX, int vY,int w, int h) {
         this.esVisible = MaxwellContainer.getVisible();
-        this.x = x;
-        this.y = y;
+        this.originalX = x;
+        this.originalY = y;
+
+        this.x = x + (70+w/2);
+        this.y = (15+h) - originalY;
         this.vX = vX;
         this.vY = vY;
         this.isRed = isRed;
@@ -30,8 +34,8 @@ public class Particle {
         grafico = new Circle();
         grafico.changeSize(8);
         grafico.changeColor(color);
-        grafico.setXposition(x);
-        grafico.setYposition(y);
+        grafico.setXposition(this.x);
+        grafico.setYposition(this.y);
 
     }
 
@@ -70,11 +74,11 @@ public class Particle {
     }
 
     public int getpX() {
-        return this.x;
+        return this.originalX;
     }
 
     public int getpY() {
-        return this.y;
+        return this.originalY;
     }
 
     public int getvX() {
@@ -90,21 +94,25 @@ public class Particle {
      * basado en sus velocidades en x y y.
      */
     public void moveV(int w, int h) {
-        for (int i = 0; i < 3; i++) {
-            y += vY;
 
-            if ("red".equals(color)) {
-                x -= vX;
-                moveSlow(-vX, vY);
-            } else {
-                x += vX;
-                moveSlow(vX, vY);
-            }
-            if (esVisible) {
-                makeVisible();
-            }
-            choque(w, h);
+        int aumentoY= this.vY /3 ;
+        int aumentoX= this.vX /3 ;
+        originalY += aumentoY;
+        y += aumentoY;
+
+        if ("red".equals(color)) {
+            originalX -= aumentoX;
+            x -= aumentoX;
+            moveSlow(-aumentoX, aumentoY);
+        } else {
+            originalX += aumentoX;
+            x += aumentoX;
+            moveSlow(aumentoX, aumentoY);
         }
+        if (esVisible) {
+            makeVisible();
+        }
+        choque(w, h);
     }
 
     private void moveSlow(int vx, int vy) {
@@ -149,8 +157,8 @@ public class Particle {
 
     public int[] format() {
         int[] info = new int[4];
-        info[0] = x;
-        info[1] = y;
+        info[0] = originalX;
+        info[1] = originalY;
         info[2] = vX;
         info[3] = vY;
         return info;
@@ -174,27 +182,34 @@ public class Particle {
      * Metodo para pasar las particulas rojas al lado correcto.
      */
     private void pasarRojo() {
-        this.x += vX;
+        this.x -= vX;
+        originalX -= vX;
         this.y += vY;
-        this.moveSlow(vX,vY);
+        originalY += vY;
+        this.moveSlow(-vX,vY);
 
     }
+
     /*
      * Metodo para pasar las particulas azules al lado correcto.
      */
 
     private void pasarBlue() {
         this.x += vX;
+        originalX += vX;
         this.y += vY;
+        originalY += vY;
         this.moveSlow(vX, vY);
     }
 
     public boolean isRed(){
         return isRed ;
     }
+
     public String getColor(){
         return color;
     }
+
     public boolean esMiColor(String color){
         return this.color.equals(color);
     }

@@ -1,4 +1,6 @@
 
+
+
 /**
  * Demon of the maxwell container
  * 
@@ -9,15 +11,19 @@ public class Demon {
     private Triangle grafico;
     private int pX;
     private int pY;
+    private int originalX;
+    private int originalY;
     private boolean esVisible = false;
 
     /**
      * Constructor for objects of class Demon
      */
-    public Demon(int pX, int pY, String color) {
+    public Demon(int w,int h, int pY, String color) {
         this.esVisible = MaxwellContainer.getVisible();
-        this.pX = pX;
-        this.pY = pY;
+        this.originalX = 0;
+        this.originalY = pY;
+        this.pX = (70 + w / 2);
+        this.pY =  (15 + h) - originalY;
         grafico = new Triangle();
         grafico.changeSize(10, 10);
         grafico.changeColor(color);
@@ -33,8 +39,9 @@ public class Demon {
     public boolean pasar(Particle p) {
         if (p.EstoyAhi(this.pX,this.pY)) {
             p.pasar();
+            return true;
         }
-        return (p.EstoyAhi(this.pX, this.pY));
+        return false;
     }
 
     public void makeVisible() {
@@ -48,7 +55,7 @@ public class Demon {
     }
 
     public int getpY() {
-        return pY;
+        return originalY;
     }
 
     public boolean EstoyAhi(int d) {

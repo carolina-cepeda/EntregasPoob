@@ -1,8 +1,8 @@
 #BlueJ class context
 comment0.target=Demon
 comment0.text=\r\n\ Demon\ of\ the\ maxwell\ container\r\n\ \r\n\ @author\ Carolina\ Cepeda\r\n\ @version\ 25/03/25\r\n
-comment1.params=pX\ pY\ color
-comment1.target=Demon(int,\ int,\ java.lang.String)
+comment1.params=w\ h\ pY\ color
+comment1.target=Demon(int,\ int,\ int,\ java.lang.String)
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Demon\r\n
 comment2.params=
 comment2.target=void\ deleteDemon()

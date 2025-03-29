@@ -101,19 +101,19 @@ public class MaxwellContainer {
      */
     public void addDemon(int d) {
         int px = 70 + w / 2;
- 
+
         if(!validarDemon(d) && validarPosition(px, d)) {
-            Demon demonio = new Demon(px, d, "black");
+            Demon demonio = new Demon(w,h,d,"black");
             demons.add(demonio);
             isOk= true;
         } else {
             JOptionPane.showMessageDialog(null, "La posición dada no es válida");
             isOk = false;
         }
-    
+
     }
 
-   /*
+    /*
      * Metodo para eliminar un demonio al juego
      * 
      * @param : entero d que se refiere a la posicion en y del demonio.
@@ -132,49 +132,48 @@ public class MaxwellContainer {
             }
         }
     }
-    
 
     /*
      * método para revisar si un demonio ya existe basado en su posición en y.
      */
     private boolean validarDemon(int d) {
-            for (Demon demon : demons) {
-                if (demon.EstoyAhi(d)) {
-                    return true;
-                }
+        for (Demon demon : demons) {
+            if (demon.EstoyAhi(d)) {
+                return true;
             }
-            return false;
-        
+        }
+        return false;
+
     }
 
     /*
      * Metodo para añadir una particula al juego
      */
     public void addParticle(String Color, boolean isRed, int px, int py, int vx, int vy) {
-       
-            if (!validarParticle(px, py,Color) && validarPosition(px, py)) {
-                Particle p = new Particle(Color, isRed, px, py, vx, vy);
+
+        if (!validarParticle(px, py,Color) && validarPosition(px, py)) {
+            Particle p = new Particle(Color, isRed, px, py, vx, vy,w,h);
 
             particles.add(p);
             coloresUsados.add(Color);
             isOk = true;
-            } else {
-                JOptionPane.showMessageDialog(null, "La partícula no está en una posición válida");
+        } else {
+            JOptionPane.showMessageDialog(null, "La partícula no está en una posición válida");
             isOk = false;
-            }
-        
+        }
+
     }
 
     private boolean validarParticle(int px, int py, String color) {
-     
-            for (Particle p : particles) {
-                if (p.EstoyAhi(px, py) || p.esMiColor(color)) {
-                    return true;
-                }
-            }
 
-            return false;
-    
+        for (Particle p : particles) {
+            if (p.EstoyAhi(px, py) || p.esMiColor(color)) {
+                return true;
+            }
+        }
+
+        return false;
+
     }
 
     /*
@@ -183,60 +182,60 @@ public class MaxwellContainer {
      * @param: posicion en x, posicion en y, cantidad de particulas maxima.
      */
     public void addHole(int px, int py, int particles) {
-    
-            if (validarPosition(px, py) && !validarHole(px, py)) {
-                Hole ho = new Hole(px, py, particles);
-                holes.add(ho);
-                isOk = true;
-            } else {
-                JOptionPane.showMessageDialog(null, "La posición dada  esta fuera del rango");
-                isOk = false;
-            }
-    
+
+        if (validarPosition(px, py) && !validarHole(px, py)) {
+            Hole ho = new Hole(px, py, particles,w,h);
+            holes.add(ho);
+            isOk = true;
+        } else {
+            JOptionPane.showMessageDialog(null, "La posición dada  esta fuera del rango");
+            isOk = false;
+        }
+
     }
 
     private boolean validarHole(int px, int py) {
-      
-            for (Hole hole : holes) {
-                if (hole.EstoyAhi(px, py)) {
-                    return true;
-                }
+
+        for (Hole hole : holes) {
+            if (hole.EstoyAhi(px, py)) {
+                return true;
             }
-            return false;
-    
+        }
+        return false;
+
     }
 
     /*
      * metodo para eliminar una particula de un color dado
      */
     public void delParticle(String color) {
-    
-            isOk = false;
-            for(Particle p : particles){
+
+        isOk = false;
+        for(Particle p : particles){
             if (p.getColor()!= null && p.getColor().equals(color)){
                 p.makeInvisible();
                 particles.remove(p);
                 isOk = true;
                 break;
             }
-            }
+        }
     }
 
     /*
      * Metodo para saber si el juego ha terminado.
      */
     public boolean isGoal() {
-            for (Particle p : particles) {
-                if (p.isRed()) {
-                    if (!p.isGoalR(h, w)) {
-                        return false;
-                    }
-                } else {
-                    if (!p.isGoalB(h, w)) {
-                        return false;
-                    }
+        for (Particle p : particles) {
+            if (p.isRed()) {
+                if (!p.isGoalR(h, w)) {
+                    return false;
+                }
+            } else {
+                if (!p.isGoalB(h, w)) {
+                    return false;
                 }
             }
+        }
 
         return true;
     }
@@ -269,18 +268,18 @@ public class MaxwellContainer {
      */
     public int[][] particles() {
 
-            int[][] infoParticles = new int[particles.size()][4];
+        int[][] infoParticles = new int[particles.size()][4];
 
-            for (int j = 0; j < particles.size(); j++) {
-                infoParticles[j] = particles.get(j).format();
-            }
+        for (int j = 0; j < particles.size(); j++) {
+            infoParticles[j] = particles.get(j).format();
+        }
 
-            Arrays.sort(infoParticles,Comparator.comparingInt((int[] p)-> p[0])
-                    .thenComparingInt(p -> p[1])
-                    .thenComparingInt(p -> p[2])
-                    .thenComparingInt(p -> p[3]));
-            isOk = true;
-            return infoParticles;
+        Arrays.sort(infoParticles,Comparator.comparingInt((int[] p)-> p[0])
+            .thenComparingInt(p -> p[1])
+            .thenComparingInt(p -> p[2])
+            .thenComparingInt(p -> p[3]));
+        isOk = true;
+        return infoParticles;
 
     }
 
@@ -288,14 +287,14 @@ public class MaxwellContainer {
      * Metodo para consultar los agujeros del juego
      */
     public int[][] holes() {
-            if (isOk()){
+        if (isOk()){
             int[][] infoHoles = new int[holes.size()][2];
 
             for (int j = 0; j < holes.size(); j++) {
                 infoHoles[j] = holes.get(j).format();
             }
             Arrays.sort(infoHoles,Comparator.comparingInt((int[] h)-> h[0])
-                    .thenComparingInt(h -> h[1]));
+                .thenComparingInt(h -> h[1]));
 
             return infoHoles;
         }
@@ -306,45 +305,45 @@ public class MaxwellContainer {
      * Metodo para hacer visible el juego
      */
     public void makeVisible() {
-            isOk = false;
-            esVisible = true;
-            marco.makeVisible();
-            interior.makeVisible();
-            separacion.makeVisible();
+        isOk = false;
+        esVisible = true;
+        marco.makeVisible();
+        interior.makeVisible();
+        separacion.makeVisible();
 
-            for (Demon d : demons) {
-                d.makeVisible();
-            }
-            for (Hole ho : holes) {
-                ho.makeVisible();
-            }
-            for (Particle p : particles) {
-                p.makeVisible();
-            }
-            isOk = true;
+        for (Demon d : demons) {
+            d.makeVisible();
+        }
+        for (Hole ho : holes) {
+            ho.makeVisible();
+        }
+        for (Particle p : particles) {
+            p.makeVisible();
+        }
+        isOk = true;
     }
 
     /*
      * Metodo para hacer invisible el juego
      */
     public void makeInvisible() {
-            isOk = false;
-            marco.makeInvisible();
-            interior.makeInvisible();
-            separacion.makeInvisible();
-            esVisible = false;
+        isOk = false;
+        marco.makeInvisible();
+        interior.makeInvisible();
+        separacion.makeInvisible();
+        esVisible = false;
 
-            for (Demon d : demons) {
-                d.makeInvisible();
-            }
+        for (Demon d : demons) {
+            d.makeInvisible();
+        }
 
-            for (Hole ho : holes) {
+        for (Hole ho : holes) {
 
-                ho.makeInvisible();
-            }
-            for (Particle p : particles) {
-                p.makeInvisible();
-            }
+            ho.makeInvisible();
+        }
+        for (Particle p : particles) {
+            p.makeInvisible();
+        }
     }
 
     /*
@@ -362,44 +361,58 @@ public class MaxwellContainer {
     }
 
     /*
-    * metodo para iniciar el juego con un numero de ticks dado
-    */
-    public void start( int ticks) {
+     * metodo para iniciar el juego con un numero de ticks dado
+     */
+    public void start(int ticks) {
+        for (int i = 0; i < ticks; i++) {
+            if (isGoal()) {
+                finish();
+                JOptionPane.showMessageDialog(null, "El juego ha terminado.");
+                break;
+            } else {
+                List<Particle> paraEliminar = new ArrayList<>();
 
-            isOk = false;
-            for (int i = 0; i < ticks; i++) {
-                if (isGoal()) {
-                    finish();
-                    JOptionPane.showMessageDialog(null, "El juego ha terminado.");
-                    break;
-                } else {
-                    List<Particle> paraEliminar = new ArrayList<>();
+                for (Particle p : particles) {
+                    if (verificarChoqueAgujero(p, holes)) {
+                        paraEliminar.add(p);
+                    }
+                    for (int j = 0; j < 3; j++) {
+                        boolean afectadaPorDemonio = pasarPorDemonios(p, demons); 
 
-                    for (Particle p : particles) {
-                        boolean afectadaPorDemonio = false;
-                        boolean afectadaPorAgujero = false;
-
-                        for (Demon d : demons) {
-                            afectadaPorDemonio |= d.pasar(p);
-                        }
-
-                        for (Hole ho : holes) {
-                            afectadaPorAgujero |= ho.pasar(p);
-                        }
-
-                        if (afectadaPorAgujero) {
-                            paraEliminar.add(p);
-                        } else if (!afectadaPorDemonio)
+                        if (!afectadaPorDemonio) { 
                             p.moveV(w, h);
                         }
-                    
 
-                    particles.removeAll(paraEliminar);
+                        if (verificarChoqueAgujero(p, holes)) {
+                            paraEliminar.add(p);
+                            break;
+                        }
+                    }
                 }
+                particles.removeAll(paraEliminar);
             }
-            isOk = true;
-}
+        }
+    }
 
+    private boolean verificarChoqueAgujero(Particle p, ArrayList<Hole> holes) {
+        for (Hole ho : holes) {
+            if (ho.pasar(p)) {
+                return true; 
+            }
+        }
+        return false;
+    }
+
+    private boolean pasarPorDemonios(Particle p, ArrayList<Demon> demons) {
+        boolean afectada= false;
+
+        for (Demon d : demons) {
+            if( d.pasar(p)){
+                afectada= true;
+            }
+        }
+        return afectada;
+    }
 
     public boolean isOk() {
         return isOk;
@@ -413,13 +426,12 @@ public class MaxwellContainer {
         return esVisible;
     }
 
-
     private String getColor() {
         List<String> colores = Arrays.asList("red", "blue", "yellow", "green", "magenta", "white", "orange", "cyan", "pink", "gray",
-        "darkgray", "lightgray", "brown", "purple", "violet", "gold", "silver", "beige", "turquoise",
-        "indigo", "maroon", "navy", "olive", "teal", "salmon", "coral", "khaki", "lavender", "orchid",
-        "plum", "crimson", "chartreuse", "lime", "aquamarine", "peru", "seagreen", "slategray", "dodgerblue",
-        "firebrick", "deeppink", "hotpink");
+                "darkgray", "lightgray", "brown", "purple", "violet", "gold", "silver", "beige", "turquoise",
+                "indigo", "maroon", "navy", "olive", "teal", "salmon", "coral", "khaki", "lavender", "orchid",
+                "plum", "crimson", "chartreuse", "lime", "aquamarine", "peru", "seagreen", "slategray", "dodgerblue",
+                "firebrick", "deeppink", "hotpink");
         List<String> coloresDisponibles = new ArrayList<>(colores);
         coloresDisponibles.removeAll(coloresUsados);
         if (coloresDisponibles.isEmpty()){
@@ -428,6 +440,6 @@ public class MaxwellContainer {
         else{
             return coloresDisponibles.get(0);
         }
-            
-        }
+
     }
+}
