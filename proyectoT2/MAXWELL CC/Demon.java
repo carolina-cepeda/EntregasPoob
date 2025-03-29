@@ -36,9 +36,9 @@ public class Demon {
         grafico.makeInvisible();
     }
 
-    public boolean pasar(Particle p) {
-        if (p.EstoyAhi(this.pX,this.pY)) {
-            p.pasar();
+    public boolean pasar(Particle p,int w, int h) {
+        if (p.EstoyAhi(this.originalX,this.originalY)){
+            p.pasar(w,h);
             return true;
         }
         return false;
@@ -59,6 +59,6 @@ public class Demon {
     }
 
     public boolean EstoyAhi(int d) {
-        return d == pY;
+        return d == originalY;
     }
 }

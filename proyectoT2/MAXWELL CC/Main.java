@@ -1,13 +1,12 @@
 public class Main {
-    public static void main(String[] args) {
-        int[][] particlesData = {
-                { 10, 120, 5, 8 },
-                { 12, 120, 4, 7 }
-            };
-
-        MaxwellContainer container = new MaxwellContainer(150, 150, 45, 1, 1, particlesData);
-        container.makeVisible();
-        container.addHole(85,80,1);
-        container.start(70);
-    }
+    public static void main(){
+        int[][] particulas={
+            {10,120,5,8},
+            {20,120,6,7}
+    };
+     MaxwellContainer mc = new MaxwellContainer(200,200,70,1,1,particulas);
+     mc.addHole(85,80,1);
+     mc.makeVisible();
+     mc.start(200);
+}
 }

@@ -8,8 +8,8 @@ public class MaxwellContest extends MaxwellContainer {
     static final double EPSILON = 1e-9;
     static final int MAXIMO_ITERACIONES = 10000;
 
-    public MaxwellContest(int h, int w) {
-        super(h, w);
+    public MaxwellContest(int h, int w, int d, int r, int b, int[][] particles) {
+        super(h, w,d,r,b,particles);
     }
 
     /**

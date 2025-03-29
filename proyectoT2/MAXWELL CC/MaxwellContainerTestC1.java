@@ -45,13 +45,13 @@ public class MaxwellContainerTestC1 {
         container.addDemon(80);
         container.addDemon(80);
         int[] demons = container.demons();
-        assertEquals(1, contadorOcurrencias(demons, 80), "No debería agregar demonios duplicados");
+        assertEquals(1,demons.length, "No debería agregar demonios duplicados");
     }
 
     @Test
     public void shoulddelDemon() {
-        container.addDemon(80);
-        container.delDemon(80);
+        container.addDemon(8);
+        container.delDemon(8);
         int[] demons = container.demons();
         assertTrue(demons ==null, "Debería eliminar el demonio de la lista");
     }
@@ -114,7 +114,7 @@ public class MaxwellContainerTestC1 {
 
     @Test
     public void shouldisGoal() {
-        container.addParticle("red", true, 75, 100, 0, 0);
+        container.addParticle("red", true, -75, 100, 0, 0);
         container.addParticle("blue", false, 185, 100, 0, 0);
         assertTrue(container.isGoal(), "Debería retornar true cuando el juego termina.");
     }
@@ -142,18 +142,19 @@ public class MaxwellContainerTestC1 {
 
     @Test
     public void shouldParticles() {
-        container.addParticle("blue", true, 120, 120, 10, 10);
-        assertEquals(1, container.particles().length);
+        container.addParticle("blue", true, 12, 12, 10, 10);
+        int[][] particles = container.particles();
+        assertEquals(1, particles.length);
     }
 
     @Test
     public void shouldSortParticles(){
-        container.addParticle("blue", true, 120, 120, 10, 10);
-        container.addParticle("red", true, 100, 100, 20, 20);
-        container.addParticle("green", true, 80, 80, 30, 30);
+        container.addParticle("blue", true, 12, 12, 1, 1);
+        container.addParticle("red", true, 10, 10, 2, 2);
+        container.addParticle("green", true, 8, 8, 3, 3);
 
         int[][] particles = container.particles();
-        int[][] expectedParticles = { { 80, 80, 30, 30 }, { 100, 100, 20, 20 }, { 120, 120, 10, 10 } };
+        int[][] expectedParticles = { { 8, 8, 3, 3 }, { 10, 10, 2, 2 }, { 12, 12, 1, 1} };
 
         assertTrue(Arrays.deepEquals(particles, expectedParticles), "Las partículas deberían estar ordenadas por posición.");
     }
@@ -186,6 +187,7 @@ public class MaxwellContainerTestC1 {
 
     public void tearDown() {
         container = null;
+
     }
 
     // Métodos auxiliares

@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
  * Clase del contenedor MaxwellContainer
  * 
  * @author Carolina Cepeda
- * @version 25/03/2025
+ * @version 28/03/2025
  */
 public class MaxwellContainer {
     private int demon;
@@ -88,10 +88,10 @@ public class MaxwellContainer {
     }
 
     /*
-     * Método para validar la posicion de los elementos
+     * Método para validar la posicion de los elemento|s
      */
     public boolean validarPosition(int px, int py) {
-        return (70 <= px && px <= 70 + w && 15 <= py && py <= 15 + h);
+        return ((-1 - w / 2) <= px && px <= (w / 2 + 1) && 0 <= py && py <= (h + 1));
     }
 
     /*
@@ -100,7 +100,7 @@ public class MaxwellContainer {
      * @param : entero d que se refiere a la posicion en y del demonio.
      */
     public void addDemon(int d) {
-        int px = 70 + w / 2;
+        int px = 0;
 
         if(!validarDemon(d) && validarPosition(px, d)) {
             Demon demonio = new Demon(w,h,d,"black");
@@ -209,16 +209,19 @@ public class MaxwellContainer {
      * metodo para eliminar una particula de un color dado
      */
     public void delParticle(String color) {
-
+        ArrayList<Particle> paraEliminar = new ArrayList<>();
         isOk = false;
         for(Particle p : particles){
             if (p.getColor()!= null && p.getColor().equals(color)){
                 p.makeInvisible();
-                particles.remove(p);
+                paraEliminar.add(p);
+                coloresUsados.remove(color);
                 isOk = true;
                 break;
             }
         }
+        particles.removeAll(paraEliminar);
+        paraEliminar.clear();
     }
 
     /*
@@ -376,7 +379,7 @@ public class MaxwellContainer {
                     if (verificarChoqueAgujero(p, holes)) {
                         paraEliminar.add(p);
                     }
-                    for (int j = 0; j < 3; j++) {
+                    for (int j = 0; j < 2; j++) {
                         boolean afectadaPorDemonio = pasarPorDemonios(p, demons); 
 
                         if (!afectadaPorDemonio) { 
@@ -385,11 +388,13 @@ public class MaxwellContainer {
 
                         if (verificarChoqueAgujero(p, holes)) {
                             paraEliminar.add(p);
-                            break;
                         }
                     }
                 }
-                particles.removeAll(paraEliminar);
+                for (Particle p : paraEliminar) {
+                    delParticle(p.getColor());
+                }
+
             }
         }
     }
@@ -407,8 +412,9 @@ public class MaxwellContainer {
         boolean afectada= false;
 
         for (Demon d : demons) {
-            if( d.pasar(p)){
+            if( d.pasar(p,w,h)){
                 afectada= true;
+                break;
             }
         }
         return afectada;
@@ -419,7 +425,7 @@ public class MaxwellContainer {
     }
 
     private boolean validarDimension(int h, int w) {
-        return (20 < h && h <= 300 && 20 < w && w < 300);
+        return (1 < h && h <= 300 && 1 < w && w < 300);
     }
 
     public static boolean getVisible() {

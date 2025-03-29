@@ -20,23 +20,23 @@ public class Hole {
     public Hole(int px, int py, int particles,int w, int h) {
         this.esVisible = MaxwellContainer.getVisible();
 
-        positionX = px;
-        positionY = py;
-        originalX = px+ (70+w) / 2;
-        originalY =(15+h)- py;
+        originalX = px;
+        originalY = py;
+        positionX = originalX + (70+w) / 2;
+        positionY =(15+h)- originalY;
 
         grafico = new Circle();
         grafico.changeSize(15);
         grafico.changeColor("black");
-        grafico.setXposition(px);
-        grafico.setYposition(py);
+        grafico.setXposition(positionX);
+        grafico.setYposition(positionY);
 
         this.particles = particles;
 
     }
 
     public boolean pasar(Particle p) {
-        return (p.EstoyAhi(positionX, positionY));
+        return (p.EstoyAhi(originalX, originalY));
     }
 
     public void makeVisible() {
@@ -51,12 +51,12 @@ public class Hole {
 
     // getPosition
     public int getpY() {
-        return positionY;
+        return originalY;
 
     }
 
     public int getpX() {
-        return positionX;
+        return originalX;
     }
 
     public int getParticles() {
@@ -64,13 +64,13 @@ public class Hole {
     }
 
     public boolean EstoyAhi(int px, int py) {
-        return (px == positionX && py == positionY);
+        return (px == originalX && py == originalY);
     }
 
     public int[] format() {
         int[] info = new int[2];
-        info[0] = positionX;
-        info[1] = positionY;
+        info[0] = originalX;
+        info[1] = originalY;
         return info;
     }
 

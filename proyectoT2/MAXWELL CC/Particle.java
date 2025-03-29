@@ -95,12 +95,12 @@ public class Particle {
      */
     public void moveV(int w, int h) {
 
-        int aumentoY= this.vY /3 ;
-        int aumentoX= this.vX /3 ;
+        int aumentoY= this.vY /2 ;
+        int aumentoX= this.vX /2 ;
         originalY += aumentoY;
         y += aumentoY;
 
-        if ("red".equals(color)) {
+        if (isRed) {
             originalX -= aumentoX;
             x -= aumentoX;
             moveSlow(-aumentoX, aumentoY);
@@ -135,8 +135,29 @@ public class Particle {
         }
     }
 
+    
+    public void pasar(int w, int h) {
+
+        int aumentoY= this.vY /2 ;
+        int aumentoX= this.vX /2 ;
+        originalY += aumentoY;
+        y += aumentoY;
+
+        if (isRed) {
+            originalX -= aumentoX;
+            x -= aumentoX;
+            moveSlow(-aumentoX, aumentoY);
+        } else {
+            originalX += aumentoX;
+            x += aumentoX;
+            moveSlow(aumentoX, aumentoY);
+        }
+        if (esVisible) {
+            makeVisible();
+        }
+    }
     private boolean EnmuroX(int w) {
-        return (x <= 70 || x >= 70 + w || x == 70 + w / 2);
+       return (x <= 70 || x >= 70 + w || x == 70 + w / 2);
     }
 
     private boolean EnmuroY(int h) {
@@ -152,7 +173,7 @@ public class Particle {
     }
 
     public boolean EstoyAhi(int px, int py) {
-        return (x == px && y == py);
+        return (originalX == px && originalY == py);
     }
 
     public int[] format() {
@@ -162,44 +183,6 @@ public class Particle {
         info[2] = vX;
         info[3] = vY;
         return info;
-    }
-
-    /*
-     * metodo para pasar las particulas al otro lado si es necesario.
-     */
-    public void pasar() {
-        if (isRed) {
-            pasarRojo();
-        } else {
-            pasarBlue();
-        }
-        if (esVisible) {
-            makeVisible();
-        }
-    }
-
-    /*
-     * Metodo para pasar las particulas rojas al lado correcto.
-     */
-    private void pasarRojo() {
-        this.x -= vX;
-        originalX -= vX;
-        this.y += vY;
-        originalY += vY;
-        this.moveSlow(-vX,vY);
-
-    }
-
-    /*
-     * Metodo para pasar las particulas azules al lado correcto.
-     */
-
-    private void pasarBlue() {
-        this.x += vX;
-        originalX += vX;
-        this.y += vY;
-        originalY += vY;
-        this.moveSlow(vX, vY);
     }
 
     public boolean isRed(){

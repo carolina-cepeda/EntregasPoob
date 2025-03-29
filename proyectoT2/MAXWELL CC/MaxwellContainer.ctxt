@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=MaxwellContainer
-comment0.text=\r\n\ Clase\ del\ contenedor\ MaxwellContainer\r\n\ \r\n\ @author\ Carolina\ Cepeda\r\n\ @version\ 25/03/2025\r\n
+comment0.text=\r\n\ Clase\ del\ contenedor\ MaxwellContainer\r\n\ \r\n\ @author\ Carolina\ Cepeda\r\n\ @version\ 28/03/2025\r\n
 comment1.params=h\ w
 comment1.target=MaxwellContainer(int,\ int)
 comment1.text=\r\n\ primer\ constructor\r\n
@@ -55,7 +55,7 @@ comment3.params=height\ width\ color\ moveX\ moveY
 comment3.target=Rectangle\ createRectangle(int,\ int,\ java.lang.String,\ int,\ int)
 comment4.params=px\ py
 comment4.target=boolean\ validarPosition(int,\ int)
-comment4.text=\r\n\ M\u00E9todo\ para\ validar\ la\ posicion\ de\ los\ elementos\r\n
+comment4.text=\r\n\ M\u00E9todo\ para\ validar\ la\ posicion\ de\ los\ elemento|s\r\n
 comment5.params=d
 comment5.target=void\ addDemon(int)
 comment5.text=\r\n\ Metodo\ para\ a\u00F1adir\ un\ demonio\ al\ juego\r\n\ \r\n\ @param\ \:\ entero\ d\ que\ se\ refiere\ a\ la\ posicion\ en\ y\ del\ demonio.\r\n
