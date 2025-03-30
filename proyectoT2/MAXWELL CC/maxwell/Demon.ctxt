@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=Demon
+comment0.text=\r\n\ Demon\ of\ the\ maxwell\ container\r\n\ \r\n\ @author\ Carolina\ Cepeda\r\n\ @version\ 29/03/25\r\n
+comment1.params=w\ h\ pY\ color
+comment1.target=Demon(int,\ int,\ int,\ java.lang.String)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Demon\r\n\ @param\ w\ Ancho\ del\ contenedor\r\n\ @param\ h\ Alto\ del\ contenedor\r\n\ @param\ pY\ Posicion\ inicial\ en\ y\r\n\ @param\ color\ Color\ del\ demonio\r\n
+comment2.params=
+comment2.target=void\ deleteDemon()
+comment2.text=\r\n\ Metodo\ para\ eliminar\ el\ demonio\r\n
+comment3.params=p\ w\ h
+comment3.target=boolean\ pasar(Particle,\ int,\ int)
+comment3.text=\r\n\ Metodo\ para\ verificar\ si\ la\ particula\ choca\ con\ el\ demonio\r\n\ @param\ p\ Particula\ a\ verificar\r\n\ @param\ w\ Ancho\ del\ contenedor\r\n\ @param\ h\ Alto\ del\ contenedor\r\n\ @return\ boolean\r\n
+comment4.params=
+comment4.target=void\ makeVisible()
+comment4.text=\r\n\ metodo\ para\ hacer\ visible\ al\ demonio\r\n
+comment5.params=
+comment5.target=void\ makeInvisible()
+comment5.text=\r\n\ metodo\ para\ hacer\ invisible\ al\ demonio\r\n
+comment6.params=
+comment6.target=int\ getpY()
+comment6.text=\r\n\ Metodo\ para\ obtener\ la\ posicion\ en\ y\ del\ demonio\r\n\ @return\ int\r\n
+comment7.params=d
+comment7.target=boolean\ EstoyAhi(int)
+comment7.text=\r\n\ Metodo\ para\ verificar\ si\ el\ demonio\ est\u00E1\ en\ la\ altura\ dada\r\n\ @param\ d\r\n\ @return\ boolean\r\n
+numComments=8

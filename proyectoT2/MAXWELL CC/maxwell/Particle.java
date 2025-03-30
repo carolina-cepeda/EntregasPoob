@@ -1,4 +1,5 @@
 package maxwell;
+import shapes.*;
 
 
 /**

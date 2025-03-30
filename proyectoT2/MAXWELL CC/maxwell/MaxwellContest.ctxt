@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.target=MaxwellContest
+comment0.text=\r\n\ @author\ \:\ Carolina\ Cepeda\r\n\ @version\:\ 22/03/25\r\n
+comment1.params=h\ w\ d\ r\ b\ particles
+comment1.target=MaxwellContest(int,\ int,\ int,\ int,\ int,\ int[][])
+comment2.params=u\ h
+comment2.target=double\ reflejo(double,\ double)
+comment2.text=\r\n\ Calcula\ la\ posici\u00F3n\ reflejada\ de\ una\ part\u00EDcula\ en\ un\ contenedor\ de\ altura\ h.\r\n\ *\ @param\ u\ Posici\u00F3n\ de\ la\ part\u00EDcula\r\n\ @param\ h\ Altura\ del\ contenedor\r\n
+comment3.params=px\ py\ vx\ vy\ w\ h\ d
+comment3.target=double\ minTiempo(int,\ int,\ double,\ double,\ int,\ int,\ int)
+comment3.text=\r\n\ Calcula\ el\ tiempo\ m\u00EDnimo\ en\ el\ que\ una\ part\u00EDcula\ alcanza\ la\ altura\ d.\r\n\ @return\ double\ ,\ infinito\ si\ no\ es\ posible\r\n
+comment4.params=h\ w\ d\ r\ b\ particles
+comment4.target=double\ solve(int,\ int,\ int,\ int,\ int,\ int[][])
+comment4.text=\r\n\ Resuelve\ el\ problema\ y\ retorna\ el\ tiempo\ necesario\ o\ "imposible".\r\n\ @return\ double\r\n
+comment5.params=h\ w\ d\ b\ r\ particles
+comment5.target=void\ simulate(int,\ int,\ int,\ int,\ int,\ int[][])
+comment5.text=\r\n\ Simula\ el\ movimiento\ de\ las\ particulas\ en\ el\ contenedor\ si\ es\ posible,\ sino\ manda\ un\ mensaje.\r\n\ @param\ h\r\n\ @param\ w\r\n\ @param\ d\r\n\ @param\ b\r\n\ @param\ r\r\n\ @param\ particles\r\n
+numComments=6
