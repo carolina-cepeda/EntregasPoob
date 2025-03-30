@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
  * The test class MaxwellContainerC1Test.
  *
  * @author Carolina cepeda
- * @version 13/03/25
+ * @version 29/03/25
  */
 
 public class MaxwellContainerTestC1 {
@@ -37,7 +37,7 @@ public class MaxwellContainerTestC1 {
     public void shouldaddDemon() {
         container.addDemon(30);
         int[] demons = container.demons();
-        assertTrue(contains(demons, 30), "Debería agregar un demonio a la lista");
+        assertTrue(demons.length ==1 && demons[0]==30, "Debería agregar un demonio a la lista");
     }
 
     @Test
@@ -69,8 +69,9 @@ public class MaxwellContainerTestC1 {
         container.addParticle("red", true, 100, 120, 3, 4);
 
         int[][] particles = container.particles();
+        int[] esperado = {100,120,3,4};
 
-        assertTrue(containsParticle(particles, 100, 120, 3, 4), "Debería agregar una partícula a la lista");
+        assertTrue(particles.length==1 && Arrays.equals(particles[0],esperado) , "Debería agregar una partícula a la lista");
     }
 
     @Test
@@ -91,9 +92,10 @@ public class MaxwellContainerTestC1 {
 
     @Test
     public void shouldnotDelParticle() {
+        container.addParticle("blue", true, 100, 120, 3, 4);
         container.delParticle("red");
         int[][] particles = container.particles();
-        assertFalse(containsParticle(particles, 100, 120, 3, 4), "No debería fallar si la partícula no existe");
+        assertTrue(particles.length ==1, "No debería fallar si la partícula no existe");
     }
 
     @Test
@@ -126,6 +128,30 @@ public class MaxwellContainerTestC1 {
         assertFalse(container.isGoal(), "Debería retornar false cuando el juego no haya terminado.");
     }
 
+    @Test
+    void testAgujerosFuncionan() {
+        int[][] particulas = {
+            {85, 80, 8, 3},
+            {30, 100, 7, 5}
+        };
+        container = new MaxwellContainer(200, 200, 70, 1, 1, particulas);
+        container.addHole(85, 80, 1);
+        container.start(200);
+        assertTrue(container.isGoal(), "La partícula debería haber caído en el agujero.");
+    }
+    
+    @Test
+    void testDemonioSirve() {
+        int[][] particulas = {
+            {0, 85, 8, 3},
+            {30, 100, 7, 5}
+        };
+        container = new MaxwellContainer(200, 200, 85, 1, 1, particulas);
+        container.addHole(80, 80, 1);
+        container.start(200);
+
+        assertTrue(container.isGoal(), "El demonio de Maxwell debería haber funcionado correctamente.");
+    }
     @Test
     public void shouldDemons() {
         container.addDemon(100);
@@ -190,59 +216,4 @@ public class MaxwellContainerTestC1 {
 
     }
 
-    // Métodos auxiliares
-    /*
-     * metodo que verifica que un valor este en un arreglo
-     */
-    private boolean contains(int[] array, int value) {
-        for (int i : array) {
-            if (i == value) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /*
-     * metodo que verifica cuantas veces se encuentra un valor en un arreglo
-     */
-    private int contadorOcurrencias(int[] array, int value) {
-        int count = 0;
-        for (int i : array) {
-            if (i == value) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    /*
-     * metodo que verifica si una particula esta contenida en un arreglo de
-     * particulas
-     */
-    private boolean containsParticle(int[][] particles, int px, int py, int vx, int vy) {
-
-        for (int[] particle : particles) {
-            if (particle[0] == px && particle[1] == py && particle[2] == vx && particle[3] == vy) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /*
-     * metodo que cuenta la cantidad de veces que se encuentra una particula en el
-     * arreglo
-     * 
-     */
-
-    private int contadorParticula(int[][] particles, int px, int py, int vx, int vy) {
-        int count = 0;
-        for (int[] particle : particles) {
-            if (particle[0] == px && particle[1] == py && particle[2] == vx && particle[3] == vy) {
-                count++;
-            }
-        }
-        return count;
-    }
 }
