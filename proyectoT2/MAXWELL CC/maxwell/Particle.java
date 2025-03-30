@@ -12,10 +12,10 @@ public class Particle {
     private String color;
     private int originalX;
     private int originalY;
-    private int x;
-    private int y;
-    private int vX;
-    private int vY;
+    protected int x;
+    protected int y;
+    protected int vX;
+    protected int vY;
     private Circle grafico;
     private boolean isRed;
     private boolean esVisible;
@@ -152,8 +152,8 @@ public class Particle {
         boolean choqueY = EnmuroY(h);
         
         if (choqueX && choqueY) {
-            this.vX = -vX;
-            this.vY = -vY;
+            this.vX = -vX/2;
+            this.vY = -vY/2;
             if (x <= 70) x = 71;
             if (x >= 70 + w) x = 70 + w - 1;
             if (y <= 15) y = 16;
@@ -197,7 +197,7 @@ public class Particle {
      * @param int w
      * @return boolean
      */
-    private boolean EnmuroX(int w) {
+    protected boolean EnmuroX(int w) {
         return (x <= 70 || x >= 70 + w || x == 70 + w / 2);
     }
 
@@ -207,7 +207,7 @@ public class Particle {
      * @param h
      * @return
      */
-    private boolean EnmuroY(int h) {
+    protected boolean EnmuroY(int h) {
         return (y <= 15 || y >= 15 + h);
     }
 
