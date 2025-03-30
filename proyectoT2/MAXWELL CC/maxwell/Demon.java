@@ -13,8 +13,8 @@ public class Demon {
     private Triangle grafico;
     private int pX;
     private int pY;
-    private int originalX;
-    private int originalY;
+    protected int originalX;
+    protected int originalY;
     private boolean esVisible = false;
 
     /**

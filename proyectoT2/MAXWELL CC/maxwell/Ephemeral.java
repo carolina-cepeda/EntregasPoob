@@ -29,26 +29,22 @@ public class Ephemeral extends Particle{
     protected void choque(int w, int h) {
         boolean choqueX = EnmuroX(w);
         boolean choqueY = EnmuroY(h);
-        
-        if (choqueX && choqueY) {
-            this.vX=-1;
-            this.vY=-1;
-            this.vX = -vX /2;
-            this.vY = -this.vY /2;
+        if (choqueX) {
+            this.vX-=1;
+            this.vX = -vX;
             if (x <= 70) x = 71;
             if (x >= 70 + w) x = 70 + w - 1;
-            if (y <= 15) y = 16;
-            if (y >= 15 + h) y = 15 + h - 1; 
-        } 
+        }
         
-        else if (choqueX) {
-            this.vX-=1;
-            this.vX = -vX/2;
-        } 
-        else if (choqueY) {
+        if (choqueY) {
             this.vY-=1;
-            this.vY = -vY/2;
+            this.vY = -vY;
+            if (y <= 15) y = 16;
+            if (y >= 15 + h) y = 15 + h - 1;
+        }
+
+        if (this.vX == 0 && this.vY == 0) {
+            this.makeInvisible();
         }
     }
-
 }

@@ -159,9 +159,20 @@ public class Canvas{
             case "firebrick": graphic.setColor(new Color(178, 34, 34)); break;
             case "deeppink": graphic.setColor(new Color(255, 20, 147)); break;
             case "hotpink": graphic.setColor(new Color(255, 105, 180)); break;
+            case "rosybrown": graphic.setColor(new Color(188, 143, 143)); break;
+            case "midnightblue": graphic.setColor(new Color(25, 25, 112)); break;
+            case "sienna": graphic.setColor(new Color(160, 82, 45)); break;
+            case "peachpuff": graphic.setColor(new Color(255, 218, 185)); break;
+            case "palegreen": graphic.setColor(new Color(152, 251, 152)); break;
+            case "mistyrose": graphic.setColor(new Color(255, 228, 225)); break;
+            case "darkorchid": graphic.setColor(new Color(153, 50, 204)); break;
+            case "steelblue": graphic.setColor(new Color(70, 130, 180)); break;
+            case "powderblue": graphic.setColor(new Color(176, 224, 230)); break;
+            case "neonblue": graphic.setColor(new Color(21, 244, 238)); break;
             default: graphic.setColor(Color.black); break;
         }
     }
+
     
 
     /**

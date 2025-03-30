@@ -9,13 +9,13 @@ import shapes.*;
  * @version 29  de marzo
  */
 public class Hole {
-    private int positionX;
-    private int positionY;
-    private int originalX;
-    private int originalY;
-    private Circle grafico;
+    protected int positionX;
+    protected int positionY;
+    protected int originalX;
+    protected int originalY;
+    protected Circle grafico;
     private int particles;
-    private boolean esVisible = false;
+    protected boolean esVisible = false;
 
     /**
      * Constructor for objects of class Hole

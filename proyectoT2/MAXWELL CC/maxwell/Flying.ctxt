@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=Flying
+comment1.params=color\ isRed\ x\ y\ vx\ vy\ w\ h
+comment1.target=Flying(java.lang.String,\ boolean,\ int,\ int,\ int,\ int,\ int,\ int)
+comment1.text=\r\n\ constructor\ de\ flying\ particle\r\n\ @param\ color\ color\ of\ the\ particle\r\n\ @param\ isRed\ booleano\ de\ si\ la\ particula\ es\ roja\ o\ azul\r\n\ @param\ x\ \ posicion\ \ x\ de\ la\ particula\r\n\ @param\ y\ \ posicion\ y\ de\ la\ particula\r\n\ @param\ vx\ velocidad\ en\ x\ de\ la\ particula\r\n\ @param\ vy\ velocidad\ en\ y\ de\ la\ particula\r\n\ @param\ w\ ancho\ del\ contenedor\r\n\ @param\ h\ alto\ del\ contenedor\r\n
+numComments=2

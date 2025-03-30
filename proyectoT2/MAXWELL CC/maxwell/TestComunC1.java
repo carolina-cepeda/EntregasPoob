@@ -777,7 +777,7 @@ public class TestComunC1
        container.addDemon(80); //añadidura
        container.delDemon(100);  
        assertEquals(1, container.demons().length); //falla debido a que no habia ningun demonio en la lista entonces se añade un demonio
-       assertFalse(container.Ok()); 
+       assertFalse(container.Ok()); //ok
    }
    
    @Test

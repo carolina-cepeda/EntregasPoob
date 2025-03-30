@@ -1,10 +1,10 @@
 package maxwell;
-import shapes.* ;
-import java.util.ArrayList;
+import java.util.ArrayList ;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import javax.swing.JOptionPane;
+import shapes.*;
 
 /**sss
  * Clase del contenedor MaxwellContainer
@@ -439,6 +439,9 @@ public class MaxwellContainer {
      * @return
      */
     private boolean verificarChoqueAgujero(Particle p) {
+        if(p instanceof Flying){
+            return false;
+        }
         for (Hole ho : holes) {
             if (ho.pasar(p)) {
                 return true; 
@@ -457,6 +460,9 @@ public class MaxwellContainer {
         for (Demon d : demons) {
             if( d.pasar(p,w,h)){
                 afectada= true;
+                if(d instanceof Weak){
+                    demons.remove(d);
+                }
                 break;
             }
         }
@@ -490,11 +496,12 @@ public class MaxwellContainer {
      * metodo para retornar  un color al azar para la particula
      */
     private String getColor() {
-        List<String> colores = Arrays.asList("red", "blue", "yellow", "green", "magenta", "white", "orange", "cyan", "pink", "gray",
+        List<String> colores = Arrays.asList("red", "blue", "green", "magenta", "white", "orange", "cyan", "pink", "gray",
                 "darkgray", "lightgray", "brown", "purple", "violet", "gold", "silver", "beige", "turquoise",
                 "indigo", "maroon", "navy", "olive", "teal", "salmon", "coral", "khaki", "lavender", "orchid",
                 "plum", "crimson", "chartreuse", "lime", "aquamarine", "peru", "seagreen", "slategray", "dodgerblue",
-                "firebrick", "deeppink", "hotpink");
+                "firebrick", "deeppink", "hotpink","rosybrown","midnightblue","sienna","peachpuff","palegreen","mistyrose",
+                "darkorchid","steelblue","powderblue","neonblue");
         List<String> coloresDisponibles = new ArrayList<>(colores);
         coloresDisponibles.removeAll(coloresUsados);
         if (coloresDisponibles.isEmpty()){
