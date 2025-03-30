@@ -102,21 +102,6 @@ public class Particle {
     }
 
     /**
-     * metodo para retornar posicion en x del grafico
-     * @return int
-     */
-    public int getvX() {
-        return this.vX;
-    }
-    /**
-     * metodo para retornar posicion en y del grafico
-     * @return int
-     */
-    public int getvY() {
-        return this.vY;
-    }
-
-    /**
      * Metodo para mover las particulas
      * basado en sus velocidades en x y y.
      * @param int ancho del contenedor, int alto.

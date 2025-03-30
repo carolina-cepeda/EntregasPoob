@@ -8,6 +8,6 @@ public class Main {
      MaxwellContainer mc = new MaxwellContainer(200,200,85,1,1,particulas);
      mc.addHole(25,80,1);
      mc.makeVisible();
-     mc.start(200);
+     mc.start(20);
 }
 }
