@@ -147,26 +147,25 @@ public class Particle {
      * @param int w ; ancho del contenedor
      * @param  int h : alto del contenedor
      */
-    private void choque(int w, int h) {
+    
+    protected void choque(int w, int h) {
         boolean choqueX = EnmuroX(w);
         boolean choqueY = EnmuroY(h);
-        
-        if (choqueX && choqueY) {
-            this.vX = -vX/2;
-            this.vY = -vY/2;
+    
+        if (choqueX) {
+            this.vX = -vX;
             if (x <= 70) x = 71;
             if (x >= 70 + w) x = 70 + w - 1;
-            if (y <= 15) y = 16;
-            if (y >= 15 + h) y = 15 + h - 1; 
-        } 
+        }
         
-        if (choqueX) {
-            this.vX = -vX/2;
-        } 
-        else if (choqueY) {
-            this.vY = -vY/2;
+        if (choqueY) {
+            this.vY = -vY;
+            if (y <= 15) y = 16;
+            if (y >= 15 + h) y = 15 + h - 1;
         }
     }
+        
+    
     /**
      * Metodo para mover la particula si choca con un demonio
      * @param w : ancho del contenedor

@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Rotator
+comment0.text=\r\n\ Rotator\ particle\ class,\ particula\ que\ intercambia\ velocidades\ cuando\ se\ choca\ con\ los\ muros\r\n
+comment1.params=color\ isRed\ x\ y\ vx\ vy\ w\ h
+comment1.target=Rotator(java.lang.String,\ boolean,\ int,\ int,\ int,\ int,\ int,\ int)
+comment1.text=\r\n\ constructor\ de\ rotator\ particle\r\n\ @param\ color\r\n\ @param\ isRed\r\n\ @param\ x\r\n\ @param\ y\r\n\ @param\ vx\r\n\ @param\ vy\r\n\ @param\ w\r\n\ @param\ h\r\n
+comment2.params=w\ h
+comment2.target=void\ choque(int,\ int)
+comment2.text=\r\n\ Metodo\ para\ verificar\ si\ la\ particula\r\n\ ha\ chocado\ con\ los\ muros\ del\ contenedor\r\n\ e\ intercambiar\ sus\ velocidades\r\n\ @param\ int\ w\ ;\ ancho\ del\ contenedor\r\n\ @param\ \ int\ h\ \:\ alto\ del\ contenedor\r\n
+numComments=3

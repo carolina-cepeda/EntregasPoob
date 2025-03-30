@@ -1,27 +1,27 @@
 package maxwell;
 /**
- * Ephemeral particle class, particles that dissapear after a number of choques
+ * Rotator particle class, particula que intercambia velocidades cuando se choca con los muros
  */
-public class Ephemeral extends Particle{
-    /**
-     * constructor de ephemeral particle
-     * @param color color of the particle
-     * @param isRed booleano de si la particula es roja o azul
-     * @param x  posicion  x de la particula
-     * @param y  posicion y de la particula
-     * @param vx velocidad en x de la particula
-     * @param vy velocidad en y de la particula
-     * @param w ancho del contenedor
-     * @param h alto del contenedor
-     */
-    public Ephemeral(String color, boolean isRed, int x, int y, int vx, int vy,int w, int h) {
+public class Rotator extends Particle{
+/**
+ * constructor de rotator particle
+ * @param color
+ * @param isRed
+ * @param x
+ * @param y
+ * @param vx
+ * @param vy
+ * @param w
+ * @param h
+ */
+    public Rotator(String color, boolean isRed, int x, int y, int vx, int vy,int w, int h) {
         super(color,isRed, x, y, vx, vy, w, h);
     }
 
-    /**
+      /**
      * Metodo para verificar si la particula
      * ha chocado con los muros del contenedor
-     * y disminuir sus velocidades
+     * e intercambiar sus velocidades
      * @param int w ; ancho del contenedor
      * @param  int h : alto del contenedor
      */
@@ -29,10 +29,12 @@ public class Ephemeral extends Particle{
     protected void choque(int w, int h) {
         boolean choqueX = EnmuroX(w);
         boolean choqueY = EnmuroY(h);
-        
+        int vXOriginal = this.vX;
+        int vYOriginal = this.vY;
+
         if (choqueX && choqueY) {
-            this.vX=-1;
-            this.vY=-1;
+            this.vX=vXOriginal;
+            this.vY= vYOriginal;
             this.vX = -vX /2;
             this.vY = -this.vY /2;
             if (x <= 70) x = 71;
@@ -42,13 +44,16 @@ public class Ephemeral extends Particle{
         } 
         
         else if (choqueX) {
+            this.vX=vXOriginal;
+            this.vY= vYOriginal;
             this.vX-=1;
             this.vX = -vX/2;
         } 
         else if (choqueY) {
+            this.vX=vXOriginal;
+            this.vY= vYOriginal;
             this.vY-=1;
             this.vY = -vY/2;
         }
     }
-
 }
