@@ -14,6 +14,8 @@ public class MaxwellContest extends MaxwellContainer {
 
     /**
      * Calcula la posición reflejada de una partícula en un contenedor de altura h.
+     * * @param u Posición de la partícula
+     * @param h Altura del contenedor
      */
     static double reflejo(double u, double h) {
         double mod = u % (2 * h);
@@ -23,6 +25,7 @@ public class MaxwellContest extends MaxwellContainer {
 
     /**
      * Calcula el tiempo mínimo en el que una partícula alcanza la altura d.
+     * @return double , infinito si no es posible
      */
     static double minTiempo(int px, int py, double vx, double vy, int w, int h, int d) {
         double mejorTiempo = Double.POSITIVE_INFINITY;
@@ -52,6 +55,7 @@ public class MaxwellContest extends MaxwellContainer {
 
     /**
      * Resuelve el problema y retorna el tiempo necesario o "imposible".
+     * @return double
      */
     public static double solve(int h, int w, int d, int r, int b, int[][] particles) {
         int totalParticulas = r + b;
@@ -79,12 +83,20 @@ public class MaxwellContest extends MaxwellContainer {
 
         return Math.round(tiempoTotal * 10.0) / 10.0;
     }
-    
+    /**
+     * Simula el movimiento de las particulas en el contenedor si es posible, sino manda un mensaje.
+     * @param h
+     * @param w
+     * @param d
+     * @param b
+     * @param r
+     * @param particles
+     */
     public void simulate(int h, int w, int d, int b, int r, int[][] particles) {
     double tiempoTotal = solve(h, w, d, r, b, particles);
 
     if (tiempoTotal == -1) { 
-        System.out.println("no es posible hacer la simulación");
+        JOptionPane.showMessageDialog(null, "no es posible hacer la simulación");
         return;
     }
 

@@ -53,7 +53,8 @@ public class MaxwellContainerTestC1 {
         container.addDemon(8);
         container.delDemon(8);
         int[] demons = container.demons();
-        assertTrue(demons ==null, "Debería eliminar el demonio de la lista");
+        int[] esperado = new int[]{};
+        assertTrue(demons.length == 0, "Debería eliminar el demonio de la lista");
     }
 
     @Test
@@ -110,7 +111,8 @@ public class MaxwellContainerTestC1 {
     public void shouldNotAddHole() {
         container.addHole(-5000, 0, 2);
         int[][] holes = container.holes();
-        assertEquals(null, holes);
+        int[][] esperado = new int[][]{};
+        assertArrayEquals(esperado, holes);
 
     }
 
@@ -162,7 +164,8 @@ public class MaxwellContainerTestC1 {
     @Test
     public void shouldNotDemons() {
         container.addDemon(10000);
-        assertEquals(null, container.demons());
+        int[] esperado = new int[]{};
+        assertArrayEquals(esperado, container.demons());
 
     }
 

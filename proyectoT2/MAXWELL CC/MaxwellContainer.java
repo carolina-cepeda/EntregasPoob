@@ -283,7 +283,6 @@ public class MaxwellContainer {
      * Metodo para consultar los demonios y sus posiciones en y
      */
     public int[] demons() {
-        if(!demons.isEmpty()){
             Ok = false;
             int[] infoDemons = new int[demons.size()];
 
@@ -295,9 +294,7 @@ public class MaxwellContainer {
             Ok = true;
 
             return infoDemons;
-        }
-        Ok = false;
-        return null;
+    
     }
 
     /**
@@ -306,7 +303,7 @@ public class MaxwellContainer {
      * particulas
      */
     public int[][] particles() {
-
+        Ok = false;
         int[][] infoParticles = new int[particles.size()][4];
 
         for (int j = 0; j < particles.size(); j++) {
@@ -326,7 +323,7 @@ public class MaxwellContainer {
      * Metodo para consultar los agujeros del juego
      */
     public int[][] holes() {
-        if (Ok()){
+            Ok = false;
             int[][] infoHoles = new int[holes.size()][2];
 
             for (int j = 0; j < holes.size(); j++) {
@@ -334,10 +331,9 @@ public class MaxwellContainer {
             }
             Arrays.sort(infoHoles,Comparator.comparingInt((int[] h)-> h[0])
                 .thenComparingInt(h -> h[1]));
+            Ok = true;
 
             return infoHoles;
-        }
-        return null;
     }
 
     /**
@@ -419,7 +415,7 @@ public class MaxwellContainer {
                     for (int j = 0; j < 2; j++) {
                         boolean afectadaPorDemonio = pasarPorDemonios(p); 
 
-                        if (!afectadaPorDemonio) { 
+                        if (!afectadaPorDemonio && !verificarChoqueAgujero(p)) { 
                             p.moveV(w, h);
                         }
 
