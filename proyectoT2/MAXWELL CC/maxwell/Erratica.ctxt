@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=Erratica
+comment1.params=color\ isRed\ x\ y\ vX\ vY\ w\ h
+comment1.target=Erratica(java.lang.String,\ boolean,\ int,\ int,\ int,\ int,\ int,\ int)
+comment2.params=w\ h
+comment2.target=void\ choque(int,\ int)
+comment2.text=\r\n\ Metodo\ para\ cambiar\ la\ velocidad\ de\ \ las\ particulas\r\n\ basado\ en\ sus\ velocidades\ en\ x\ y\ y\ de\ forma\ aleatoria\ entre\ 0,1,\ y\ -1.\r\n\ @param\ int\ ancho\ del\ contenedor,\ int\ alto.\r\n
+numComments=3

@@ -1,5 +1,6 @@
 package maxwell;
 
+
 public  class Weak extends Demon{
     /**
      * Constructor for objects of class weak

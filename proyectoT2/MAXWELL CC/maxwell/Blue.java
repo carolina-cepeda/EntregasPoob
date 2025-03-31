@@ -8,7 +8,7 @@ public class Blue extends Demon {
      * @param pY Posicion inicial en y
      */
     public Blue(int w,int h, int pY) {
-        super(w,h,pY,"blue");
+        super(w,h,pY,"neonblue");
     }
 
     /**

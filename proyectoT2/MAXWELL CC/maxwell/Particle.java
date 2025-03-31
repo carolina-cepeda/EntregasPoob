@@ -104,6 +104,21 @@ public class Particle {
         return this.originalY;
     }
 
+     /**
+     * metodo para retornar velocidad en x del juego
+     * @return int
+     */
+    public int getvX() {
+        return this.vX;
+    }
+    /**
+     * metodo para retornar posicion en y del juego
+     * @return int
+     */
+    public int getvY() {
+        return this.vY;
+    }
+
     /**
      * Metodo para mover las particulas
      * basado en sus velocidades en x y y.

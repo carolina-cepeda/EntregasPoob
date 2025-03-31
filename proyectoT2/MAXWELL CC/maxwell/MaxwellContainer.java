@@ -526,4 +526,45 @@ public class MaxwellContainer {
         }
 
     }
+
+
+
+    //metodos añadidura en ciclo 3
+
+    /**
+     * metodo para añadir un objeto particula
+     * @return void
+     */
+    public void addParticle(Particle p) {
+        if (p != null) {
+            addParticle(p.getColor(), p.isRed(), p.getpX(), p.getpY(), p.getvX(), p.getvY());
+        } else {
+            JOptionPane.showMessageDialog(null, "Error: la partícula es nula");
+        }
+    }
+
+    /**
+     * metodo para añadir un objeto agujero
+     * @return void
+     */   
+    public void addHole(Hole ho) {
+        if (ho != null) {
+            addHole(ho.getpX(), ho.getpY(), ho.getParticles());
+        } else {
+            JOptionPane.showMessageDialog(null, "Error: el agujero es nulo");
+        }
 }
+
+    /**
+     * metodo para añadir un objeto demonio
+     * @return void
+     */
+    public void addDemon(Demon d) {
+        if (d != null) {
+            addDemon(d.getpY());
+        } else {
+            JOptionPane.showMessageDialog(null, "Error: el demonio es nulo");
+        }
+    }
+}
+
