@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Weak
+comment1.params=w\ h\ pY
+comment1.target=Weak(int,\ int,\ int)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ weak\r\n\ @param\ w\ Ancho\ del\ contenedor\r\n\ @param\ h\ Alto\ del\ contenedor\r\n\ @param\ pY\ Posicion\ inicial\ en\ y\r\n
+comment2.params=p\ w\ h
+comment2.target=boolean\ pasar(Particle,\ int,\ int)
+comment2.text=\r\n\ Metodo\ para\ saber\ si\ la\ particula\ choca\ con\ el\ demonio\ y\ pasa\r\n\ @param\ p\ Particula\ a\ verificar\r\n\ @param\ w\ Ancho\ del\ contenedor\r\n\ @param\ h\ Alto\ del\ contenedor\r\n\ @return\ boolean\r\n
+numComments=3

@@ -1,7 +1,6 @@
 package maxwell;
 import shapes.*;
 
-
 /**
  * Write a description of class Hole here.
  * 
@@ -57,13 +56,15 @@ public class Hole {
         }
         return false;
     }
-/**
- * metodo para hacer visible al agujero
- */
+
+    /**
+     * metodo para hacer visible al agujero
+     */
     public void makeVisible() {
         grafico.makeVisible();
         esVisible = true;
     }
+
     /**
      * metodo para hacer invisible al agujero
      */
@@ -80,6 +81,7 @@ public class Hole {
         return originalY;
 
     }
+
     /**
      * Metodo para obtener la posicion en X del agujero
      * @return int
@@ -87,6 +89,7 @@ public class Hole {
     public int getpX() {
         return originalX;
     }
+
     /**
      * Metodo para obtener la cantidad de particulas que pueden colocarse en el agujero
      * @return int
@@ -94,6 +97,7 @@ public class Hole {
     public int getParticles() {
         return particles;
     }
+
     /**
      * metodo para verificar si el agujero está en la posicion dada
      * @param px : posicion en x
@@ -103,14 +107,16 @@ public class Hole {
     public boolean EstoyAhi(int px, int py) {
         return (px == originalX && py == originalY);
     }
+
     /**
      * metodo para retornar al agujero en un formato dado
      * @return int[] : arreglo con la posicion en x y y del agujero
      */
     public int[] format() {
-        int[] info = new int[2];
+        int[] info = new int[3];
         info[0] = originalX;
         info[1] = originalY;
+        info[2] = particles;
         return info;
     }
 

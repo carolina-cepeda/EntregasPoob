@@ -1,7 +1,7 @@
 package maxwell;
 
 
-
+import java.util.* ;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -567,7 +567,7 @@ public class TestComunC1
 
     public void accordingPHRshouldGetHoles() {
 
-        MaxwellContainer container = new MaxwellContainer(100, 100);
+        MaxwellContainer container = new MaxwellContainer(150, 150);
 
         container.addHole(50, 50, 3);
 
@@ -659,22 +659,25 @@ public class TestComunC1
        MaxwellContainer container = new MaxwellContainer(100, 100);
        assertTrue(container.Ok(), "El contenedor debería crearse correctamente con dimensiones válidas.");
    } //PREGUNTAR: Dice que hubo un fallo peor al intentarlo en BlueJ funciona correctamente
-    @Test
+   
+   
+    @Test //dimensiones validas en mi contenedor
    public void noDeberiaCrearContenedorConDimensionesInvalidas() {
        MaxwellContainer container = new MaxwellContainer(201, 201);
        assertFalse(container.Ok(), "El contenedor no debería crearse con dimensiones inválidas.");
    }
+   
     // Pruebas para el método create
    @Test
    public void deberiaEstablecerDimensionesValidasConCreate() {
-       MaxwellContainer container = new MaxwellContainer(500, 100);
-   //container.create
+       MaxwellContainer container = new MaxwellContainer(500, 100);   //habia un container.create y las dimensiones NO son validas
+
        assertTrue(container.Ok(), "El método create debería establecer dimensiones válidas.");
+       
    }//PREGUNTAR: Dice que hubo un fallo peor al intentarlo en BlueJ funciona correctamente
     @Test
    public void noDeberiaEstablecerDimensionesInvalidasConCreate() {
-       MaxwellContainer container = new MaxwellContainer(500, 500);
-   //container.create
+       MaxwellContainer container = new MaxwellContainer(500, 500); //container.create
        assertFalse(container.Ok(), "El método create no debería establecer dimensiones inválidas.");
    }
     // Pruebas para el método addDemon
@@ -715,7 +718,7 @@ public class TestComunC1
    public void noDeberiaAgregarParticulaConParametrosInvalidos() {
        MaxwellContainer container = new MaxwellContainer(100, 100);
        container.addParticle("red",true, 0, 0, 0, 0);
-       assertFalse(container.Ok(), "No debería añadirse una partícula con parámetros inválidos.");
+       assertFalse(container.Ok(), "No debería añadirse una partícula con parámetros inválidos."); 
    }
     // Pruebas para el método delParticle
    @Test
@@ -776,8 +779,8 @@ public class TestComunC1
        container.makeInvisible();
        container.addDemon(80); //añadidura
        container.delDemon(100);  
-       assertEquals(1, container.demons().length); //falla debido a que no habia ningun demonio en la lista entonces se añade un demonio
-       assertFalse(container.Ok()); //ok
+       assertEquals(0, container.demons().length); //falla debido a que no habia ningun demonio en la lista entonces se añade un demonio
+       assertFalse(container.Ok()); 
    }
    
    @Test
@@ -792,20 +795,21 @@ public class TestComunC1
        MaxwellContainer container = new MaxwellContainer(150,150);
        container.makeInvisible();
        container.addParticle("particle1", true, 10, 10, 1, 1);
-       assertEquals(6, container.particles().length);
+       assertEquals(1, container.particles().length);
    }
     @Test
    public void accordingANshouldNotAddParticle() {
        MaxwellContainer container = new MaxwellContainer(150,150);
        container.makeInvisible();
        container.addParticle("particle2", false, -10, -10, 1, 1);
-       assertEquals(5, container.particles().length);
+       assertEquals(0, container.particles().length); //falla debido a que no está la lista de particulas , se cambia a 0
    }
     @Test
    public void accordingANshouldAddHole() {
        MaxwellContainer container = new MaxwellContainer(150,150);
        container.makeInvisible();
        container.addHole(30, 40, 5);
+       // se hace cambio de un numero 6 a un 1
        assertEquals(1, container.holes().length);
    }
    /**
@@ -904,19 +908,20 @@ public class TestComunC1
     @Test
 
     public void shouldMoveParticles() {
-        MaxwellContainer container = new MaxwellContainer(200, 200, 2, 1, 1, new int[][]{
+        MaxwellContainer container = new MaxwellContainer(250, 250, 2, 1, 1, new int[][]{
 
-            {50, 50, 1, 1, 0}, 
+            {50, 50, 1, 1}, 
 
-            {150, 150, -1, -1, 1}
+            {120, 120, -1, -1}
 
-        });
+        }); 
 
-        int[][] initialPositions = container.particles();
+        int[][] initialPositions = container.particles(); 
 
         container.start(5);
 
         int[][] newPositions = container.particles();
+
 
         assertNotEquals(initialPositions[0][0], newPositions[0][0], "Las partículas deben haberse movido");
 

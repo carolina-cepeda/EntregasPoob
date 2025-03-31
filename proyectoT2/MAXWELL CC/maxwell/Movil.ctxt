@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=Movil
+comment0.text=\r\n\ Movil\ Hole\ classs\r\n
+comment1.params=px\ py\ w\ h\ particles
+comment1.target=Movil(int,\ int,\ int,\ int,\ int)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Movil\r\n\ @param\ int\ px\ Posicion\ inicial\ en\ x\r\n\ @param\ int\ py\ Posicion\ inicial\ en\ y\r\n\ @param\ int\ w\ Ancho\ del\ contenedor\r\n\ @param\ int\ h\ Alto\ del\ contenedor\r\n
+comment2.params=w\ h
+comment2.target=void\ mover(int,\ int)
+comment2.text=\r\n\ Metodo\ para\ mover\ las\ particulas\r\n\ basado\ en\ sus\ velocidades\ en\ x\ y\ y.\r\n\ @param\ int\ ancho\ del\ contenedor,\ int\ alto.\r\n
+comment3.params=vx\ vy
+comment3.target=void\ moveSlow(int,\ int)
+comment3.text=\r\n\ Metodo\ para\ mover\ las\ particulas\ lentamente\r\n\ @param\ int\ vx\ \:\ velocidad\ en\ x\r\n\ @param\ int\ vy\ \:\ velocidad\ en\ y\r\n
+comment4.params=w\ h
+comment4.target=void\ choque(int,\ int)
+comment4.text=\r\n\ Metodo\ para\ verificar\ si\ la\ particula\r\n\ ha\ chocado\ con\ los\ muros\ del\ contenedor\r\n\ @param\ int\ w\ ;\ ancho\ del\ contenedor\r\n\ @param\ \ int\ h\ \:\ alto\ del\ contenedor\r\n
+comment5.params=w
+comment5.target=boolean\ EnmuroX(int)
+comment5.text=\r\n\ Metodo\ para\ verificar\ si\ el\ agujero\r\n\ ha\ chocado\ con\ los\ muros\ verticales\ del\ contenedor\r\n\ @param\ int\ w\ ancho\ del\ contenedor\r\n\ @return\ boolean\r\n
+comment6.params=h
+comment6.target=boolean\ EnmuroY(int)
+comment6.text=\r\n\ Metodo\ para\ verificar\ si\ el\ agujero\r\n\ ha\ chocado\ con\ los\ muros\ horizontales\ del\ contenedor\r\n\ @param\ h\ altura\ del\ contenedor\r\n\ @return\ boolean\r\n
+comment7.params=x\ y
+comment7.target=boolean\ estoyAhi(int,\ int)
+comment7.text=\r\n\ Metodo\ para\ verificar\ si\ el\ agujero\ est\u00E1\ en\ una\ posicion\ dada\r\n\ @param\ int\ x\ posicion\ en\ x\r\n\ @param\ int\ y\ posicion\ en\ y\r\n\ @return\ boolean\r\n
+numComments=8

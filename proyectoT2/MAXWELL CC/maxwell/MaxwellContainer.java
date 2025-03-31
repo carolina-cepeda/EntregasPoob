@@ -61,6 +61,7 @@ public class MaxwellContainer {
         if (!Ok)
             return;
 
+        Ok= false;
         this.h = h;
         this.w = w;
         esVisible = false;
@@ -80,8 +81,10 @@ public class MaxwellContainer {
 
             boolean isRed = (i < r);
             String color = getColor();
+
             if (color!=null){
                 addParticle(color, isRed, px, py, vx, vy);
+                Ok = true;
             }
         }
     }
@@ -119,6 +122,7 @@ public class MaxwellContainer {
      * @param : entero d que se refiere a la posicion en y del demonio.
      */
     public void addDemon(int d) {
+        Ok = false;
         int px = 0;
 
         if(!validarDemon(d) && validarPosition(px, d)) {
@@ -138,8 +142,8 @@ public class MaxwellContainer {
      * @param : entero d que se refiere a la posicion en y del demonio.
      */
     public void delDemon(int d) {
+        Ok = false;
         if (!demons.isEmpty()){
-            Ok = false;
             for (int i = 0; i < demons.size(); i++) {
                 Demon demonio = demons.get(i);
                 if (demonio.EstoyAhi(d)) {
@@ -175,6 +179,7 @@ public class MaxwellContainer {
      * @param vy: velocidad en y
      */
     public void addParticle(String Color, boolean isRed, int px, int py, int vx, int vy) {
+        Ok= false;
 
         if (!validarParticle(px, py,Color) && validarPosition(px, py)) {
             Particle p = new Particle(Color, isRed, px, py, vx, vy,w,h);
@@ -184,16 +189,16 @@ public class MaxwellContainer {
             Ok = true;
         } else {
             JOptionPane.showMessageDialog(null, "La partícula no está en una posición válida");
-            Ok = false;
         }
 
     }
+
     /**
-    * Metodo para verificar si una particula ya existe en la posicion dada o su color.
-    * @param px: posicion en x
-    * @param py: posicion en y
-    * @param color: color de la particula
-    */
+     * Metodo para verificar si una particula ya existe en la posicion dada o su color.
+     * @param px: posicion en x
+     * @param py: posicion en y
+     * @param color: color de la particula
+     */
     private boolean validarParticle(int px, int py, String color) {
 
         for (Particle p : particles) {
@@ -214,6 +219,7 @@ public class MaxwellContainer {
      * @param particles: cantidad de particulas que el agujero puede absorber
      */
     public void addHole(int px, int py, int particles) {
+        Ok = false;
 
         if (validarPosition(px, py) && !validarHole(px, py)) {
             Hole ho = new Hole(px, py, particles,w,h);
@@ -221,10 +227,10 @@ public class MaxwellContainer {
             Ok = true;
         } else {
             JOptionPane.showMessageDialog(null, "La posición dada  esta fuera del rango");
-            Ok = false;
         }
 
     }
+
     /**
      * Metodo para validar si un agujero del juego ya existe
      * @param px
@@ -285,18 +291,18 @@ public class MaxwellContainer {
      * Metodo para consultar los demonios y sus posiciones en y
      */
     public int[] demons() {
-            Ok = false;
-            int[] infoDemons = new int[demons.size()];
+        Ok = false;
+        int[] infoDemons = new int[demons.size()];
 
-            for (int j = 0; j < demons.size(); j++) {
-                infoDemons[j] = demons.get(j).getpY();
+        for (int j = 0; j < demons.size(); j++) {
+            infoDemons[j] = demons.get(j).getpY();
 
-            }
-            Arrays.sort(infoDemons);
-            Ok = true;
+        }
+        Arrays.sort(infoDemons);
+        Ok = true;
 
-            return infoDemons;
-    
+        return infoDemons;
+
     }
 
     /**
@@ -325,17 +331,18 @@ public class MaxwellContainer {
      * Metodo para consultar los agujeros del juego
      */
     public int[][] holes() {
-            Ok = false;
-            int[][] infoHoles = new int[holes.size()][2];
+        Ok = false;
+        int[][] infoHoles = new int[holes.size()][3];
 
-            for (int j = 0; j < holes.size(); j++) {
-                infoHoles[j] = holes.get(j).format();
-            }
-            Arrays.sort(infoHoles,Comparator.comparingInt((int[] h)-> h[0])
-                .thenComparingInt(h -> h[1]));
-            Ok = true;
+        for (int j = 0; j < holes.size(); j++) {
+            infoHoles[j] = holes.get(j).format();
+        }
+        Arrays.sort(infoHoles,Comparator.comparingInt((int[] h)-> h[0])
+            .thenComparingInt(h -> h[1])
+            .thenComparingInt(h->h[2]));
+        Ok = true;
 
-            return infoHoles;
+        return infoHoles;
     }
 
     /**
@@ -381,13 +388,13 @@ public class MaxwellContainer {
         for (Particle p : particles) {
             p.makeInvisible();
         }
+        Ok = true;
     }
 
     /**
      * metodo para finalizar el juego
      */
     public void finish() {
-
         Ok = false;
         makeInvisible();
         demons.clear();
@@ -402,10 +409,12 @@ public class MaxwellContainer {
      * @param ticks : numero de movimientos que puede hacer cada particula
      */
     public void start(int ticks) {
+        Ok = false;
         for (int i = 0; i < ticks; i++) {
             if (isGoal()) {
                 finish();
                 JOptionPane.showMessageDialog(null, "El juego ha terminado.");
+                Ok= true;
                 break;
             } else {
                 List<Particle> paraEliminar = new ArrayList<>();
@@ -432,7 +441,9 @@ public class MaxwellContainer {
 
             }
         }
+        Ok = true;
     }
+
     /**
      * Metodo para verificar si una particula ha pasado por un agujero
      * @param particula
@@ -449,6 +460,7 @@ public class MaxwellContainer {
         }
         return false;
     }
+
     /**
      * Metodo para verificar si una particula ha pasado por un demonio
      * @param particle
@@ -468,12 +480,14 @@ public class MaxwellContainer {
         }
         return afectada;
     }
+
     /**
-    * metodo para verificar si la ultima operación es válida
-    */
+     * metodo para verificar si la ultima operación es válida
+     */
     public boolean Ok() {
         return Ok;
     }
+
     /**
      * Metodo para validar las dimensiones del contenedor
      * @param h

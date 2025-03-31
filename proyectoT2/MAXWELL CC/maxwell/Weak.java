@@ -25,4 +25,6 @@ public  class Weak extends Demon{
         }
         return false;
 
+
+    }
 }
