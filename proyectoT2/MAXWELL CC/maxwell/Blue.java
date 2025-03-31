@@ -18,6 +18,7 @@ public class Blue extends Demon {
      * @param h Alto del contenedor
      * @return boolean
      */
+    @Override
     public boolean pasar(Particle p,int w, int h) {
         if (p.EstoyAhi(this.originalX,this.originalY) && !p.isRed()){
             p.pasar(w,h);

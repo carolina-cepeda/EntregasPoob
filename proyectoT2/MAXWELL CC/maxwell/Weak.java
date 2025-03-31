@@ -17,6 +17,7 @@ public  class Weak extends Demon{
      * @param h Alto del contenedor
      * @return boolean
      */
+    @Override
     public boolean pasar(Particle p,int w, int h) {
         if (p.EstoyAhi(this.originalX,this.originalY)){
             p.pasar(w,h);

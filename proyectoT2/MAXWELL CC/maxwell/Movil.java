@@ -18,32 +18,32 @@ public class Movil extends Hole{
     
     }
 
-    /**
-     * Metodo para mover las particulas
-     * basado en sus velocidades en x y y.
-     * @param int ancho del contenedor, int alto.
-     */
-    public void mover(int w, int h) {
+        /**
+         * Metodo para mover los agujeros
+         * basado en sus velocidades en x y y.
+         * @param int ancho del contenedor, int alto.
+         */
+        public void mover(int w, int h) {
 
-        int aumentoY= this.vY /2 ;
-        int aumentoX= this.vX /2 ;
+            int aumentoY= this.vY /2 ;
+            int aumentoX= this.vX /2 ;
 
-        choque(w, h);
-        originalY += aumentoY;
-        positionY += aumentoY;
-    
-        originalX += aumentoX;
-        positionY += aumentoX;
-        moveSlow(aumentoX, aumentoY);
+            choque(w, h);
+            originalY += aumentoY;
+            positionY += aumentoY;
         
-        if (esVisible) {
-            makeVisible();
-        }
-        choque(w, h);
+            originalX += aumentoX;
+            positionY += aumentoX;
+            moveSlow(aumentoX, aumentoY);
+            
+            if (esVisible) {
+                makeVisible();
+            }
+            choque(w, h);
 
     }
     /**
-     * Metodo para mover las particulas lentamente
+     * Metodo para mover los agujeroslentamente
      * @param int vx : velocidad en x
      * @param int vy : velocidad en y
      */
@@ -56,16 +56,16 @@ public class Movil extends Hole{
     }
 
     /**
-     * Metodo para verificar si la particula
+     * Metodo para verificar si los agujeros
      * ha chocado con los muros del contenedor
      * @param int w ; ancho del contenedor
      * @param  int h : alto del contenedor
      */
     
-    protected void choque(int w, int h) {
+    private void choque(int w, int h) {
         boolean choqueX = EnmuroX(w);
         boolean choqueY = EnmuroY(h);
-        while (!estoyAhi(0,0)) {
+        while (!EstoyEnEsquinas(w,h)) {
            
         if (choqueX) {
             this.vX = -vX;
@@ -86,7 +86,7 @@ public class Movil extends Hole{
      * @param int w ancho del contenedor
      * @return boolean
      */
-    protected boolean EnmuroX(int w) {
+    private boolean EnmuroX(int w) {
         return (positionX <= 70 || positionX >= 70 + w || positionX== 70 + w / 2);
     }
 
@@ -96,16 +96,15 @@ public class Movil extends Hole{
      * @param h altura del contenedor
      * @return boolean
      */
-    protected boolean EnmuroY(int h) {
+    private boolean EnmuroY(int h) {
         return (positionY <= 15 || positionY >= 15 + h);
     }
+    
     /**
-     * Metodo para verificar si el agujero está en una posicion dada
-     * @param int x posicion en x
-     * @param int y posicion en y
+     * Metodo para verificar si el agujero está en una esquina
      * @return boolean
      */
-    private boolean estoyAhi(int x, int y) {
-        return (originalX == x && originalY == y);
-    }
+    private boolean EstoyEnEsquinas(int w,int h) {
+        return (positionX == 70 || positionX == 70 + w || positionY == 15 || positionY == 15 + h);
+}
 }
