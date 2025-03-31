@@ -86,4 +86,35 @@ public class CoreTest {
         }
     }
 
+    @Test
+    public void shouldThrowExceptionIfAllCoursesHaveCreditsIssues(){
+        Core c = new Core("LALA", "LA PRUEBA 1", 50);
+        c.addCourse(new Course("PRI1", "Proyecto Integrador 1", -3, 3));
+        c.addCourse(new Course("DDYA", "Diseño de Datos y Algoritmos", -4, 4));
+        c.addCourse(new Course("MPIN", "Matematicas para Informatica", -3, 4));
+
+        try {
+            int horas = c.inPersonEstimated();
+        } catch (Plan15Exception e) {
+            assertEquals(Plan15Exception.IMPOSSIBLE, e.getMessage());
+        }
+    }
+
+    @Test
+    public void shouldTotalInPersonSumCredits(){
+        Core c = new Core("LALA", "LA PRUEBA 1", 50);
+        c.addCourse(new Course("PRI1", "Proyecto Integrador 1", -3));
+        c.addCourse(new Course("DDYA", "Diseño de Datos y Algoritmos", -4, 4));
+        c.addCourse(new Course("MPIN", "Matematicas para Informatica", -3, 4));
+
+        try {
+            int horas = c.inPersonEstimated();
+
+            assertEquals(8,horas);
+            
+        } catch (Plan15Exception e) {
+            fail(" Threw a exception");
+        }
+    }
+
 }

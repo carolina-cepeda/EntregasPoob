@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Plan15Exception
-comment0.text=\r\nClases\ de\ excepciones\ del\ plan\ 15\r\n\ \r\n\ @author\ Carolina\ Cepeda\r\n\ @version\ 27/03\r\n
+comment0.text=\r\n\ Clases\ de\ excepciones\ del\ plan\ 15\r\n\ \r\n\ @author\ Carolina\ Cepeda\r\n\ @version\ 27/03\r\n
 comment1.params=message
 comment1.target=Plan15Exception(java.lang.String)
 numComments=2

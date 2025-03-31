@@ -33,7 +33,7 @@ public class Core extends Unit {
     /*
      * Sums the credits of the courses that the core has
      * 
-     * @return int
+     * @return int totalCreditos
      * 
      * @throws Plan15Exception IMPOSSIBLE, if there are no courses
      */
@@ -60,7 +60,7 @@ public class Core extends Unit {
      * If necessary (unknown or error), assumes the number of credits is 3
      * is equal to the in-person hours.
      * 
-     * @return
+     * @return int suma
      * @throws Plan15Exception IMPOSSIBLE, If there are no credits
      */
     public int creditsEstimated() throws Plan15Exception {
@@ -88,12 +88,39 @@ public class Core extends Unit {
      * If the hours of a course are incorrect, it is assumed that all the time is in
      * person.
      * 
-     * @return
+     * @return int horas
      * @throws Plan15Exception IMPOSSIBLE, If there are no courses or all courses
      *                         has credit issues
      */
     public int inPersonEstimated() throws Plan15Exception {
-        return 0;
+        int horas = 0;
+        boolean cursoValido = false;
+
+        if (courses.isEmpty()) {
+            throw new Plan15Exception(Plan15Exception.IMPOSSIBLE);
+        }
+        for (Course c : courses) {
+            try {
+                horas += inPerson();
+                cursoValido = true;
+
+            } catch (Plan15Exception e) {
+                if (e.getMessage().equals(Plan15Exception.IN_PERSON_UNKNOWN)) {
+                    horas += c.credits() * inPersonPercentage;
+                    cursoValido = true;
+                }
+
+                if (e.getMessage().equals(Plan15Exception.IN_PERSON_ERROR)) {
+                    horas += c.credits();
+                    cursoValido = true;
+                }
+            }
+        }
+        if (!cursoValido) {
+            throw new Plan15Exception(Plan15Exception.IMPOSSIBLE);
+        }
+        return horas;
+
     }
 
     @Override
