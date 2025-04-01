@@ -101,7 +101,7 @@ public class Core extends Unit {
         }
         for (Course c : courses) {
             try {
-                horas += inPerson();
+                horas += c.inPerson();
                 cursoValido = true;
 
             } catch (Plan15Exception e) {

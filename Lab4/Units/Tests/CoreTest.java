@@ -101,20 +101,21 @@ public class CoreTest {
     }
 
     @Test
-    public void shouldTotalInPersonSumCredits(){
+    public void shouldinPersonEstimatedIfInPersonNormal(){
         Core c = new Core("LALA", "LA PRUEBA 1", 50);
-        c.addCourse(new Course("PRI1", "Proyecto Integrador 1", -3));
-        c.addCourse(new Course("DDYA", "Diseño de Datos y Algoritmos", -4, 4));
-        c.addCourse(new Course("MPIN", "Matematicas para Informatica", -3, 4));
+        c.addCourse(new Course("PRI1", "Proyecto Integrador 1", 3,2));
+        c.addCourse(new Course("DDYA", "Diseño de Datos y Algoritmos", 4, 4));
+        c.addCourse(new Course("MPIN", "Matematicas para Informatica", 3, 4));
 
         try {
             int horas = c.inPersonEstimated();
 
-            assertEquals(8,horas);
+            assertEquals(10,horas);
             
         } catch (Plan15Exception e) {
-            fail(" Threw a exception");
+            fail("Threw a exception");
         }
+        
     }
 
 }
