@@ -224,11 +224,16 @@ public class Plan15GUI extends JFrame{
         textDetails.setText(plan.toString());
     }
     
-    private void  actionAdd(){
-        if (basics.getText().trim().equals("")){
-            plan.addCourse(code.getText(),name.getText(),credits.getText(),inPerson.getText());
-        }else{ 
-            plan.addCore(code.getText(),name.getText(),credits.getText(),basics.getText());
+    private void  actionAdd (){
+        try{
+            if (basics.getText().trim().equals("")){
+                plan.addCourse(code.getText(),name.getText(),credits.getText(),inPerson.getText());
+            }else{ 
+                plan.addCore(code.getText(),name.getText(),credits.getText(),basics.getText());
+            }
+        }
+        catch(Plan15Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
 
@@ -242,7 +247,15 @@ public class Plan15GUI extends JFrame{
     } 
     
    public static void main(String args[]){
-       Plan15GUI gui=new Plan15GUI();
-       gui.setVisible(true);
+        Plan15GUI gui=new Plan15GUI();
+        gui.setVisible(true);
+        gui.code.setText("CAPA2");
+        gui.name.setText("caso prueba 2");
+        gui.credits.setText("10.3");
+        gui.inPerson.setText("2.3");
+        gui.basics.setText("");
+        gui.buttonAdd.doClick();
+        gui.buttonList.doClick();
+
+   }
    }    
-}

@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Plan15GUI",
+            "request": "launch",
+            "mainClass": "presentation.Plan15GUI",
+            "projectName": "plan15_cabd6ca5"
+        },
+        {
             "type": "jdk",
             "request": "launch",
             "name": "Launch Java App"

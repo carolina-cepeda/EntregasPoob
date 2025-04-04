@@ -5,7 +5,7 @@ public class Course extends Unit{
     private Integer credits;
     private Integer inPerson;
     
-    public Course(String code, String name){
+    public Course(String code, String name) {
         super(code, name);
     }    
     
