@@ -73,6 +73,12 @@ public class Plan15{
             throw new Plan15Exception(Plan15Exception.CREDITS_ERROR);
         }
 
+        for (Unit u: units){
+            if (u.name().equals(name)){
+                throw new Plan15Exception(Plan15Exception.NAME_ALREADY_EXISTS);
+            }
+        }
+
         Course nc=new Course(code,name,Integer.parseInt(credits),Integer.parseInt(inPerson));
         units.add(nc);
         courses.put(code.toUpperCase(),nc); 
@@ -101,6 +107,12 @@ public class Plan15{
 
         if(name.equals("")){
             throw new Plan15Exception(Plan15Exception.NAME_ERROR);
+        }
+        
+        for (Unit u: units){
+            if (u.name().equals(name)){
+                throw new Plan15Exception(Plan15Exception.NAME_ALREADY_EXISTS);
+            }
         }
 
         Core c = new Core(code,name,Integer.parseInt(percentage));
