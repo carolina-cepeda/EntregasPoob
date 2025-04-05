@@ -109,6 +109,12 @@ public class Plan15{
             throw new Plan15Exception(Plan15Exception.NAME_ERROR);
         }
         
+        if (!esEntero(percentage)) {
+            throw new Plan15Exception(Plan15Exception.PERCENTAGE_ERROR);
+        }
+        if(Integer.parseInt(percentage) <0 || Integer.parseInt(percentage) >100){
+            throw new Plan15Exception(Plan15Exception.PERCENTAGE_ERROR);
+        }
         for (Unit u: units){
             if (u.name().equals(name)){
                 throw new Plan15Exception(Plan15Exception.NAME_ALREADY_EXISTS);

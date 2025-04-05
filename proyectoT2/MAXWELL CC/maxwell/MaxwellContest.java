@@ -1,12 +1,13 @@
 package maxwell;
 
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
+
 /*
  * @author : Carolina Cepeda
  * @version: 22/03/25
  */
 public class MaxwellContest extends MaxwellContainer {
-
     static final double EPSILON = 1e-9;
     static final int MAXIMO_ITERACIONES = 10000;
 
@@ -83,8 +84,10 @@ public class MaxwellContest extends MaxwellContainer {
             }
         }
 
-        return Math.round(tiempoTotal * 10.0) / 10.0;
+        return Math.round(tiempoTotal * 10.0)/10.0;
     }
+    
+
     /**
      * Simula el movimiento de las particulas en el contenedor si es posible, sino manda un mensaje.
      * @param h

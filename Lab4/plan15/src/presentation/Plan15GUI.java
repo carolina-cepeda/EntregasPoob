@@ -240,27 +240,28 @@ public class Plan15GUI extends JFrame{
     private void actionSearch(){
         String patronBusqueda=textSearch.getText();
         String answer = "";
-        if(patronBusqueda.length() > 0) {
-            answer = plan.search(patronBusqueda);
+
+        try{
+            if(patronBusqueda.length() > 0) {
+                answer = plan.search(patronBusqueda);
+            }
+            textResults.setText(answer);
         }
-        textResults.setText(answer);
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(this,"Ocurrió un error durante la busqueda");
+            textResults.setText("");
+            Log.record(ex);
+        }
     } 
     
    public static void main(String args[]){
         Plan15GUI gui=new Plan15GUI();
         gui.setVisible(true);
-        gui.code.setText("CAPA4");
-        gui.name.setText("caso prueba 4");
+        gui.code.setText("CAPA3");
+        gui.name.setText(" intentando y no funciona");
         gui.credits.setText("10");
         gui.inPerson.setText("2");
-        gui.basics.setText("");
-        gui.buttonAdd.doClick();
-
-        gui.code.setText("CAPA4");
-        gui.name.setText("caso prueba 4");
-        gui.credits.setText("10");
-        gui.inPerson.setText("2");
-        gui.basics.setText("");
+        gui.basics.setText("PRI1");
         gui.buttonAdd.doClick();
         gui.buttonList.doClick();
 

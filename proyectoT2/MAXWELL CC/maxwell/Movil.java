@@ -29,11 +29,11 @@ public class Movil extends Hole{
             int aumentoX= this.vX /2 ;
 
             choque(w, h);
-            originalY += aumentoY;
-            positionY += aumentoY;
+            this.originalY += aumentoY;
+            this.positionY += aumentoY;
         
-            originalX += aumentoX;
-            positionY += aumentoX;
+            this.originalX += aumentoX;
+            this.positionX += aumentoX;
             moveSlow(aumentoX, aumentoY);
             
             if (esVisible) {
