@@ -69,9 +69,27 @@ public class Plan15{
         if(name.equals("")){
             throw new Plan15Exception(Plan15Exception.NAME_ERROR);
         }
+        if (!esEntero(credits) || !esEntero(inPerson)) {
+            throw new Plan15Exception(Plan15Exception.CREDITS_ERROR);
+        }
+
         Course nc=new Course(code,name,Integer.parseInt(credits),Integer.parseInt(inPerson));
         units.add(nc);
         courses.put(code.toUpperCase(),nc); 
+    }
+
+    /**
+     * metodo para saber si el número es entero
+     * @param s
+     * @return boolean
+     */
+    private boolean esEntero(String s) {
+        try {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
     
     /**

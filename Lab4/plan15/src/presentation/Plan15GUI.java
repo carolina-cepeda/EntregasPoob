@@ -249,10 +249,17 @@ public class Plan15GUI extends JFrame{
    public static void main(String args[]){
         Plan15GUI gui=new Plan15GUI();
         gui.setVisible(true);
-        gui.code.setText("CAPA2");
-        gui.name.setText("caso prueba 2");
-        gui.credits.setText("10.3");
-        gui.inPerson.setText("2.3");
+        gui.code.setText("CAPA4");
+        gui.name.setText("caso prueba 4");
+        gui.credits.setText("10");
+        gui.inPerson.setText("2");
+        gui.basics.setText("");
+        gui.buttonAdd.doClick();
+
+        gui.code.setText("CAPA4");
+        gui.name.setText("caso prueba 4");
+        gui.credits.setText("10");
+        gui.inPerson.setText("2");
         gui.basics.setText("");
         gui.buttonAdd.doClick();
         gui.buttonList.doClick();
