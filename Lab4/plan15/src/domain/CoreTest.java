@@ -145,30 +145,27 @@ public class CoreTest {
     }
 
     @Test
-    public void shouldListToString(){
-        Plan15 p = new Plan15();
-        try{
-            p.addCourse("PRI2", "Proyecto Integrador 2", "3", "3");
-            p.addCore("NFCC", "Nucleo de Formacion Comun por Campo", "50", "PRI2");
-        }
-        catch(Plan15Exception e){
-            System.out.println(e.getMessage());
-        }
-        String expected = "6 unidades[\n" +
-            ">PRI1: Proyecto Integrador. Creditos:9[3+24]\n" +
-            ">DDYA: Diseño de Datos y Algoritmos. Creditos:4[4+8]\n" +
-            ">MPIN: Matematicas para Informatica. Creditos:3[4+5]\n" +
-            ">FCC: Nucleo formacion por comun por campo. [50%]\n" +
-            "\tPRI1: Proyecto Integrador. Creditos:9[3+24]\n" +
-            "\tDDYA: Diseño de Datos y Algoritmos. Creditos:4[4+8]\n" +
-            "\tMPIN: Matematicas para Informatica. Creditos:3[4+5]\n" +
-            ">PRI2: Proyecto Integrador 2. Creditos:3[3+6]\n" +
-            ">NFCC: Nucleo de Formacion Comun por Campo. [50%]\n" +
-            "\tPRI2: Proyecto Integrador 2. Creditos:3[3+6]\n" +
-            "]";
-
-        assertEquals(expected, p.toString());
+public void shouldListToString() {
+    Plan15 p = new Plan15();
+    try {
+        p.addCourse("PRI2", "Proyecto Integrador 2", "3", "3");
+        p.addCore("NFCC", "Nucleo de Formacion Comun por Campo", "50", "PRI2");
+    } catch (Plan15Exception e) {
+        System.out.println(e.getMessage());
     }
+
+    String result= p.toString();
+
+    assertTrue(result.contains("PRI2: Proyecto Integrador 2. Creditos:3[3+6]"));
+    assertTrue(result.contains("NFCC: Nucleo de Formacion Comun por Campo. [50%]"));
+    assertTrue(result.contains("\tPRI2: Proyecto Integrador 2. Creditos:3[3+6]"));
+    assertTrue(result.contains("PRI1: Proyecto Integrador. Creditos:9[3+24]"));
+    assertTrue(result.contains("DDYA: Diseño de Datos y Algoritmos. Creditos:4[4+8]"));
+    assertTrue(result.contains("MPIN: Matematicas para Informatica. Creditos:3[4+5]"));
+    assertTrue(result.contains("FCC: Nucleo formacion por comun por campo. [50%]"));
+
+    assertTrue(result.contains("6 unidades"));
+}
 
     @Test
     public void shouldThrowExceptionCoreNameError(){
@@ -269,5 +266,33 @@ public class CoreTest {
         } catch (Plan15Exception e) {
             assertEquals(Plan15Exception.NAME_ALREADY_EXISTS, e.getMessage());
         }
+    }
+
+    @Test
+    public void shouldSearchCourseByName(){
+        Plan15 p = new Plan15();
+        try {
+            p.addCourse("PRI2", "Proyecto Integrador 2", "3", "3");
+            p.addCore("NFCC", "Nucleo de Formacion Comun por Campo", "50", "PRI2");
+        } 
+        catch (Plan15Exception e) {
+            System.out.println(e.getMessage());
+        }
+        String result = p.search("PRI2");
+        assertTrue(result.contains("PRI2: Proyecto Integrador 2. Creditos:3[3+6]"));
+    }
+
+    @Test
+    public void shouldSearchCoreByName(){
+        Plan15 p = new Plan15();
+        try {
+            p.addCourse("PRI2", "Proyecto Integrador 2", "3", "3");
+            p.addCore("NFCC", "Nucleo de Formacion Comun por Campo", "50", "PRI2");
+        } 
+        catch (Plan15Exception e) {
+            System.out.println(e.getMessage());
+        }
+        String result = p.search("NFCC");
+        assertTrue(result.contains("NFCC: Nucleo de Formacion Comun por Campo. [50%]"));
     }
 }

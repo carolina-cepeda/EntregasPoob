@@ -137,7 +137,7 @@ public class Plan15{
     public ArrayList<Unit> select(String prefix){
         ArrayList <Unit> answers=new ArrayList<Unit>();
         prefix=prefix.toUpperCase();
-        for(int i=0;i<=units.size();i++){
+        for(int i=0;i < units.size();i++){
             if(units.get(i).code().toUpperCase().startsWith(prefix)){
                 answers.add(units.get(i));
             }   
@@ -154,7 +154,7 @@ public class Plan15{
      */
     public String data(ArrayList<Unit> selected){
         StringBuffer answer=new StringBuffer();
-        answer.append(units.size()+ " unidades\n");
+        answer.append(selected.size() + " unidades encontradas\n");
         for(Unit p : selected) {
             try{
                 answer.append('>' + p.data());

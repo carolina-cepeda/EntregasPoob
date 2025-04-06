@@ -218,45 +218,51 @@ public class Plan15GUI extends JFrame{
     }    
 
     
-    private void actionList(){
-        try{
+    private void actionList() {
+        try {
             textDetails.setText(plan.toString());
         }
-        catch(Exception e){
+         catch (Exception e) {
             JOptionPane.showMessageDialog(this, Plan15Exception.LIST_ERROR);
             Log.record(e);
         }
     }
     
-    private void  actionAdd (){
-        try{
-            if (basics.getText().trim().equals("")){
-                plan.addCourse(code.getText(),name.getText(),credits.getText(),inPerson.getText());
-            }else{ 
-                plan.addCore(code.getText(),name.getText(),credits.getText(),basics.getText());
+    private void actionAdd() {
+        try {
+            if (basics.getText().trim().equals("")) {
+                plan.addCourse(code.getText(), name.getText(), credits.getText(), inPerson.getText());
+            } else {
+                plan.addCore(code.getText(), name.getText(), credits.getText(), basics.getText());
             }
-        }
-        catch(Exception e){
+        } catch (Plan15Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+           
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, Plan15Exception.ADD_ERROR);
             Log.record(e);
         }
     }
-
-    private void actionSearch(){
-        String patronBusqueda=textSearch.getText();
-        String answer = "";
-
-        try{
-            if(patronBusqueda.length() > 0) {
-                answer = plan.search(patronBusqueda);
+    
+    private void actionSearch() {
+        String patron = textSearch.getText().trim();
+    
+        try {
+            if (patron.isEmpty()) {
+                textResults.setText("Por favor, escribe algo para buscar.");
+                return;
             }
-            textResults.setText(answer);
+    
+            String resultado = plan.search(patron);
+    
+                textResults.setText(resultado);
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(this, Plan15Exception.SEARCH_ERROR);
+            Log.record(e);
+        }
     }
-    catch(Exception e){
-        JOptionPane.showMessageDialog(this, Plan15Exception.SEARCH_ERROR);
-        Log.record(e);
-    }
-    } 
+    
     
    public static void main(String args[]){
         Plan15GUI gui=new Plan15GUI();
