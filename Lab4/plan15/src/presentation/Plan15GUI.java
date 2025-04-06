@@ -1,12 +1,10 @@
 package presentation; 
  
 import domain.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import java.util.*;
 
 /**
  * @version ECI 2025
@@ -221,7 +219,13 @@ public class Plan15GUI extends JFrame{
 
     
     private void actionList(){
-        textDetails.setText(plan.toString());
+        try{
+            textDetails.setText(plan.toString());
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(this, Plan15Exception.LIST_ERROR);
+            Log.record(e);
+        }
     }
     
     private void  actionAdd (){
@@ -232,8 +236,9 @@ public class Plan15GUI extends JFrame{
                 plan.addCore(code.getText(),name.getText(),credits.getText(),basics.getText());
             }
         }
-        catch(Plan15Exception e){
-            JOptionPane.showMessageDialog(this, e.getMessage());
+        catch(Exception e){
+            JOptionPane.showMessageDialog(this, Plan15Exception.ADD_ERROR);
+            Log.record(e);
         }
     }
 
@@ -246,12 +251,11 @@ public class Plan15GUI extends JFrame{
                 answer = plan.search(patronBusqueda);
             }
             textResults.setText(answer);
-        }
-        catch(Exception ex){
-            JOptionPane.showMessageDialog(this,"Ocurrió un error durante la busqueda");
-            textResults.setText("");
-            Log.record(ex);
-        }
+    }
+    catch(Exception e){
+        JOptionPane.showMessageDialog(this, Plan15Exception.SEARCH_ERROR);
+        Log.record(e);
+    }
     } 
     
    public static void main(String args[]){

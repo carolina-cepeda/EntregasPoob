@@ -16,6 +16,10 @@ public class Plan15Exception extends Exception {
     public static final String NAME_ERROR = "error en el nombre";
     public static final String NAME_ALREADY_EXISTS = "El nombre ingresado ya existe en el sistema";
     public static final String PERCENTAGE_ERROR = "error en el porcentaje dado en en núcleo";
+    public static final String SEARCH_ERROR = "Ocurrió un error durante la busqueda";
+    public static final String LIST_ERROR = "Ocurrió un error durante la lista";
+    public static final String ADD_ERROR = "Ocurrió un error durante la adición";
+
     public Plan15Exception(String message) {
         super(message);
     }
