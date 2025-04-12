@@ -88,23 +88,38 @@ public class DMaxwellGUI extends JFrame {
      * * Método para preparar las acciones del menú.
      * se utiliza un listener para cada elemento del menú.
      */
-    private void prepareActionsMenu() {
+     private void prepareActionsMenu() {
         itemNuevo.addActionListener(e -> {
             JOptionPane.showMessageDialog(this, "Nuevo archivo creado.");
         });
     
         itemAbrir.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Abrir archivo (aquí iría un JFileChooser).");
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                String fileName = fileChooser.getSelectedFile().getName();
+                JOptionPane.showMessageDialog(this,
+                    "Funcionalidad de abrir en construcción.\nArchivo seleccionado: " + fileName,
+                    "Abrir archivo",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
         });
     
         itemSalvar.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Archivo guardado.");
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showSaveDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                String fileName = fileChooser.getSelectedFile().getName();
+                JOptionPane.showMessageDialog(this,
+                    "Funcionalidad de guardar en construcción.\nArchivo a guardar: " + fileName,
+                    "Salvar archivo",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
         });
     
         itemSalir.addActionListener(e -> exit());
     }
-    
-    public static void main(String[] args) {
+        public static void main(String[] args) {
         DMaxwellGUI gui = new DMaxwellGUI();
         gui.prepareElements();
         gui.setVisible(true);
