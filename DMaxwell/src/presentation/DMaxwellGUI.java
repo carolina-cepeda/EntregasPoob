@@ -42,7 +42,7 @@ public class DMaxwellGUI extends JFrame {
 
         //paneles
         prepareConfigPanel();
-        prepareSimulationPanel();
+        prepareElementsBoard();
         prepareColorPanel();
         prepareStatsPanel();
         organizaPaneles();
@@ -52,28 +52,80 @@ public class DMaxwellGUI extends JFrame {
 
         //acciones
         prepareActions();
-    
         
     }
     /**
      * metodo para preparar el panel de simulacion
      */
-    private void prepareSimulationPanel(){
+    private void prepareElementsBoard(){
 
         simulacionPanel = new JPanel();
-        //simulacionPanel.setLayout(new GridLayout(this.hTablero, this.wTablero));
-
-        for (int i = 0; i < this.hTablero; i++) { 
-            JButton button = new JButton();
-            button.setPreferredSize(new Dimension(1, 1)); 
-            simulacionPanel.add(button);
+        simulacionPanel.setLayout(new GridLayout(4, 5));
+        
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j <= 4; j++) {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(1, 1));
+                if (i == 2 && j == 2) {
+                    button.setBackground(Color.MAGENTA); // demonio
+                } else {
+                    button.setBackground(Color.LIGHT_GRAY);
+                }
+                simulacionPanel.add(button);
+            }
         }
+        refresh();
+
+    }
+
+    /**
+     * Metodo para preparar el panel de simulacion
+     */
+    private void refresh(){
+
+        // si se crea el tablero
+        aplicarButton.addActionListener(e -> {
+            try {
+                hTablero = Integer.parseInt(h.getText());
+                wTablero = Integer.parseInt(w.getText());
+        
+                int separadorColumna = wTablero / 2;
+                int totalColumnas = wTablero + 1;
+                int totalFilas = hTablero;
+        
+                simulacionPanel.removeAll();
+                simulacionPanel.setLayout(new GridLayout(totalFilas, totalColumnas));
+        
+                for (int fila = 0; fila < totalFilas; fila++) {
+                    for (int col = 0; col < totalColumnas; col++) {
+                        JButton button = new JButton();
+                        button.setPreferredSize(new Dimension(1, 1)); 
+                        if (col == separadorColumna) {
+                            if (fila == totalFilas / 2) {
+                                button.setBackground(Color.MAGENTA); // demonio
+                            } else {
+                                button.setBackground(Color.BLACK);
+                                button.setEnabled(false);
+                            }
+                        }
+        
+                        simulacionPanel.add(button);
+                    }
+                }        
+                simulacionPanel.revalidate();
+                simulacionPanel.repaint();
+        
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Por favor, introduce valores válidos para h y w.");
+            }
+        });
     }
     /**
      * Metodo para preparar el panel de configuracion
      */
     private void prepareConfigPanel() {
-        configuracionPanel = new JPanel(new GridLayout(6, 2, 5, 5)); // ia
+        configuracionPanel = new JPanel(); 
+        configuracionPanel.setLayout(new FlowLayout(FlowLayout.LEFT)); // Todo en una línea
     
         hLabel = new JLabel("h:");
         wLabel = new JLabel("w:");
@@ -81,11 +133,11 @@ public class DMaxwellGUI extends JFrame {
         bLabel = new JLabel("b:");
         oLabel = new JLabel("o:");
     
-        h = new JTextField(5);
-        w = new JTextField(5);
-        r = new JTextField(5);
-        b = new JTextField(5);
-        o = new JTextField(5);
+        h = new JTextField(3);
+        w = new JTextField(3);
+        r = new JTextField(3);
+        b = new JTextField(3);
+        o = new JTextField(3);
     
         aplicarButton = new JButton("Aplicar");
     
@@ -99,10 +151,11 @@ public class DMaxwellGUI extends JFrame {
         configuracionPanel.add(b);
         configuracionPanel.add(oLabel);
         configuracionPanel.add(o);
-        configuracionPanel.add(new JLabel()); // espacio vacío
-        configuracionPanel.add(aplicarButton);
+        configuracionPanel.add(aplicarButton); 
+    
         configuracionPanel.setBorder(BorderFactory.createTitledBorder("Configuración del contenedor"));
     }
+    
     
     /**
      * Metodo para preparar el panel de color
@@ -115,7 +168,6 @@ public class DMaxwellGUI extends JFrame {
     
         colorPanel.add(colorLabel);
         colorPanel.add(colorComboBox);
-        colorPanel.setBorder(BorderFactory.createTitledBorder("Color de la Partícula"));
 
     }
     
@@ -125,15 +177,19 @@ public class DMaxwellGUI extends JFrame {
      * Metodo para preparar el panel de estadisticas
      */
     private void prepareStatsPanel(){
-        estPanel = new JPanel();
+        estPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); 
+    
+        estPanel.setLayout(new BoxLayout(estPanel, BoxLayout.Y_AXIS));
         correctParticlesLabel = new JLabel("Partículas correctas:");
         lostParticlesLabel = new JLabel("Partículas perdidas:");
-
+    
         estPanel.add(correctParticlesLabel);
+        estPanel.add(Box.createVerticalStrut(5));
         estPanel.add(lostParticlesLabel);
         estPanel.setBorder(BorderFactory.createTitledBorder("Estadísticas"));
-
     }
+    
+    
 
     /**
      * * Método para organizar los paneles en la ventana.
@@ -152,11 +208,9 @@ public class DMaxwellGUI extends JFrame {
     }
     
     
-        
-
-
+    
     /**
-     * * Método para preparar las acciones del menú.
+     * * Método para preparar los elementos del menu
      * 
      */
     private void prepareElementsMenu() {
@@ -193,31 +247,11 @@ public class DMaxwellGUI extends JFrame {
         });
 
         prepareActionsMenu();
-
-        // aplicacion de la configuracion refresh??
-        aplicarButton.addActionListener(e -> {
-            try {
-                hTablero = Integer.parseInt(h.getText());
-                wTablero = Integer.parseInt(w.getText());
         
-                simulacionPanel.removeAll(); // limpia botones anteriores
-                simulacionPanel.setLayout(new GridLayout(hTablero, wTablero));
-        
-                for (int i = 0; i < hTablero * wTablero; i++) {
-                    JButton button = new JButton();
-                    button.setPreferredSize(new Dimension(30, 30));
-                    simulacionPanel.add(button);
-                }
-        
-                simulacionPanel.revalidate();
-                simulacionPanel.repaint();
-        
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Por favor, introduce valores válidos para h y w.");
-            }
-        });  
         
     }
+
+    
 
     /**
      * * Método para mostrar un mensaje de advertencia al usuario.
