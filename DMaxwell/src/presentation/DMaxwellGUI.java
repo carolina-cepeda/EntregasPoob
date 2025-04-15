@@ -4,6 +4,7 @@ import java.awt.event.*;
 import javax.swing.*;
 public class DMaxwellGUI extends JFrame {
 
+    //paneles
     private JMenuBar menuBar;
     private JMenu menuArchivo;
     private JMenuItem itemNuevo, itemAbrir, itemSalvar, itemSalir;
@@ -12,11 +13,14 @@ public class DMaxwellGUI extends JFrame {
     private JPanel colorPanel;
     private JPanel estPanel;
 
+    //tablero
+    private JButton botonSeleccionado = null;
+
     // componentes de configuracion
     private JTextField h,w,r,b,o;
     private JLabel hLabel,wLabel,rLabel,bLabel,oLabel,colorLabel;
     private JButton aplicarButton;
-    private JComboBox<String> colorComboBox;
+    private JButton elegirColorButton;
 
     // componentes estadisticas
     private JLabel correctParticlesLabel;
@@ -50,8 +54,6 @@ public class DMaxwellGUI extends JFrame {
         //menu
         prepareElementsMenu();
 
-        //acciones
-        prepareActions();
         
     }
     /**
@@ -81,45 +83,54 @@ public class DMaxwellGUI extends JFrame {
     /**
      * Metodo para preparar el panel de simulacion
      */
-    private void refresh(){
-
-        // si se crea el tablero
+    private void refresh() {
         aplicarButton.addActionListener(e -> {
             try {
                 hTablero = Integer.parseInt(h.getText());
                 wTablero = Integer.parseInt(w.getText());
-        
+    
                 int separadorColumna = wTablero / 2;
                 int totalColumnas = wTablero + 1;
                 int totalFilas = hTablero;
-        
+    
                 simulacionPanel.removeAll();
                 simulacionPanel.setLayout(new GridLayout(totalFilas, totalColumnas));
-        
+    
                 for (int fila = 0; fila < totalFilas; fila++) {
                     for (int col = 0; col < totalColumnas; col++) {
                         JButton button = new JButton();
-                        button.setPreferredSize(new Dimension(1, 1)); 
+                        button.setPreferredSize(new Dimension(1, 1));
+    
                         if (col == separadorColumna) {
                             if (fila == totalFilas / 2) {
                                 button.setBackground(Color.MAGENTA); // demonio
                             } else {
-                                button.setBackground(Color.BLACK);
+                                button.setBackground(Color.BLACK); //muro
                                 button.setEnabled(false);
                             }
+                        } else {
+                            button.addActionListener(f -> {
+                                if (botonSeleccionado != null) {
+                                    botonSeleccionado.setBorder(null);
+                                }
+                                botonSeleccionado = button;
+                                botonSeleccionado.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2));
+                            });
                         }
-        
+    
                         simulacionPanel.add(button);
                     }
-                }        
+                }
+    
                 simulacionPanel.revalidate();
                 simulacionPanel.repaint();
-        
+    
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Por favor, introduce valores válidos para h y w.");
             }
         });
     }
+    
     /**
      * Metodo para preparar el panel de configuracion
      */
@@ -161,14 +172,11 @@ public class DMaxwellGUI extends JFrame {
      * Metodo para preparar el panel de color
      */
     private void prepareColorPanel(){
-        colorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        colorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); 
         colorLabel = new JLabel("Color de la partícula: ");
-        String[] colores = {"Rojo", "Verde", "Azul"};
-        colorComboBox = new JComboBox<>(colores);
-    
+        elegirColorButton = new JButton("Elegir color...");
         colorPanel.add(colorLabel);
-        colorPanel.add(colorComboBox);
-
+        colorPanel.add(elegirColorButton);
     }
     
 
@@ -247,11 +255,10 @@ public class DMaxwellGUI extends JFrame {
         });
 
         prepareActionsMenu();
-        
+        prepareActionsColor();
         
     }
 
-    
 
     /**
      * * Método para mostrar un mensaje de advertencia al usuario.
@@ -304,9 +311,29 @@ public class DMaxwellGUI extends JFrame {
     
         itemSalir.addActionListener(e -> exit());
     }
+
+    /**
+     * * Método para preparar las acciones del color.
+     * */
+    private void prepareActionsColor() {
+        elegirColorButton.addActionListener(e -> {
+            if (botonSeleccionado == null) {
+                JOptionPane.showMessageDialog(this, "Primero selecciona una celda del tablero.");
+                return;
+            }
+    
+            Color colorElegido = JColorChooser.showDialog(this, "Selecciona un color para la partícula", currentParticleColor);
+            if (colorElegido != null) {
+                currentParticleColor = colorElegido;
+                botonSeleccionado.setBackground(currentParticleColor); 
+            }
+        });
+    }
+    
         public static void main(String[] args) {
         DMaxwellGUI gui = new DMaxwellGUI();
         gui.prepareElements();
+        gui.prepareActions();
         gui.setVisible(true);
     }
 }
