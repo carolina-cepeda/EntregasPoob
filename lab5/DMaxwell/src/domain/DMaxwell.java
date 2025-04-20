@@ -1,0 +1,132 @@
+package domain;
+
+import java.util.*;
+/**
+ * Clase principal que representa el juego DMaxwell.
+ * Contiene la logica del juego y los elementos que lo componen.
+ */
+public class DMaxwell {
+
+	private int h;
+
+	private int w;
+
+	private int cantidadRojas;
+
+	private int cantidadAzules;
+
+	private int cantidadHoles;
+
+	private int afectadas;
+
+	private ArrayList<Elemento> elementos;
+
+/**
+ * Constructor de la clase DMaxwell.
+ * Inicializa los atributos de la clase y genera los elementos en el tablero.
+ * @param h : alto del tablero
+ * @param w : ancho del tablero
+ * @param r : cantidad de particulas rojas
+ * @param b : cantidad de particulas azules
+ * @param o : cantidad de agujeros
+ */
+	public void DMaxwell (int h, int w, int r, int b, int o) {
+		this.h = h;
+		this.w = w;
+		this.cantidadRojas = r;
+		this.cantidadAzules = b;
+		this.cantidadHoles = o;
+		this.afectadas = 0;
+		this.elementos = new ArrayList<>();
+		Random random = new Random();
+		Set<String> posiciones = new HashSet<>();
+		int totalElementos = cantidadRojas + cantidadAzules + cantidadHoles +1;
+		int elementosGenerados = 0;
+
+		while(elementosGenerados < totalElementos){
+			int px = random.nextInt(w);
+			int py = random.nextInt(h);
+			String clave = px + ","+ py;
+			if(!posiciones.contains(clave)){
+				posiciones.add(clave);
+				if (elementosGenerados < r) {
+					Particula particula = new Particula(true, px, py);
+					elementos.add(particula);
+				} else if (elementosGenerados < r + b) {
+					Particula particula = new Particula(false, px, py);
+					elementos.add(particula);
+				} else if(elementosGenerados < r + b + o) {
+					Agujero agujero = new Agujero(px, py);
+					elementos.add(agujero);
+				}
+				else{
+					Demonio demonio = new Demonio(px, py);
+					elementos.add(demonio);
+				}
+				elementosGenerados++;
+			}
+		}
+	}
+	
+	/**
+	 * Mueve la particula a la nueva posicion, si no es valida, vuelve a la
+	 * posicion anterior.Verifica si ha caido en un agujero antes de moverla y si 
+	 * ha caido en un agujero no la mueve.
+	 * @param px : posicion en x de la particula
+	 * @param py : posicion en y de la particula
+	 * @param aumentoX : cantidad a mover en x
+	 * @param aumentoY : cantidad a mover en y
+	 */
+	public void moverParticula(int px, int py, int aumentoX, int aumentoY) {
+		for (Elemento elemento : elementos) {
+
+			if (elemento.EstoyAhi(px, py) && elemento instanceof Particula particula) {
+
+				boolean estaEnAgujero = false;
+				
+				for (Elemento e : elementos) {
+					if (e instanceof Agujero agujero && agujero.cae(particula)) {
+						afectadas++;
+						estaEnAgujero = true;
+					}
+				}
+
+				if(!estaEnAgujero){
+					particula.Mover(aumentoX, aumentoY);
+				}
+					
+				if (!particula.EstoyEnPosicionValida(h, w)) {
+					particula.Mover(-aumentoX, -aumentoY);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Calcula la cantidad de Particulas que han caido en agujeros en 
+	 * razon al total.
+	 * @return porcentaje de particulas caidas.
+	 */
+	public double calcularParticulasCaidas() {
+		return afectadas/((cantidadRojas + cantidadAzules) * 100.0);
+	}
+
+	/**
+	 * Calcula la cantidad de Particulas que han pasado por el demonio.
+	 * en razon al total.
+	 * @return porcentaje de particulas pasadas.
+	 */
+
+	public double calcularParticulasCorrectas() {
+		int correctas = 0;
+		for (Elemento elemento : elementos) {
+			if (elemento instanceof Particula particula) {
+				if (particula.EstoyPosicionCorrecta(h, w)) {
+					correctas++;
+				}
+			}
+		}
+		return correctas/((cantidadRojas + cantidadAzules) * 100.0);
+	}
+
+}
