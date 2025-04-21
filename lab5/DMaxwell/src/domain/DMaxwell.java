@@ -80,25 +80,22 @@ public class DMaxwell {
 	 */
 	public void moverParticula(int px, int py, int aumentoX, int aumentoY) {
 		for (Elemento elemento : elementos) {
-
 			if (elemento.estoyAhi(px, py) && elemento instanceof Particula particula) {
-
-				boolean estaEnAgujero = false;
-				
+	
+				particula.mover(aumentoX, aumentoY);
+	
+				if (!particula.estoyEnPosicionValida(h, w)) {
+					particula.mover(-aumentoX, -aumentoY);
+					return;
+				}
+	
 				for (Elemento e : elementos) {
 					if (e instanceof Agujero agujero && agujero.cae(particula)) {
 						afectadas++;
-						estaEnAgujero = true;
 					}
 				}
-
-				if(!estaEnAgujero){
-					particula.mover(aumentoX, aumentoY);
-				}
-					
-				if (!particula.estoyEnPosicionValida(h, w)) {
-					particula.mover(-aumentoX, -aumentoY);
-				}
+	
+				return;
 			}
 		}
 	}
