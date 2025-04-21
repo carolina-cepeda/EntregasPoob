@@ -31,7 +31,7 @@ public class DMaxwell {
  * @param o : cantidad de agujeros
  */
 // mejorar distribucion
-	public void DMaxwell (int h, int w, int r, int b, int o) {
+	public DMaxwell (int h, int w, int r, int b, int o) {
 		this.h = h;
 		this.w = w;
 		this.cantidadRojas = r;
@@ -130,4 +130,67 @@ public class DMaxwell {
 		return correctas/((cantidadRojas + cantidadAzules) * 100.0);
 	}
 
+	/*
+	* * Devuelve la cantidad de particulas que han caido en agujeros.
+	* @return int cantidad de particulas caidas.
+	*/
+	public int getAfectadas() {
+		return this.afectadas;
+	}
+	/**
+	 * Devuelve la cantidad de agujeros en el tablero.
+	 * @return int cantidad de agujeros.
+	 */
+	public int getCantidadHoles() {
+		return this.cantidadHoles;
+	}
+	/**
+	 * Devuelve la cantidad de particulas rojas en el tablero.
+	 * @return int cantidad de particulas rojas.
+	 */
+	public int getCantidadRojas() {
+		return this.cantidadRojas;
+	}
+	/**
+	 * Devuelve la cantidad de particulas azules en el tablero.
+	 * @return int cantidad de particulas azules.
+	 */
+	public int getCantidadAzules() {
+		return this.cantidadAzules;
+	}
+	/**
+	 * Devuelve la cantidad de filas del tablero.
+	 * @return int cantidad de filas.
+	 */
+	public int getH() {
+		return this.h;
+	}
+
+	/**
+	 * Devuelve la cantidad de columnas del tablero.
+	 * @return int cantidad de columnas.
+	 */
+	public int getW() {
+		return this.w;
+	}
+	/**
+	 * Devuelve la cantidad de demonios en el juego
+	 * @return int cantidad de demonios.
+	 */
+	public int getCantidadDemonios() {
+		int demonios = 0;
+		for (Elemento elemento : elementos) {
+			if (elemento instanceof Demonio) {
+				demonios++;
+			}
+		}
+		return demonios;
+	}
+	/**
+	 * Devuelve la lista de elementos del tablero.
+	 * @return ArrayList<Elemento> lista de elementos.
+	 */
+	public ArrayList<Elemento> getElementos() {
+		return this.elementos;
+	}
 }

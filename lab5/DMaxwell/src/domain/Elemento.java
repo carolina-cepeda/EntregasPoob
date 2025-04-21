@@ -41,4 +41,15 @@ public abstract class Elemento {
 	
 		return this.py > 0 && this.py < h + 1 && this.px > 0 && this.px < w + 2;
 	}
+	
+	/**
+	 * metodo para asignar una posision px, py dada
+	 * @param px : posicion en x 
+	 * @param py : posicion en y
+	 * 
+	 */
+	public void setPosition(int px, int py) {
+		this.px = px;
+		this.py = py;
+	}
 }
