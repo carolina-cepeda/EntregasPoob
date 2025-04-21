@@ -81,24 +81,25 @@ public class DMaxwell {
 	public void moverParticula(int px, int py, int aumentoX, int aumentoY) {
 		for (Elemento elemento : elementos) {
 			if (elemento.estoyAhi(px, py) && elemento instanceof Particula particula) {
-	
 				particula.mover(aumentoX, aumentoY);
-	
 				if (!particula.estoyEnPosicionValida(h, w)) {
 					particula.mover(-aumentoX, -aumentoY);
 					return;
 				}
-	
 				for (Elemento e : elementos) {
 					if (e instanceof Agujero agujero && agujero.cae(particula)) {
 						afectadas++;
 					}
-				}
 	
+					if (e instanceof Demonio demonio) {
+						demonio.pasar(particula);
+					}
+				}
 				return;
 			}
 		}
 	}
+	
 
 	/**
 	 * Calcula la cantidad de Particulas que han caido en agujeros en 

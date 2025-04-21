@@ -9,7 +9,15 @@ public class DMaxwellTest {
     DMaxwell dMaxwell;
     @Before
     public void setUp(){
-        dMaxwell = new DMaxwell(10, 10, 5, 5, 2);
+        dMaxwell = new DMaxwell(10, 10, 2, 2, 2);
+
+        dMaxwell.getElementos().get(0).setPosition(1, 1); //b1
+        dMaxwell.getElementos().get(1).setPosition(2, 2); //b2
+        dMaxwell.getElementos().get(2).setPosition(3, 3); //r1
+        dMaxwell.getElementos().get(3).setPosition(4, 4); //r2
+        dMaxwell.getElementos().get(4).setPosition(5, 5); //o1
+        dMaxwell.getElementos().get(5).setPosition(6, 6); //o2
+        dMaxwell.getElementos().get(6).setPosition(7, 7); //d
     }
 
     @After
@@ -23,8 +31,8 @@ public class DMaxwellTest {
         assertEquals(10, dMaxwell.getH());
         assertEquals(10, dMaxwell.getW());
         assertEquals(2, dMaxwell.getCantidadHoles());
-        assertEquals(5, dMaxwell.getCantidadRojas());
-        assertEquals(5, dMaxwell.getCantidadAzules());
+        assertEquals(2, dMaxwell.getCantidadRojas());
+        assertEquals(2, dMaxwell.getCantidadAzules());
         assertEquals(0, dMaxwell.getAfectadas());
         assertEquals(1, dMaxwell.getCantidadDemonios());
 
@@ -47,10 +55,17 @@ public class DMaxwellTest {
     @Test 
     public void shouldFallIntoHole(){
         dMaxwell.getElementos().get(0).setPosition(1, 1);
-        dMaxwell.getElementos().get(10).setPosition(1, 2);
+        dMaxwell.getElementos().get(5).setPosition(1, 2);
         dMaxwell.moverParticula(1, 1, 0,1);
-        assertEquals(1, dMaxwell.getAfectadas());
+        assertEquals(1, dMaxwell.getAfectadas()); 
     
     }
 
+    @Test
+    public void shouldPassParticleWhenDemon(){
+        dMaxwell.getElementos().get(0).setPosition(1, 1);
+        dMaxwell.getElementos().get(6).setPosition(1, 2);
+        dMaxwell.moverParticula(1, 1, 0,1);
+        assertEquals(0,dMaxwell.getElementos().get(0).px); 
+    }
 }
