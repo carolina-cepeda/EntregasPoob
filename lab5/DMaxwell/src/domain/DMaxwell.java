@@ -30,6 +30,7 @@ public class DMaxwell {
  * @param b : cantidad de particulas azules
  * @param o : cantidad de agujeros
  */
+// mejorar distribucion
 	public void DMaxwell (int h, int w, int r, int b, int o) {
 		this.h = h;
 		this.w = w;
@@ -80,7 +81,7 @@ public class DMaxwell {
 	public void moverParticula(int px, int py, int aumentoX, int aumentoY) {
 		for (Elemento elemento : elementos) {
 
-			if (elemento.EstoyAhi(px, py) && elemento instanceof Particula particula) {
+			if (elemento.estoyAhi(px, py) && elemento instanceof Particula particula) {
 
 				boolean estaEnAgujero = false;
 				
@@ -92,11 +93,11 @@ public class DMaxwell {
 				}
 
 				if(!estaEnAgujero){
-					particula.Mover(aumentoX, aumentoY);
+					particula.mover(aumentoX, aumentoY);
 				}
 					
-				if (!particula.EstoyEnPosicionValida(h, w)) {
-					particula.Mover(-aumentoX, -aumentoY);
+				if (!particula.estoyEnPosicionValida(h, w)) {
+					particula.mover(-aumentoX, -aumentoY);
 				}
 			}
 		}
@@ -121,7 +122,7 @@ public class DMaxwell {
 		int correctas = 0;
 		for (Elemento elemento : elementos) {
 			if (elemento instanceof Particula particula) {
-				if (particula.EstoyPosicionCorrecta(h, w)) {
+				if (particula.estoyPosicionCorrecta(h, w)) {
 					correctas++;
 				}
 			}
