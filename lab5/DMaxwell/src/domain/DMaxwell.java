@@ -107,7 +107,7 @@ public class DMaxwell {
 	 * @return porcentaje de particulas caidas.
 	 */
 	public double calcularParticulasCaidas() {
-		return afectadas/((cantidadRojas + cantidadAzules) * 100.0);
+		return (afectadas * 100.0)/(cantidadRojas + cantidadAzules);
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class DMaxwell {
 				}
 			}
 		}
-		return correctas/((cantidadRojas + cantidadAzules) * 100.0);
+		return (correctas * 100.0)/(cantidadRojas + cantidadAzules);
 	}
 
 	/*
