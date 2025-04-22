@@ -81,6 +81,12 @@ public class DMaxwell {
 	public void moverParticula(int px, int py, int aumentoX, int aumentoY) {
 		for (Elemento elemento : elementos) {
 			if (elemento.estoyAhi(px, py) && elemento instanceof Particula particula) {
+				int nuevaX = particula.getPx() + aumentoX;
+            	int nuevaY = particula.getPy() + aumentoY;
+            
+            if (posicionOcupadaPorParticula(nuevaX, nuevaY,particula)) {
+                return;
+            }
 				particula.mover(aumentoX, aumentoY);
 				if (!particula.estoyEnPosicionValida(h, w)) {
 					particula.mover(-aumentoX, -aumentoY);
@@ -191,4 +197,20 @@ public class DMaxwell {
 	public ArrayList<Elemento> getElementos() {
 		return this.elementos;
 	}
+	/**
+	 * Verifica si una posición está ocupada por otra partícula.
+	 * @param px : posición en x a verificar.
+	 * @param py : posición en y a verificar.
+	 * @param actual : partícula actual que se está moviendo.
+	 * @return true si la posición está ocupada, false en caso contrario.
+	 */
+	private boolean posicionOcupadaPorParticula(int x, int y, Particula actual) {
+		for (Elemento e : elementos) {
+			if (e instanceof Particula p && p != actual && p.getPx() == x && p.getPy() == y) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

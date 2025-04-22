@@ -52,4 +52,19 @@ public abstract class Elemento {
 		this.px = px;
 		this.py = py;
 	}
+
+	/**
+	 * * metodo para obtener la posicion en x
+	 * @return int px
+	 */
+	public int getPx() {
+		return px;
+	}
+	/**
+	 * metodo para obtener la posicion en y
+	 * @return int py
+	 */
+	public int getPy() {
+		return py;
+	}
 }

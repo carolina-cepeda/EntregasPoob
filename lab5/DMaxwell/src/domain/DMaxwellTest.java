@@ -40,15 +40,15 @@ public class DMaxwellTest {
 
 
 
-    @Test // el random podria hacer fallar este test x los limites de las paredes, replantear o añadir set
+    @Test 
     public void shouldMoveParticle(){
         int pyInicial = dMaxwell.getElementos().get(0).py;
         int pxInicial = dMaxwell.getElementos().get(0).px;
-        dMaxwell.moverParticula(pxInicial,pyInicial, 1, 1);
+        dMaxwell.moverParticula(pxInicial,pyInicial, 1, 0);
         int pyFinal = dMaxwell.getElementos().get(0).py;
         int pxFinal = dMaxwell.getElementos().get(0).px;
-        assertEquals(pyFinal, pyInicial + 1);
-        assertEquals(pxFinal, pxInicial + 1);
+        assertEquals(pyInicial ,pyFinal);
+        assertEquals(pxInicial +1 ,pxFinal);
 
     }
 
@@ -106,15 +106,16 @@ public class DMaxwellTest {
         assertEquals(25.0,dMaxwell.calcularParticulasCorrectas(),0.001);
         assertEquals(0,dMaxwell.getAfectadas()); 
     }
+    
     @Test
-    //añadir condicional para que las particulas no puedan estar en la misma posicion
-    public void shouldNotLetParticlesInTheSamePosition(){
-        int pxInicial = 1;
-        int pyInicial = 1;
-        dMaxwell.getElementos().get(0).setPosition(1, 1);
-        dMaxwell.getElementos().get(1).setPosition(1, 1);
+    public void shouldNotLetParticlesMoveIntoSamePosition() {
+    dMaxwell.getElementos().get(0).setPosition(1, 1);
+    dMaxwell.getElementos().get(1).setPosition(0, 0);
 
-        assertFalse(dMaxwell.getElementos().get(1).estoyAhi(pxInicial, pyInicial));
-        
-    }
+    dMaxwell.moverParticula(0, 0, 1, 1); // intenta mover la partícula [1] a (1,1)
+
+    assertEquals(0, dMaxwell.getElementos().get(1).getPx());
+    assertEquals(0, dMaxwell.getElementos().get(1).getPy());
+}
+
 }
