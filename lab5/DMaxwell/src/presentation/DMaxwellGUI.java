@@ -1,8 +1,12 @@
 package presentation;
+import domain.DMaxwell;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 public class DMaxwellGUI extends JFrame {
+
+    //dominio
+    private DMaxwell dMaxwell;
 
     //paneles
     private JMenuBar menuBar;
@@ -31,6 +35,12 @@ public class DMaxwellGUI extends JFrame {
     private Color currentParticleColor = Color.RED;
     private int hTablero ;
     private int wTablero;
+
+    private DMaxwellGUI(){
+        prepareElements();
+        prepareActions();
+
+    }
     /**
      * * Método para preparar los elementos de la ventana.
      * Establece el tamaño y la ubicación de la ventana en la pantalla.
@@ -124,6 +134,10 @@ public class DMaxwellGUI extends JFrame {
     
                 simulacionPanel.revalidate();
                 simulacionPanel.repaint();
+                int rValor = Integer.parseInt(r.getText());
+                int bValor = Integer.parseInt(b.getText());
+                int oValor = Integer.parseInt(o.getText());
+                dMaxwell = new DMaxwell(hTablero, wTablero, rValor, bValor, oValor);
     
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Por favor, introduce valores válidos para h y w.");
@@ -332,8 +346,6 @@ public class DMaxwellGUI extends JFrame {
     
         public static void main(String[] args) {
         DMaxwellGUI gui = new DMaxwellGUI();
-        gui.prepareElements();
-        gui.prepareActions();
         gui.setVisible(true);
     }
 }
