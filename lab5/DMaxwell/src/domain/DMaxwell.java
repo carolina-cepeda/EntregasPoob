@@ -87,23 +87,35 @@ public class DMaxwell {
 	 * @param aumentoY : cantidad a mover en y
 	 */
 	public void moverParticula(int px, int py, int aumentoX, int aumentoY) {
-		for (Elemento elemento : elementos) {
+		for (Iterator<Elemento> iterator = elementos.iterator(); iterator.hasNext();) {
+			Elemento elemento = iterator.next();
 			if (elemento.estoyAhi(px, py) && elemento instanceof Particula particula) {
 				int nuevaX = particula.getPx() + aumentoX;
-            	int nuevaY = particula.getPy() + aumentoY;
-            
-			if (posicionOcupadaPorParticula(nuevaX, nuevaY,particula) || !particula.estoyEnPosicionValida(h, w)) {
-                return;
-            }
+				int nuevaY = particula.getPy() + aumentoY;
+
+				if (nuevaX < 0 || nuevaX > w || nuevaY < 0 || nuevaY >= h) {
+					return; 
+				}
+				
+
+				if (nuevaX == w/2 && nuevaY != h/2) {
+					return;
+				}
+				
+				if (posicionOcupadaPorParticula(nuevaX, nuevaY, particula)) {
+					return;
+				}
+				
+			
 				particula.mover(aumentoX, aumentoY);
 				
 				for (Elemento e : elementos) {
 					if (e instanceof Agujero agujero && agujero.cae(particula)) {
 						afectadas++;
-						//Iterator.remove();
-						//return;
+						iterator.remove();
+						return;
 					}
-	
+					
 					if (e instanceof Demonio demonio) {
 						demonio.pasar(particula);
 					}
@@ -112,7 +124,6 @@ public class DMaxwell {
 			}
 		}
 	}
-	
 
 	/**
 	 * Calcula la cantidad de Particulas que han caido en agujeros en 
@@ -220,13 +231,14 @@ public class DMaxwell {
 		return false;
 	}
 	
-	public void cambiarColorParticulaEn(int x, int y, Color nuevoColor) {
+	public boolean cambiarColorParticulaEn(int x, int y, Color nuevoColor) {
 		for (Elemento e : elementos) {
 			if (e instanceof Particula p && p.estoyAhi(x, y)) {
 				p.setColorPersonalizado(nuevoColor);
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 	
 }

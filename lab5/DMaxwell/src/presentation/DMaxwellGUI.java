@@ -179,7 +179,12 @@ public class DMaxwellGUI extends JFrame {
                 JButton btn = (JButton) components[index];
 
                 if (e instanceof Particula) {
-                    btn.setBackground(((Particula) e).isRed() ? Color.RED : Color.BLUE);
+                    Color colorPersonalizado = ((Particula) e).getColorPersonalizado();
+                    if (colorPersonalizado != null) {
+                        btn.setBackground(colorPersonalizado);
+                    } else {
+                        btn.setBackground(((Particula) e).isRed() ? Color.RED : Color.BLUE);
+                    }
                 } else if (e instanceof Agujero) {
                     btn.setBackground(Color.BLACK);
                 } else if (e instanceof Demonio) {
@@ -405,11 +410,28 @@ public class DMaxwellGUI extends JFrame {
                 JOptionPane.showMessageDialog(this, "Primero selecciona una celda del tablero.");
                 return;
             }
+            int indice= Arrays.asList(simulacionPanel.getComponents()).indexOf(botonSeleccionado);
+            int x = indice % (wTablero + 1); // uso de ia para encontrar las coordenadas x,y
+            int y = indice / (wTablero + 1);
     
-            Color colorElegido = JColorChooser.showDialog(this, "Selecciona un color para la partícula", currentParticleColor);
+            Color colorElegido = JColorChooser.showDialog(
+                this, "Selecciona un color para la partícula",  currentParticleColor
+            );
+    
             if (colorElegido != null) {
-                currentParticleColor = colorElegido;
-                botonSeleccionado.setBackground(currentParticleColor); 
+                if (dMaxwell != null) {
+                    boolean exito = dMaxwell.cambiarColorParticulaEn(x, y, colorElegido);
+                    if (exito) {
+                        currentParticleColor = colorElegido;
+                        botonSeleccionado.setBackground(currentParticleColor);
+                    } else {
+                        JOptionPane.showMessageDialog(
+                            this, 
+                            "No hay una partícula en esta posición.", "Error", 
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+                }
             }
         });
     }
