@@ -1,5 +1,6 @@
 package domain;
 
+import java.awt.Color;
 import java.util.*;
 /**
  * Clase principal que representa el juego DMaxwell.
@@ -42,12 +43,19 @@ public class DMaxwell {
 		this.elementos = new ArrayList<>();
 		Random random = new Random();
 		Set<String> posiciones = new HashSet<>();
-		int totalElementos = cantidadRojas + cantidadAzules + cantidadHoles +1;
+		int totalElementos = cantidadRojas + cantidadAzules + cantidadHoles;
 		int elementosGenerados = 0;
 
 		while(elementosGenerados < totalElementos){
 			int px = random.nextInt(w);
 			int py = random.nextInt(h);
+			if (px == w / 2) continue;
+			if (elementosGenerados < r) {
+				if (px >= w/2) continue; 
+			} 
+			else if (elementosGenerados < r + b) {
+				if (px <= w/2) continue; 
+			}
 			String clave = px + ","+ py;
 			if(!posiciones.contains(clave)){
 				posiciones.add(clave);
@@ -57,17 +65,16 @@ public class DMaxwell {
 				} else if (elementosGenerados < r + b) {
 					Particula particula = new Particula(false, px, py);
 					elementos.add(particula);
-				} else if(elementosGenerados < r + b + o) {
+				} else {
 					Agujero agujero = new Agujero(px, py);
 					elementos.add(agujero);
 				}
-				else{
-					Demonio demonio = new Demonio(px, py);
-					elementos.add(demonio);
-				}
+				
 				elementosGenerados++;
 			}
 		}
+		Demonio demonio = new Demonio(w/2, h/2);
+		elementos.add(demonio);
 	}
 	
 	/**
@@ -93,6 +100,8 @@ public class DMaxwell {
 				for (Elemento e : elementos) {
 					if (e instanceof Agujero agujero && agujero.cae(particula)) {
 						afectadas++;
+						//Iterator.remove();
+						//return;
 					}
 	
 					if (e instanceof Demonio demonio) {
@@ -209,6 +218,15 @@ public class DMaxwell {
 			}
 		}
 		return false;
+	}
+	
+	public void cambiarColorParticulaEn(int x, int y, Color nuevoColor) {
+		for (Elemento e : elementos) {
+			if (e instanceof Particula p && p.estoyAhi(x, y)) {
+				p.setColorPersonalizado(nuevoColor);
+				return;
+			}
+		}
 	}
 	
 }

@@ -1,7 +1,12 @@
 package presentation;
+import domain.Agujero;
 import domain.DMaxwell;
+import domain.Demonio;
+import domain.Elemento;
+import domain.Particula;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import javax.swing.*;
 public class DMaxwellGUI extends JFrame {
 
@@ -19,7 +24,7 @@ public class DMaxwellGUI extends JFrame {
 
     //tablero
     private JButton botonSeleccionado = null;
-
+ 
     // componentes de configuracion
     private JTextField h,w,r,b,o;
     private JLabel hLabel,wLabel,rLabel,bLabel,oLabel,colorLabel;
@@ -91,60 +96,125 @@ public class DMaxwellGUI extends JFrame {
     }
 
     /**
-     * Metodo para preparar el panel de simulacion
+     * Metodo para refrescar el panel de simulacion
      */
+
     private void refresh() {
-        aplicarButton.addActionListener(e -> {
-            try {
-                hTablero = Integer.parseInt(h.getText());
-                wTablero = Integer.parseInt(w.getText());
-    
-                int separadorColumna = wTablero / 2;
-                int totalColumnas = wTablero + 1;
-                int totalFilas = hTablero;
-    
-                simulacionPanel.removeAll();
-                simulacionPanel.setLayout(new GridLayout(totalFilas, totalColumnas));
-    
-                for (int fila = 0; fila < totalFilas; fila++) {
-                    for (int col = 0; col < totalColumnas; col++) {
-                        JButton button = new JButton();
-                        button.setPreferredSize(new Dimension(1, 1));
-    
-                        if (col == separadorColumna) {
-                            if (fila == totalFilas / 2) {
-                                button.setBackground(Color.MAGENTA); // demonio
-                            } else {
-                                button.setBackground(Color.BLACK); //muro
-                                button.setEnabled(false);
-                            }
-                        } else {
-                            button.addActionListener(f -> {
-                                if (botonSeleccionado != null) {
-                                    botonSeleccionado.setBorder(null);
-                                }
-                                botonSeleccionado = button;
-                                botonSeleccionado.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2));
-                            });
-                        }
-    
-                        simulacionPanel.add(button);
-                    }
-                }
-    
-                simulacionPanel.revalidate();
-                simulacionPanel.repaint();
-                int rValor = Integer.parseInt(r.getText());
-                int bValor = Integer.parseInt(b.getText());
-                int oValor = Integer.parseInt(o.getText());
-                dMaxwell = new DMaxwell(hTablero, wTablero, rValor, bValor, oValor);
-    
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Por favor, introduce valores válidos para h y w.");
-            }
+    aplicarButton.addActionListener(e -> {
+        if (leerConfiguracion()) {
+            inicializarModelo();
+            dibujarTablero();
+            colocarElementosEnTablero();
+        }
         });
     }
+    /**
+     * metodo para leer la informacion dada en el panel de configuracion
+     * @return
+     */
+    private boolean leerConfiguracion() {
+        try {
+            hTablero = Integer.parseInt(h.getText());
+            wTablero = Integer.parseInt(w.getText());
+            return true;
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Por favor, introduce valores válidos para h y w.");
+            return false;
+        }
+    }
+
+    private void inicializarModelo() {
+        int rValor = Integer.parseInt(r.getText());
+        int bValor = Integer.parseInt(b.getText());
+        int oValor = Integer.parseInt(o.getText());
+        dMaxwell = new DMaxwell(hTablero, wTablero, rValor, bValor, oValor);
+    }
+
+    private void dibujarTablero() {
+        simulacionPanel.removeAll();
+        simulacionPanel.setLayout(new GridLayout(hTablero, wTablero + 1));
+        botonSeleccionado = null;
     
+        int separadorColumna = wTablero / 2;
+        int totalColumnas = wTablero + 1;
+        int totalFilas = hTablero;
+    
+        for (int fila = 0; fila < totalFilas; fila++) {
+            for (int col = 0; col < totalColumnas; col++) {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(1, 1));
+    
+                if (col == separadorColumna) {
+                    if (fila == totalFilas / 2) {
+                        button.setBackground(Color.GRAY); // demonio
+                    } else {
+                        button.setBackground(Color.BLACK); // muro
+                        button.setEnabled(false);
+                    }
+                } else {
+                    button.addActionListener(f -> seleccionarCelda(button));
+                }
+    
+                simulacionPanel.add(button);
+            }
+        }
+    
+        simulacionPanel.revalidate();
+        simulacionPanel.repaint();
+    }
+    
+
+    private void colocarElementosEnTablero() {
+        if (dMaxwell == null) return;
+
+        Component[] components = simulacionPanel.getComponents();
+        int cols = wTablero + 1;
+
+        for (Elemento e : dMaxwell.getElementos()) {
+            int x = e.getPx();
+            int y = e.getPy();
+            int index = y * cols + x;
+
+            if (index >= 0 && index < components.length) {
+                JButton btn = (JButton) components[index];
+
+                if (e instanceof Particula) {
+                    btn.setBackground(((Particula) e).isRed() ? Color.RED : Color.BLUE);
+                } else if (e instanceof Agujero) {
+                    btn.setBackground(Color.BLACK);
+                } else if (e instanceof Demonio) {
+                    btn.setBackground(Color.GRAY);
+                }
+            }
+        }
+    }
+
+    private void seleccionarCelda(JButton boton) {
+    if (botonSeleccionado == null) {
+        botonSeleccionado = boton;
+        botonSeleccionado.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+    } else {
+        int indexOrigen = Arrays.asList(simulacionPanel.getComponents()).indexOf(botonSeleccionado);
+        int indexDestino = Arrays.asList(simulacionPanel.getComponents()).indexOf(boton);
+        int x1 = indexOrigen % (wTablero + 1);
+        int y1 = indexOrigen / (wTablero + 1);
+        int x2 = indexDestino % (wTablero + 1);
+        int y2 = indexDestino / (wTablero + 1);
+
+        // Solo si son adyacentes
+        if ((Math.abs(x1 - x2) + Math.abs(y1 - y2)) == 1) {
+            dMaxwell.moverParticula(x1, y1, x2 - x1, y2 - y1);
+            dibujarTablero(); 
+            colocarElementosEnTablero();
+        }
+
+        botonSeleccionado.setBorder(null);
+        botonSeleccionado = null;
+    }
+}
+
+
+
     /**
      * Metodo para preparar el panel de configuracion
      */

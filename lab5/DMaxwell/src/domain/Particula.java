@@ -1,10 +1,14 @@
 package domain;
+
+import java.awt.Color;
+
 /**
  * clase que describe una particula del juego
  * @author Carolina Cepeda
 */
 public class Particula extends Elemento {
 	private boolean isRed;
+	private Color colorPersonalizado;
 
 	/**
 	 * constructor de la particula
@@ -53,5 +57,29 @@ public class Particula extends Elemento {
 			mover(1, 0);
 		}
 	}
+
+	/**
+	 * metodo para retornar si es del equipo rojo  la particula
+	 */
+	public boolean isRed() {
+		return isRed;
+	}
+
+	/**
+	 * metodo para colocar un color personalizado a la particula
+	 * @param c
+	 */
+	public void setColorPersonalizado(Color c) {
+		this.colorPersonalizado = c;
+	}
+	/**
+	 * metodo para retornar el color personalizado de la particula
+	 * @return Color
+	 */
+	
+	public Color getColorPersonalizado() {
+		return colorPersonalizado;
+	}
+	
 
 }
