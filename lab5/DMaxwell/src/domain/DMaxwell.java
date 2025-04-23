@@ -4,6 +4,7 @@ import java.util.*;
 /**
  * Clase principal que representa el juego DMaxwell.
  * Contiene la logica del juego y los elementos que lo componen.
+ * @author carolina cepeda
  */
 public class DMaxwell {
 
@@ -84,14 +85,11 @@ public class DMaxwell {
 				int nuevaX = particula.getPx() + aumentoX;
             	int nuevaY = particula.getPy() + aumentoY;
             
-            if (posicionOcupadaPorParticula(nuevaX, nuevaY,particula)) {
+			if (posicionOcupadaPorParticula(nuevaX, nuevaY,particula) || !particula.estoyEnPosicionValida(h, w)) {
                 return;
             }
 				particula.mover(aumentoX, aumentoY);
-				if (!particula.estoyEnPosicionValida(h, w)) {
-					particula.mover(-aumentoX, -aumentoY);
-					return;
-				}
+				
 				for (Elemento e : elementos) {
 					if (e instanceof Agujero agujero && agujero.cae(particula)) {
 						afectadas++;
@@ -206,7 +204,7 @@ public class DMaxwell {
 	 */
 	private boolean posicionOcupadaPorParticula(int x, int y, Particula actual) {
 		for (Elemento e : elementos) {
-			if (e instanceof Particula p && p != actual && p.getPx() == x && p.getPy() == y) {
+			if (e instanceof Particula p && p != actual && p.estoyAhi(x, y)) {
 				return true;
 			}
 		}

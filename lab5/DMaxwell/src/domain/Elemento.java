@@ -1,6 +1,7 @@
 package domain;
 /**
  * clase que describe un elemento del juego
+ * @author Carolina Cepeda
  */
 public abstract class Elemento {
 

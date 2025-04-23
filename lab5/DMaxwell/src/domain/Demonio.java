@@ -2,6 +2,8 @@ package domain;
 /**
  * Clase que representa un demonio en el juego DMaxwell.
  * Un demonio es un elemento que puede afectar a las particulas en el tablero.
+ * nc
+ * @autor Carolina Cepeda
  */
 public class Demonio extends Elemento {
 
