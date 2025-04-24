@@ -23,6 +23,8 @@ public class DMaxwell {
 
 	private ArrayList<Elemento> elementos;
 
+	private boolean simulacionTerminada = false;
+
 /**
  * Constructor de la clase DMaxwell.
  * Inicializa los atributos de la clase y genera los elementos en el tablero.
@@ -88,6 +90,7 @@ public class DMaxwell {
 	 * @param aumentoY : cantidad a mover en y
 	 */
 	public void moverParticula(int px, int py, int aumentoX, int aumentoY) {
+		if (simulacionTerminada) return;
 		for (Iterator<Elemento> iterator = elementos.iterator(); iterator.hasNext();) {
 			Elemento elemento = iterator.next();
 			if (elemento.estoyAhi(px, py) && elemento instanceof Particula particula) {
@@ -131,9 +134,14 @@ public class DMaxwell {
 						}
 					}
 				}
+				
+				if(finish()){
+					return;
+				}
 				return;
 			}
 		}
+		
 	}
 
 	/**
@@ -257,4 +265,17 @@ public class DMaxwell {
 		return false;
 	}
 	
+	public boolean finish() {
+		double porcentajeCorrectas = calcularParticulasCorrectas();
+		double porcentajePerdidas = calcularParticulasCaidas();
+		
+		if (porcentajeCorrectas >= 100.0 || porcentajePerdidas >= 100.0) {
+			simulacionTerminada = true;
+			return true;
+		}
+		return false;
+	}
+	public boolean isSimulacionTerminada() {
+		return simulacionTerminada;
+	}
 }

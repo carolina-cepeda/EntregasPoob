@@ -209,7 +209,7 @@ public class DMaxwellGUI extends JFrame {
         int x2 = indexDestino % (wTablero + 1);
         int y2 = indexDestino / (wTablero + 1);
 
-        // Solo si son adyacentes
+        // Solo si son N S O E
         if ((Math.abs(x1 - x2) + Math.abs(y1 - y2)) == 1) {
             dMaxwell.moverParticula(x1, y1, x2 - x1, y2 - y1);
             dibujarTablero(); 
@@ -375,6 +375,7 @@ public class DMaxwellGUI extends JFrame {
      private void prepareActionsMenu() {
         itemNuevo.addActionListener(e -> {
             JOptionPane.showMessageDialog(this, "Nuevo archivo creado.");
+            reiniciarJuego();
         });
     
         itemAbrir.addActionListener(e -> {
@@ -441,21 +442,55 @@ public class DMaxwellGUI extends JFrame {
     private void actualizarEstadisticas() {
         if (dMaxwell != null) {
             double porcentajeCorrectas = dMaxwell.calcularParticulasCorrectas();
-            int perdidas = dMaxwell.getAfectadas();
+            double porcentajePerdidas = dMaxwell.calcularParticulasCaidas();
             
             correctParticlesLabel.setText(String.format("Partículas correctas: %.1f%%", porcentajeCorrectas));
-            lostParticlesLabel.setText(String.format("Partículas perdidas: %d", perdidas));
+            lostParticlesLabel.setText(String.format("Partículas perdidas: %.1f", porcentajePerdidas));
             
             statsTextArea.setText(String.format(
-                "Estadísticas:\n- Correctas: %.1f%%\n- Perdidas: %d\n- Rojas: %d\n- Azules: %d",
+                "Estadísticas:\n- Correctas: %.1f%%\n- Perdidas: %1f\n- Rojas: %d\n- Azules: %d",
                 porcentajeCorrectas,
-                perdidas,
+                porcentajePerdidas,
                 dMaxwell.getCantidadRojas(),
                 dMaxwell.getCantidadAzules()
             ));
+            if (dMaxwell.isSimulacionTerminada()) {
+                mostrarMensajeFinal();
+            }
         }
     }
-    
+    private void mostrarMensajeFinal() {
+        simulacionPanel.setEnabled(false);
+        Object[] opciones = {"Nuevo Juego", "Salir"};
+        int eleccion = JOptionPane.showOptionDialog(
+            this,
+            "¡Felicidades, el juego ha terminado!\n" +
+            "Partículas correctas: " + String.format("%.1f%%", dMaxwell.calcularParticulasCorrectas()) + "\n" +
+            "Partículas perdidas: " + String.format("%.1f%%", dMaxwell.calcularParticulasCaidas()),
+            "Fin del Juego",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.INFORMATION_MESSAGE,
+            null,
+            opciones,
+            opciones[0]
+        );
+        if (eleccion == JOptionPane.YES_OPTION) {
+            reiniciarJuego();
+            simulacionPanel.setEnabled(true);
+        } else {
+            exit();
+        }
+    }
+
+    private void reiniciarJuego() {
+        dMaxwell = null;
+        h.setText("4");
+        w.setText("4");
+        r.setText("0");
+        b.setText("0");
+        o.setText("0");
+       refresh();
+    }
         public static void main(String[] args) {
         DMaxwellGUI gui = new DMaxwellGUI();
         gui.setVisible(true);
