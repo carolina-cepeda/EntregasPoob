@@ -147,6 +147,7 @@ public class DMaxwellGUI extends JFrame {
                 if (col == separadorColumna) {
                     if (fila == totalFilas / 2) {
                         button.setBackground(Color.GRAY); // demonio
+                        button.addActionListener(e -> seleccionarCelda(button)); 
                     } else {
                         button.setBackground(Color.BLACK); // muro
                         button.setEnabled(false);

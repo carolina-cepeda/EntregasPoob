@@ -51,12 +51,13 @@ public class DMaxwell {
 			int py = random.nextInt(h);
 			if (px == w / 2) continue;
 			if (elementosGenerados < r) {
-				if (px >= w/2) continue; 
+				if (px <= w/2) continue; 
 			} 
 			else if (elementosGenerados < r + b) {
-				if (px <= w/2) continue; 
+				if (px >= w/2) continue; 
 			}
 			String clave = px + ","+ py;
+
 			if(!posiciones.contains(clave)){
 				posiciones.add(clave);
 				if (elementosGenerados < r) {
@@ -90,34 +91,44 @@ public class DMaxwell {
 		for (Iterator<Elemento> iterator = elementos.iterator(); iterator.hasNext();) {
 			Elemento elemento = iterator.next();
 			if (elemento.estoyAhi(px, py) && elemento instanceof Particula particula) {
-				int nuevaX = particula.getPx() + aumentoX;
-				int nuevaY = particula.getPy() + aumentoY;
-
-				if (nuevaX < 0 || nuevaX > w || nuevaY < 0 || nuevaY >= h) {
-					return; 
-				}
-				
-
-				if (nuevaX == w/2 && nuevaY != h/2) {
-					return;
-				}
-				
-				if (posicionOcupadaPorParticula(nuevaX, nuevaY, particula)) {
-					return;
-				}
-				
-			
-				particula.mover(aumentoX, aumentoY);
-				
+				int nuevaX = px + aumentoX;
+				int nuevaY = py + aumentoY;
+	
 				for (Elemento e : elementos) {
-					if (e instanceof Agujero agujero && agujero.cae(particula)) {
-						afectadas++;
-						iterator.remove();
+					if (e instanceof Demonio demonio && demonio.estoyAhi(nuevaX, nuevaY)) {
+
+						int posFinalX = particula.isRed() ? nuevaX - 1 : nuevaX + 1;
+						int posFinalY = nuevaY;
+						
+						if (posicionOcupadaPorParticula(posFinalX, posFinalY, particula)) {
+							return; 
+						}
+
+						particula.mover(aumentoX, aumentoY);
+
+						particula.pasar();
+
+						for (Elemento agujero : elementos) {
+							if (agujero instanceof Agujero a && a.cae(particula)) {
+								iterator.remove();
+								afectadas++;
+								return;
+							}
+						}
 						return;
 					}
-					
-					if (e instanceof Demonio demonio) {
-						demonio.pasar(particula);
+				}
+
+				if (!posicionOcupadaPorParticula(nuevaX, nuevaY, particula) &&
+					nuevaX >= 0 && nuevaX < w && nuevaY >= 0 && nuevaY < h) {
+					particula.mover(aumentoX, aumentoY);
+
+					for (Elemento e : elementos) {
+						if (e instanceof Agujero agujero && agujero.cae(particula)) {
+							iterator.remove();
+							afectadas++;
+							return;
+						}
 					}
 				}
 				return;
