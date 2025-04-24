@@ -34,12 +34,14 @@ public class DMaxwellGUI extends JFrame {
     // componentes estadisticas
     private JLabel correctParticlesLabel;
     private JLabel lostParticlesLabel;
+    private JTextArea statsTextArea;
 
 
     //datos predeterminados de la simulación
     private Color currentParticleColor = Color.RED;
     private int hTablero ;
     private int wTablero;
+
 
     private DMaxwellGUI(){
         prepareElements();
@@ -213,7 +215,7 @@ public class DMaxwellGUI extends JFrame {
             dibujarTablero(); 
             colocarElementosEnTablero();
         }
-
+        actualizarEstadisticas();
         botonSeleccionado.setBorder(null);
         botonSeleccionado = null;
     }
@@ -274,16 +276,16 @@ public class DMaxwellGUI extends JFrame {
     /**
      * Metodo para preparar el panel de estadisticas
      */
-    private void prepareStatsPanel(){
-        estPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); 
-    
+    private void prepareStatsPanel() {
+        estPanel = new JPanel();
         estPanel.setLayout(new BoxLayout(estPanel, BoxLayout.Y_AXIS));
-        correctParticlesLabel = new JLabel("Partículas correctas:");
-        lostParticlesLabel = new JLabel("Partículas perdidas:");
-    
+        correctParticlesLabel = new JLabel("Partículas correctas: 0%");
+        lostParticlesLabel = new JLabel("Partículas perdidas: 0");
+        
         estPanel.add(correctParticlesLabel);
         estPanel.add(Box.createVerticalStrut(5));
         estPanel.add(lostParticlesLabel);
+        
         estPanel.setBorder(BorderFactory.createTitledBorder("Estadísticas"));
     }
     
@@ -435,6 +437,23 @@ public class DMaxwellGUI extends JFrame {
                 }
             }
         });
+    }
+    private void actualizarEstadisticas() {
+        if (dMaxwell != null) {
+            double porcentajeCorrectas = dMaxwell.calcularParticulasCorrectas();
+            int perdidas = dMaxwell.getAfectadas();
+            
+            correctParticlesLabel.setText(String.format("Partículas correctas: %.1f%%", porcentajeCorrectas));
+            lostParticlesLabel.setText(String.format("Partículas perdidas: %d", perdidas));
+            
+            statsTextArea.setText(String.format(
+                "Estadísticas:\n- Correctas: %.1f%%\n- Perdidas: %d\n- Rojas: %d\n- Azules: %d",
+                porcentajeCorrectas,
+                perdidas,
+                dMaxwell.getCantidadRojas(),
+                dMaxwell.getCantidadAzules()
+            ));
+        }
     }
     
         public static void main(String[] args) {

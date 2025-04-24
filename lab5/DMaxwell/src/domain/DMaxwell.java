@@ -151,8 +151,13 @@ public class DMaxwell {
 	 * @return porcentaje de particulas pasadas.
 	 */
 
-	public double calcularParticulasCorrectas() {
+	 public double calcularParticulasCorrectas() {
+		int totalParticulas = cantidadRojas + cantidadAzules;
+		if (totalParticulas == 0) return 0.0;
+		
 		int correctas = 0;
+		int totalDisponibles = totalParticulas - afectadas; 
+		
 		for (Elemento elemento : elementos) {
 			if (elemento instanceof Particula particula) {
 				if (particula.estoyPosicionCorrecta(h, w)) {
@@ -160,7 +165,7 @@ public class DMaxwell {
 				}
 			}
 		}
-		return (correctas * 100.0)/(cantidadRojas + cantidadAzules);
+		return (correctas * 100.0) / totalDisponibles;
 	}
 
 	/*
