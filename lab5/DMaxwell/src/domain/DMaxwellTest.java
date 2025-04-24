@@ -1,5 +1,9 @@
 package domain;
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -117,5 +121,70 @@ public class DMaxwellTest {
     assertEquals(0, dMaxwell.getElementos().get(1).getPx());
     assertEquals(0, dMaxwell.getElementos().get(1).getPy());
 }
+
+@Test
+public void shouldFinishWhenAllParticlesFallIntoHolesProperly() {
+    int fila = 0;
+    Agujero agujero = new Agujero(6, 0);
+    Agujero agujero2 = new Agujero(6, 1);
+    dMaxwell.getElementos().add(agujero);
+    dMaxwell.getElementos().add(agujero2);
+    // Colocar agujeros en la columna 5, filas 0, 1, 2, 3 (una por fila)
+    for (Elemento e : dMaxwell.getElementos()) {
+        if (e instanceof Agujero o) {
+            o.setPosition(6, fila++);
+        }
+    }
+
+    fila = 0;
+    
+    List<Particula> particulas = new ArrayList<>();
+    for (Elemento e : dMaxwell.getElementos()) {
+        if (e instanceof Particula p) {
+            p.setPosition(5, fila++);
+            particulas.add(p);
+        }
+    }
+
+    fila = 0;
+    for (Particula p : particulas) {
+        dMaxwell.moverParticula(5, fila, 1, 0);
+        fila++;
+    }
+
+    double caidas = dMaxwell.calcularParticulasCaidas();
+    System.out.println("Caídas: " + caidas + "%");
+
+    assertEquals("Debería haber 100% de partículas caídas", 100.0, caidas, 0.1);
+    assertTrue("El juego debería terminar por caída total", dMaxwell.finish());
+    assertTrue(dMaxwell.isSimulacionTerminada());
+    
+}
+
+
+
+
+@Test
+public void shouldFinishWhenAllParticlesAreInCorrectPosition() {
+    int filaRoja = 0;
+    int filaAzul = 0;
+
+    for (Elemento e : dMaxwell.getElementos()) {
+        if (e instanceof Particula p) {
+            if (p.isRed()) {
+                p.setPosition(1, filaRoja++); 
+            } else {
+                p.setPosition(8, filaAzul++); 
+            }
+        }
+    }
+
+    boolean terminado = dMaxwell.finish();
+
+    assertTrue("Debería terminar porque todas están en posición correcta", terminado);
+    assertTrue(dMaxwell.isSimulacionTerminada());
+}
+
+
 
 }

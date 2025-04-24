@@ -34,7 +34,7 @@ public class DMaxwellGUI extends JFrame {
     // componentes estadisticas
     private JLabel correctParticlesLabel;
     private JLabel lostParticlesLabel;
-    private JTextArea statsTextArea;
+    private JTextArea statsTextArea = new JTextArea(5, 20);
 
 
     //datos predeterminados de la simulación
@@ -102,13 +102,18 @@ public class DMaxwellGUI extends JFrame {
      */
 
     private void refresh() {
-    aplicarButton.addActionListener(e -> {
-        if (leerConfiguracion()) {
-            inicializarModelo();
-            dibujarTablero();
-            colocarElementosEnTablero();
+        for (ActionListener al : aplicarButton.getActionListeners()) {
+            aplicarButton.removeActionListener(al);
         }
+        aplicarButton.addActionListener(e -> {
+            if (leerConfiguracion()) {
+                inicializarModelo();
+                dibujarTablero();
+                colocarElementosEnTablero();
+                actualizarEstadisticas(); 
+            }
         });
+        
     }
     /**
      * metodo para leer la informacion dada en el panel de configuracion
@@ -212,10 +217,12 @@ public class DMaxwellGUI extends JFrame {
         // Solo si son N S O E
         if ((Math.abs(x1 - x2) + Math.abs(y1 - y2)) == 1) {
             dMaxwell.moverParticula(x1, y1, x2 - x1, y2 - y1);
+            dMaxwell.finish();
             dibujarTablero(); 
             colocarElementosEnTablero();
+            actualizarEstadisticas();
         }
-        actualizarEstadisticas();
+        
         botonSeleccionado.setBorder(null);
         botonSeleccionado = null;
     }
@@ -281,7 +288,8 @@ public class DMaxwellGUI extends JFrame {
         estPanel.setLayout(new BoxLayout(estPanel, BoxLayout.Y_AXIS));
         correctParticlesLabel = new JLabel("Partículas correctas: 0%");
         lostParticlesLabel = new JLabel("Partículas perdidas: 0");
-        
+        statsTextArea.setEditable(false);
+
         estPanel.add(correctParticlesLabel);
         estPanel.add(Box.createVerticalStrut(5));
         estPanel.add(lostParticlesLabel);
@@ -461,7 +469,6 @@ public class DMaxwellGUI extends JFrame {
     }
 
     private void mostrarMensajeFinal() {
-        simulacionPanel.setEnabled(false);
         Object[] opciones = {"Nuevo Juego", "Salir"};
         int eleccion = JOptionPane.showOptionDialog(
             this,
@@ -477,7 +484,7 @@ public class DMaxwellGUI extends JFrame {
         );
         if (eleccion == JOptionPane.YES_OPTION) {
             reiniciarJuego();
-            simulacionPanel.setEnabled(true);
+
         } else {
             exit();
         }
@@ -490,7 +497,12 @@ public class DMaxwellGUI extends JFrame {
         r.setText("0");
         b.setText("0");
         o.setText("0");
-        refresh();
+        if (leerConfiguracion()) {
+            inicializarModelo();
+            dibujarTablero();
+            colocarElementosEnTablero();
+            actualizarEstadisticas();  
+        }
     }
         public static void main(String[] args) {
         DMaxwellGUI gui = new DMaxwellGUI();

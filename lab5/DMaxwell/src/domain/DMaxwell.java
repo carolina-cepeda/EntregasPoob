@@ -141,7 +141,7 @@ public class DMaxwell {
 				return;
 			}
 		}
-		
+		finish();
 	}
 
 	/**
