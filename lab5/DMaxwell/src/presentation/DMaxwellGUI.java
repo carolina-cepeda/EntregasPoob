@@ -459,6 +459,7 @@ public class DMaxwellGUI extends JFrame {
             }
         }
     }
+
     private void mostrarMensajeFinal() {
         simulacionPanel.setEnabled(false);
         Object[] opciones = {"Nuevo Juego", "Salir"};
@@ -489,7 +490,7 @@ public class DMaxwellGUI extends JFrame {
         r.setText("0");
         b.setText("0");
         o.setText("0");
-       refresh();
+        refresh();
     }
         public static void main(String[] args) {
         DMaxwellGUI gui = new DMaxwellGUI();

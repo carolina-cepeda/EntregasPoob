@@ -56,7 +56,7 @@ public class DMaxwell {
 				if (px <= w/2) continue; 
 			} 
 			else if (elementosGenerados < r + b) {
-				if (px >= w/2) continue; 
+				if (px > w/2) continue; 
 			}
 			String clave = px + ","+ py;
 
@@ -115,6 +115,7 @@ public class DMaxwell {
 							if (agujero instanceof Agujero a && a.cae(particula)) {
 								iterator.remove();
 								afectadas++;
+								finish();
 								return;
 							}
 						}
@@ -123,21 +124,20 @@ public class DMaxwell {
 				}
 
 				if (!posicionOcupadaPorParticula(nuevaX, nuevaY, particula) &&
-					nuevaX >= 0 && nuevaX < w && nuevaY >= 0 && nuevaY < h) {
+					nuevaX >= 0 && nuevaX < w+1 && nuevaY >= 0 && nuevaY < h) {
 					particula.mover(aumentoX, aumentoY);
 
 					for (Elemento e : elementos) {
 						if (e instanceof Agujero agujero && agujero.cae(particula)) {
 							iterator.remove();
 							afectadas++;
+							finish();
 							return;
 						}
 					}
 				}
-				
-				if(finish()){
-					return;
-				}
+
+		        finish();
 				return;
 			}
 		}
