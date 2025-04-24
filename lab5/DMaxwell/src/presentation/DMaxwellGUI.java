@@ -453,15 +453,7 @@ public class DMaxwellGUI extends JFrame {
             double porcentajePerdidas = dMaxwell.calcularParticulasCaidas();
             
             correctParticlesLabel.setText(String.format("Partículas correctas: %.1f%%", porcentajeCorrectas));
-            lostParticlesLabel.setText(String.format("Partículas perdidas: %.1f", porcentajePerdidas));
-            
-            statsTextArea.setText(String.format(
-                "Estadísticas:\n- Correctas: %.1f%%\n- Perdidas: %1f\n- Rojas: %d\n- Azules: %d",
-                porcentajeCorrectas,
-                porcentajePerdidas,
-                dMaxwell.getCantidadRojas(),
-                dMaxwell.getCantidadAzules()
-            ));
+            lostParticlesLabel.setText(String.format("Partículas perdidas: %.1f%%", porcentajePerdidas));
             if (dMaxwell.isSimulacionTerminada()) {
                 mostrarMensajeFinal();
             }
