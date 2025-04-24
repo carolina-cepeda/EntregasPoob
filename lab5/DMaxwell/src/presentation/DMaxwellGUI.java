@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.*;
+
 public class DMaxwellGUI extends JFrame {
 
     //dominio
@@ -42,12 +43,15 @@ public class DMaxwellGUI extends JFrame {
     private int hTablero ;
     private int wTablero;
 
-
+    /**
+     * * Constructor de la clase DMaxwellGUI.
+     */
     private DMaxwellGUI(){
         prepareElements();
         prepareActions();
 
     }
+    
     /**
      * * Método para preparar los elementos de la ventana.
      * Establece el tamaño y la ubicación de la ventana en la pantalla.
@@ -100,7 +104,6 @@ public class DMaxwellGUI extends JFrame {
     /**
      * Metodo para refrescar el panel de simulacion
      */
-
     private void refresh() {
         for (ActionListener al : aplicarButton.getActionListeners()) {
             aplicarButton.removeActionListener(al);
@@ -115,6 +118,7 @@ public class DMaxwellGUI extends JFrame {
         });
         
     }
+
     /**
      * metodo para leer la informacion dada en el panel de configuracion
      * @return
@@ -130,6 +134,10 @@ public class DMaxwellGUI extends JFrame {
         }
     }
 
+    /**
+     * * Metodo para inicializar el modelo
+     * Crea una nueva instancia de DMaxwell con los valores de configuración proporcionados por el usuario.
+     */
     private void inicializarModelo() {
         int rValor = Integer.parseInt(r.getText());
         int bValor = Integer.parseInt(b.getText());
@@ -137,6 +145,10 @@ public class DMaxwellGUI extends JFrame {
         dMaxwell = new DMaxwell(hTablero, wTablero, rValor, bValor, oValor);
     }
 
+    /**
+     * * Metodo para dibujar el tablero
+     * Crea un nuevo panel de simulación y lo organiza en una cuadrícula.
+     */
     private void dibujarTablero() {
         simulacionPanel.removeAll();
         simulacionPanel.setLayout(new GridLayout(hTablero, wTablero + 1));
@@ -162,16 +174,17 @@ public class DMaxwellGUI extends JFrame {
                 } else {
                     button.addActionListener(f -> seleccionarCelda(button));
                 }
-    
                 simulacionPanel.add(button);
             }
         }
-    
         simulacionPanel.revalidate();
         simulacionPanel.repaint();
     }
     
-
+/**
+ * * Metodo para colocar los elementos en el tablero
+ * Coloca los elementos en el tablero según sus coordenadas.
+ */
     private void colocarElementosEnTablero() {
         if (dMaxwell == null) return;
 
@@ -202,6 +215,10 @@ public class DMaxwellGUI extends JFrame {
         }
     }
 
+    /**
+     * * Metodo para seleccionar una celda del tablero
+     * @param boton
+     */
     private void seleccionarCelda(JButton boton) {
     if (botonSeleccionado == null) {
         botonSeleccionado = boton;
@@ -228,8 +245,6 @@ public class DMaxwellGUI extends JFrame {
     }
 }
 
-
-
     /**
      * Metodo para preparar el panel de configuracion
      */
@@ -242,15 +257,13 @@ public class DMaxwellGUI extends JFrame {
         rLabel = new JLabel("r:");
         bLabel = new JLabel("b:");
         oLabel = new JLabel("o:");
-    
         h = new JTextField(3);
         w = new JTextField(3);
         r = new JTextField(3);
         b = new JTextField(3);
         o = new JTextField(3);
-    
         aplicarButton = new JButton("Aplicar");
-    
+
         configuracionPanel.add(hLabel);
         configuracionPanel.add(h);
         configuracionPanel.add(wLabel);
@@ -262,10 +275,8 @@ public class DMaxwellGUI extends JFrame {
         configuracionPanel.add(oLabel);
         configuracionPanel.add(o);
         configuracionPanel.add(aplicarButton); 
-    
         configuracionPanel.setBorder(BorderFactory.createTitledBorder("Configuración del contenedor"));
     }
-    
     
     /**
      * Metodo para preparar el panel de color
@@ -278,8 +289,6 @@ public class DMaxwellGUI extends JFrame {
         colorPanel.add(elegirColorButton);
     }
     
-
-
     /**
      * Metodo para preparar el panel de estadisticas
      */
@@ -297,8 +306,6 @@ public class DMaxwellGUI extends JFrame {
         estPanel.setBorder(BorderFactory.createTitledBorder("Estadísticas"));
     }
     
-    
-
     /**
      * * Método para organizar los paneles en la ventana.
      * Utiliza un layout de tipo GridLayout para organizar los paneles.
@@ -314,8 +321,6 @@ public class DMaxwellGUI extends JFrame {
     
         add(mainPanel, BorderLayout.CENTER);
     }
-    
-    
     
     /**
      * * Método para preparar los elementos del menu
@@ -340,7 +345,6 @@ public class DMaxwellGUI extends JFrame {
         setJMenuBar(menuBar);
     }
     
-
     /**
      * * Método para preparar las acciones de la ventana.
      * Agrega un listener para el evento de cierre de la ventana.
@@ -358,7 +362,6 @@ public class DMaxwellGUI extends JFrame {
         prepareActionsColor();
         
     }
-
 
     /**
      * * Método para mostrar un mensaje de advertencia al usuario.
@@ -409,7 +412,6 @@ public class DMaxwellGUI extends JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
             }
         });
-    
         itemSalir.addActionListener(e -> exit());
     }
 
@@ -447,6 +449,11 @@ public class DMaxwellGUI extends JFrame {
             }
         });
     }
+
+    /**
+     * * Método para actualizar las estadísticas de la simulación.
+     * Calcula el porcentaje de partículas correctas y perdidas y actualiza los labels correspondientes.
+     */
     private void actualizarEstadisticas() {
         if (dMaxwell != null) {
             double porcentajeCorrectas = dMaxwell.calcularParticulasCorrectas();
@@ -454,12 +461,15 @@ public class DMaxwellGUI extends JFrame {
             
             correctParticlesLabel.setText(String.format("Partículas correctas: %.1f%%", porcentajeCorrectas));
             lostParticlesLabel.setText(String.format("Partículas perdidas: %.1f%%", porcentajePerdidas));
-            if (dMaxwell.isSimulacionTerminada()) {
+            if (dMaxwell.finish()) {
                 mostrarMensajeFinal();
             }
         }
     }
 
+    /**
+     * * Método para mostrar un mensaje al finalizar el juego.
+     */
     private void mostrarMensajeFinal() {
         Object[] opciones = {"Nuevo Juego", "Salir"};
         int eleccion = JOptionPane.showOptionDialog(
@@ -482,6 +492,10 @@ public class DMaxwellGUI extends JFrame {
         }
     }
 
+    /**
+     * * Método para reiniciar el juego.
+     * Limpia el tablero y restablece los valores de las estadísticas.
+     */
     private void reiniciarJuego() {
         dMaxwell = null;
         h.setText("4");

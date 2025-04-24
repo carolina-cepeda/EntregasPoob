@@ -21,7 +21,7 @@ public class DMaxwell {
 
 	private int afectadas;
 
-	private ArrayList<Elemento> elementos;
+	private ArrayList<Elemento> elementos = new ArrayList<>();
 
 	private boolean simulacionTerminada = false;
 
@@ -34,52 +34,71 @@ public class DMaxwell {
  * @param b : cantidad de particulas azules
  * @param o : cantidad de agujeros
  */
-// mejorar distribucion
-	public DMaxwell (int h, int w, int r, int b, int o) {
-		this.h = h;
-		this.w = w;
-		this.cantidadRojas = r;
-		this.cantidadAzules = b;
-		this.cantidadHoles = o;
-		this.afectadas = 0;
-		this.elementos = new ArrayList<>();
-		Random random = new Random();
-		Set<String> posiciones = new HashSet<>();
-		int totalElementos = cantidadRojas + cantidadAzules + cantidadHoles;
-		int elementosGenerados = 0;
+public DMaxwell(int h, int w, int r, int b, int o) {
+    this.h = h;
+    this.w = w;
+    this.cantidadRojas = r;
+    this.cantidadAzules = b;
+    this.cantidadHoles = o;
+    this.afectadas = 0;
 
-		while(elementosGenerados < totalElementos){
-			int px = random.nextInt(w);
-			int py = random.nextInt(h);
-			if (px == w / 2) continue;
-			if (elementosGenerados < r) {
-				if (px <= w/2) continue; 
-			} 
-			else if (elementosGenerados < r + b) {
-				if (px > w/2) continue; 
-			}
-			String clave = px + ","+ py;
+    Set<String> posiciones = new HashSet<>();
+    Random random = new Random();
 
-			if(!posiciones.contains(clave)){
-				posiciones.add(clave);
-				if (elementosGenerados < r) {
-					Particula particula = new Particula(true, px, py);
-					elementos.add(particula);
-				} else if (elementosGenerados < r + b) {
-					Particula particula = new Particula(false, px, py);
-					elementos.add(particula);
-				} else {
-					Agujero agujero = new Agujero(px, py);
-					elementos.add(agujero);
-				}
-				
-				elementosGenerados++;
-			}
-		}
-		Demonio demonio = new Demonio(w/2, h/2);
-		elementos.add(demonio);
-	}
-	
+    generarParticulas(r, true, random, posiciones); 
+    generarParticulas(b, false, random, posiciones); 
+    generarAgujeros(o, random, posiciones); 
+
+    elementos.add(new Demonio(w / 2, h / 2)); // demonio al centro
+}
+
+/**
+ * Genera las particulas en el tablero.
+ * @param cantidad
+ * @param esRoja
+ * @param random
+ * @param posiciones
+ */
+private void generarParticulas(int cantidad, boolean esRoja, Random random, Set<String> posiciones) {
+    int generadas = 0;
+    while (generadas < cantidad) {
+        int px = random.nextInt(w);
+        int py = random.nextInt(h);
+
+        if (px == w / 2) continue;
+        if (esRoja && px <= w / 2) continue;
+        if (!esRoja && px > w / 2) continue;
+
+        String clave = px + "," + py;
+        if (posiciones.add(clave)) {
+            elementos.add(new Particula(esRoja, px, py));
+            generadas++;
+        }
+    }
+}
+
+/**
+ * Genera los agujeros en el tablero.
+ * @param cantidad
+ * @param random
+ * @param posiciones
+ */
+private void generarAgujeros(int cantidad, Random random, Set<String> posiciones) {
+    int generados = 0;
+    while (generados < cantidad) {
+        int px = random.nextInt(w);
+        int py = random.nextInt(h);
+
+        if (px == w / 2) continue;
+
+        String clave = px + "," + py;
+        if (posiciones.add(clave)) {
+            elementos.add(new Agujero(px, py));
+            generados++;
+        }
+    }
+}
+
 	/**
 	 * Mueve la particula a la nueva posicion, si no es valida, vuelve a la
 	 * posicion anterior.Verifica si ha caido en un agujero antes de moverla y si 
@@ -90,58 +109,79 @@ public class DMaxwell {
 	 * @param aumentoY : cantidad a mover en y
 	 */
 	public void moverParticula(int px, int py, int aumentoX, int aumentoY) {
+
 		if (simulacionTerminada) return;
-		for (Iterator<Elemento> iterator = elementos.iterator(); iterator.hasNext();) {
-			Elemento elemento = iterator.next();
-			if (elemento.estoyAhi(px, py) && elemento instanceof Particula particula) {
-				int nuevaX = px + aumentoX;
-				int nuevaY = py + aumentoY;
 	
-				for (Elemento e : elementos) {
-					if (e instanceof Demonio demonio && demonio.estoyAhi(nuevaX, nuevaY)) {
+		for (Iterator<Elemento> it = elementos.iterator(); it.hasNext();) {
 
-						int posFinalX = particula.isRed() ? nuevaX - 1 : nuevaX + 1;
-						int posFinalY = nuevaY;
-						
-						if (posicionOcupadaPorParticula(posFinalX, posFinalY, particula)) {
-							return; 
-						}
-
-						particula.mover(aumentoX, aumentoY);
-
-						particula.pasar();
-
-						for (Elemento agujero : elementos) {
-							if (agujero instanceof Agujero a && a.cae(particula)) {
-								iterator.remove();
-								afectadas++;
-								finish();
-								return;
-							}
-						}
-						return;
-					}
-				}
-
-				if (!posicionOcupadaPorParticula(nuevaX, nuevaY, particula) &&
-					nuevaX >= 0 && nuevaX < w+1 && nuevaY >= 0 && nuevaY < h) {
-					particula.mover(aumentoX, aumentoY);
-
-					for (Elemento e : elementos) {
-						if (e instanceof Agujero agujero && agujero.cae(particula)) {
-							iterator.remove();
-							afectadas++;
-							finish();
-							return;
-						}
-					}
-				}
-
-		        finish();
-				return;
+			Elemento elemento = it.next();
+	
+			if (!(elemento.estoyAhi(px, py) && elemento instanceof Particula particula)) continue;
+	
+			int nuevaX = px + aumentoX;
+			int nuevaY = py + aumentoY;
+	
+			if (interactuarConDemonio(particula, nuevaX, nuevaY, aumentoX, aumentoY, it)) return;
+	
+			if (!posicionOcupadaPorParticula(nuevaX, nuevaY, particula) &&
+				nuevaX >= 0 && nuevaX < w + 1 && nuevaY >= 0 && nuevaY < h) { // seria mejor manejar el metodo "posicionCorrecta" en esta clase para manejar las nuevas 
+				particula.mover(aumentoX, aumentoY); 
+	
+				if (verificarAgujero(particula, it)) return;
 			}
+	
+			finish();
+			return;
 		}
 		finish();
+	}
+	
+	/**
+	 * Verifica si la particula interactua con el demonio, si es asi, la mueve y
+	 * verifica si cae en un agujero. Si cae en un agujero, la elimina de la lista de elementos.
+	 * @param particula
+	 * @param nuevaX
+	 * @param nuevaY
+	 * @param aumentoX
+	 * @param aumentoY
+	 * @param it :elemento actual
+	 * @return true si la particula interactua con el demonio, false en caso contrario.
+	 */
+	private boolean interactuarConDemonio(Particula particula, int nuevaX, int nuevaY, int aumentoX, int aumentoY, Iterator<Elemento> it) {
+		for (Elemento e : elementos) {
+			if (e instanceof Demonio demonio && demonio.estoyAhi(nuevaX, nuevaY)) {
+				int posFinalX = particula.isRed() ? nuevaX - 1 : nuevaX + 1;
+	
+				if (posicionOcupadaPorParticula(posFinalX, nuevaY, particula)) return true;
+	
+				particula.mover(aumentoX, aumentoY);
+				particula.pasar();
+	
+				if (verificarAgujero(particula, it)) return true;
+	
+				finish();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Verifica si la particula cae en un agujero, si es asi, la elimina de la lista de elementos.
+	 * @param particula
+	 * @param it :elemento actual
+	 * @return true si la particula cae en un agujero, false en caso contrario.
+	 */
+	private boolean verificarAgujero(Particula particula, Iterator<Elemento> it) {
+		for (Elemento e : elementos) {
+			if (e instanceof Agujero agujero && agujero.cae(particula)) {
+				it.remove();
+				afectadas++;
+				finish();
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -183,6 +223,7 @@ public class DMaxwell {
 	public int getAfectadas() {
 		return this.afectadas;
 	}
+
 	/**
 	 * Devuelve la cantidad de agujeros en el tablero.
 	 * @return int cantidad de agujeros.
@@ -190,6 +231,7 @@ public class DMaxwell {
 	public int getCantidadHoles() {
 		return this.cantidadHoles;
 	}
+
 	/**
 	 * Devuelve la cantidad de particulas rojas en el tablero.
 	 * @return int cantidad de particulas rojas.
@@ -197,6 +239,7 @@ public class DMaxwell {
 	public int getCantidadRojas() {
 		return this.cantidadRojas;
 	}
+
 	/**
 	 * Devuelve la cantidad de particulas azules en el tablero.
 	 * @return int cantidad de particulas azules.
@@ -204,6 +247,7 @@ public class DMaxwell {
 	public int getCantidadAzules() {
 		return this.cantidadAzules;
 	}
+
 	/**
 	 * Devuelve la cantidad de filas del tablero.
 	 * @return int cantidad de filas.
@@ -219,6 +263,7 @@ public class DMaxwell {
 	public int getW() {
 		return this.w;
 	}
+
 	/**
 	 * Devuelve la cantidad de demonios en el juego
 	 * @return int cantidad de demonios.
@@ -232,6 +277,7 @@ public class DMaxwell {
 		}
 		return demonios;
 	}
+
 	/**
 	 * Devuelve la lista de elementos del tablero.
 	 * @return ArrayList<Elemento> lista de elementos.
@@ -239,6 +285,7 @@ public class DMaxwell {
 	public ArrayList<Elemento> getElementos() {
 		return this.elementos;
 	}
+
 	/**
 	 * Verifica si una posición está ocupada por otra partícula.
 	 * @param px : posición en x a verificar.
@@ -254,7 +301,14 @@ public class DMaxwell {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * 
+	 * @param x : posicion en x de la particula a cambiar el color
+	 * @param y : posicion en y de la particula a cambiar el color
+	 * @param nuevoColor : nuevo color de la particula
+	 * @return boolean : el proceso de cambiar el color de la particula fue exitoso.
+	 */
 	public boolean cambiarColorParticulaEn(int x, int y, Color nuevoColor) {
 		for (Elemento e : elementos) {
 			if (e instanceof Particula p && p.estoyAhi(x, y)) {
@@ -264,7 +318,11 @@ public class DMaxwell {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * Verifica si terminó el juego
+	 * @return true si la simulación terinó, false en caso contrario.
+	 */
 	public boolean finish() {
 		double porcentajeCorrectas = calcularParticulasCorrectas();
 		double porcentajePerdidas = calcularParticulasCaidas();
@@ -275,7 +333,5 @@ public class DMaxwell {
 		}
 		return false;
 	}
-	public boolean isSimulacionTerminada() {
-		return simulacionTerminada;
-	}
+	
 }

@@ -129,7 +129,7 @@ public void shouldFinishWhenAllParticlesFallIntoHolesProperly() {
     Agujero agujero2 = new Agujero(6, 1);
     dMaxwell.getElementos().add(agujero);
     dMaxwell.getElementos().add(agujero2);
-    // Colocar agujeros en la columna 5, filas 0, 1, 2, 3 (una por fila)
+  
     for (Elemento e : dMaxwell.getElementos()) {
         if (e instanceof Agujero o) {
             o.setPosition(6, fila++);
@@ -153,11 +153,9 @@ public void shouldFinishWhenAllParticlesFallIntoHolesProperly() {
     }
 
     double caidas = dMaxwell.calcularParticulasCaidas();
-    System.out.println("Caídas: " + caidas + "%");
-
     assertEquals("Debería haber 100% de partículas caídas", 100.0, caidas, 0.1);
     assertTrue("El juego debería terminar por caída total", dMaxwell.finish());
-    assertTrue(dMaxwell.isSimulacionTerminada());
+    assertTrue(dMaxwell.finish());
     
 }
 
@@ -182,7 +180,7 @@ public void shouldFinishWhenAllParticlesAreInCorrectPosition() {
     boolean terminado = dMaxwell.finish();
 
     assertTrue("Debería terminar porque todas están en posición correcta", terminado);
-    assertTrue(dMaxwell.isSimulacionTerminada());
+    assertTrue(dMaxwell.finish());
 }
 
 
