@@ -67,7 +67,7 @@ private void generarParticulas(int cantidad, boolean esRoja, Random random, Set<
 
         if (px == w / 2) continue;
         if (esRoja && px <= w / 2) continue;
-        if (!esRoja && px > w / 2) continue;
+        if (!esRoja && px > w / 2 +1) continue;
 
         String clave = px + "," + py;
         if (posiciones.add(clave)) {
@@ -127,7 +127,7 @@ private void generarAgujeros(int cantidad, Random random, Set<String> posiciones
 			}
 	
 			if (!posicionOcupadaPorParticula(nuevaX, nuevaY, particula) &&
-				nuevaX >= 0 && nuevaX < w && nuevaY >= 0 && nuevaY < h) {
+				nuevaX >= 0 && nuevaX < w +2 && nuevaY >= 0 && nuevaY < h) {
 				particula.mover(aumentoX, aumentoY);
 				if (verificarAgujero(particula, it)) return;
 			}
