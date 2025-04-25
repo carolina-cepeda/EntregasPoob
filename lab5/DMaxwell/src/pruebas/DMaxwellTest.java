@@ -66,11 +66,11 @@ public class DMaxwellTest {
     }
 
     @Test
-    public void shouldPassParticleToRightWhenDemon(){
+    public void shouldPassParticleToLeftWhenDemon(){
         dMaxwell.getElementos().get(0).setPosition(1, 1);
         dMaxwell.getElementos().get(6).setPosition(1, 2);
         dMaxwell.moverParticula(1, 1, 0,1);
-        assertEquals(0,dMaxwell.getElementos().get(0).px); 
+        assertEquals(1,dMaxwell.getElementos().get(0).px); 
     }
 
     @Test

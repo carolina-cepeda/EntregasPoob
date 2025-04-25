@@ -110,7 +110,7 @@ private void generarAgujeros(int cantidad, Random random, Set<String> posiciones
 	 */
 	public void moverParticula(int px, int py, int aumentoX, int aumentoY) {
 
-		if (simulacionTerminada) return;
+		if (finish()) return;
 	
 		for (Iterator<Elemento> it = elementos.iterator(); it.hasNext();) {
 
@@ -127,7 +127,7 @@ private void generarAgujeros(int cantidad, Random random, Set<String> posiciones
 				nuevaX >= 0 && nuevaX < w + 1 && nuevaY >= 0 && nuevaY < h) { // seria mejor manejar el metodo "posicionCorrecta" en esta clase para manejar las nuevas 
 				particula.mover(aumentoX, aumentoY); 
 	
-				if (verificarAgujero(particula, it)) return;
+			if (verificarAgujero(particula, it)) return;
 			}
 	
 			finish();
@@ -152,10 +152,10 @@ private void generarAgujeros(int cantidad, Random random, Set<String> posiciones
 			if (e instanceof Demonio demonio && demonio.estoyAhi(nuevaX, nuevaY)) {
 				int posFinalX = particula.isRed() ? nuevaX - 1 : nuevaX + 1;
 	
+				demonio.pasar(particula);
+				
 				if (posicionOcupadaPorParticula(posFinalX, nuevaY, particula)) return true;
 	
-				particula.mover(aumentoX, aumentoY);
-				particula.pasar();
 	
 				if (verificarAgujero(particula, it)) return true;
 	
