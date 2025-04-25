@@ -113,21 +113,23 @@ private void generarAgujeros(int cantidad, Random random, Set<String> posiciones
 		if (finish()) return;
 	
 		for (Iterator<Elemento> it = elementos.iterator(); it.hasNext();) {
-
 			Elemento elemento = it.next();
 	
-			if (!(elemento.estoyAhi(px, py) && elemento instanceof Particula particula)) continue;
+			if (!(elemento.estoyAhi(px, py) && elemento instanceof Particula particula)) 
+				continue;
 	
 			int nuevaX = px + aumentoX;
 			int nuevaY = py + aumentoY;
-	
-			if (interactuarConDemonio(particula, nuevaX, nuevaY, aumentoX, aumentoY, it)) return;
+
+			if (interactuarConDemonio(particula, nuevaX, nuevaY, it)) {
+				finish();
+				return;
+			}
 	
 			if (!posicionOcupadaPorParticula(nuevaX, nuevaY, particula) &&
-				nuevaX >= 0 && nuevaX < w + 1 && nuevaY >= 0 && nuevaY < h) { // seria mejor manejar el metodo "posicionCorrecta" en esta clase para manejar las nuevas 
-				particula.mover(aumentoX, aumentoY); 
-	
-			if (verificarAgujero(particula, it)) return;
+				nuevaX >= 0 && nuevaX < w && nuevaY >= 0 && nuevaY < h) {
+				particula.mover(aumentoX, aumentoY);
+				if (verificarAgujero(particula, it)) return;
 			}
 	
 			finish();
@@ -147,25 +149,22 @@ private void generarAgujeros(int cantidad, Random random, Set<String> posiciones
 	 * @param it :elemento actual
 	 * @return true si la particula interactua con el demonio, false en caso contrario.
 	 */
-	private boolean interactuarConDemonio(Particula particula, int nuevaX, int nuevaY, int aumentoX, int aumentoY, Iterator<Elemento> it) {
+	private boolean interactuarConDemonio(Particula particula, int nuevaX, int nuevaY, Iterator<Elemento> it) {
+
 		for (Elemento e : elementos) {
 			if (e instanceof Demonio demonio && demonio.estoyAhi(nuevaX, nuevaY)) {
-				int posFinalX = particula.isRed() ? nuevaX - 1 : nuevaX + 1;
-	
-				demonio.pasar(particula);
-				
-				if (posicionOcupadaPorParticula(posFinalX, nuevaY, particula)) return true;
-	
-	
-				if (verificarAgujero(particula, it)) return true;
-	
-				finish();
+
+				if (demonio.pasar(particula)) {
+
+					return verificarAgujero(particula, it);
+				}
 				return true;
+				}
 			}
+			
+			return false;
 		}
-		return false;
-	}
-	
+		
 	/**
 	 * Verifica si la particula cae en un agujero, si es asi, la elimina de la lista de elementos.
 	 * @param particula
