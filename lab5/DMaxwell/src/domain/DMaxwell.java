@@ -204,7 +204,6 @@ private void generarAgujeros(int cantidad, Random random, Set<String> posiciones
 		if (totalParticulas == 0) return 0.0;
 		
 		int correctas = 0;
-		int totalDisponibles = totalParticulas - afectadas; 
 		
 		for (Elemento elemento : elementos) {
 			if (elemento instanceof Particula particula) {
@@ -213,7 +212,7 @@ private void generarAgujeros(int cantidad, Random random, Set<String> posiciones
 				}
 			}
 		}
-		return (correctas * 100.0) / totalDisponibles;
+		return (correctas * 100.0) / totalParticulas;
 	}
 
 	/*
@@ -327,7 +326,7 @@ private void generarAgujeros(int cantidad, Random random, Set<String> posiciones
 		double porcentajeCorrectas = calcularParticulasCorrectas();
 		double porcentajePerdidas = calcularParticulasCaidas();
 		
-		if (porcentajeCorrectas >= 100.0 || porcentajePerdidas >= 100.0) {
+		if (porcentajeCorrectas + porcentajePerdidas >= 100.0) {
 			simulacionTerminada = true;
 			return true;
 		}
