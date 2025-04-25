@@ -66,11 +66,18 @@ public class DMaxwellTest {
     }
 
     @Test
-    public void shouldPassParticleToLeftWhenDemon(){
-        dMaxwell.getElementos().get(0).setPosition(1, 1);
-        dMaxwell.getElementos().get(6).setPosition(1, 2);
-        dMaxwell.moverParticula(1, 1, 0,1);
-        assertEquals(1,dMaxwell.getElementos().get(0).px); 
+    public void shouldNotAllowRedParticleToPassToRight() {
+        int centerX = dMaxwell.getW() / 2;
+        int centerY = dMaxwell.getH() / 2;
+
+        dMaxwell.getElementos().get(6).setPosition(centerX, centerY); 
+        dMaxwell.getElementos().get(2).setPosition(centerX + 1, centerY); 
+
+        dMaxwell.moverParticula(centerX + 1, centerY, -1, 0); 
+
+        // La partícula no debería moverse porque no puede pasar por el demonio
+        assertEquals(centerX + 1, dMaxwell.getElementos().get(2).getPx());
+        assertEquals(centerY, dMaxwell.getElementos().get(2).getPy());
     }
 
     @Test

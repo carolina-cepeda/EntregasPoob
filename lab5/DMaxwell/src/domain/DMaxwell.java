@@ -150,20 +150,21 @@ private void generarAgujeros(int cantidad, Random random, Set<String> posiciones
 	 * @return true si la particula interactua con el demonio, false en caso contrario.
 	 */
 	private boolean interactuarConDemonio(Particula particula, int nuevaX, int nuevaY, Iterator<Elemento> it) {
-
 		for (Elemento e : elementos) {
 			if (e instanceof Demonio demonio && demonio.estoyAhi(nuevaX, nuevaY)) {
-
-				if (demonio.pasar(particula, nuevaX, nuevaY)) {
-    	return verificarAgujero(particula, it);
-		}
-
-				return true;
+				boolean paso = demonio.pasar(particula, nuevaX, nuevaY);
+				if (paso) {
+					// Verificar la posición al lado del demonio
+					int ladoX = particula.isRed() ? nuevaX - 1 : nuevaX + 1;
+					if (!posicionOcupadaPorParticula(ladoX, nuevaY, particula)) {
+						return verificarAgujero(particula, it);
+					}
 				}
+				return false; 
 			}
-			
-			return false;
 		}
+		return false; 
+	}
 		
 	/**
 	 * Verifica si la particula cae en un agujero, si es asi, la elimina de la lista de elementos.
