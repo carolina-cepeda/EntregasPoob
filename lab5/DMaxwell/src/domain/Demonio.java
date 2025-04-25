@@ -18,14 +18,17 @@ public class Demonio extends Elemento {
 	/**
 	 * metodo para verificar si una particula pasa al demonio o no
 	 * @param particula 
+	 * @param targetX : posicion en x a verificar
+	 * @param targetY : posicion en y a verificar
 	 * @return boolean
 	 */
-	public boolean pasar(Particula particula) {
-		if(particula.estoyAhi(px, py)){
+	public boolean pasar(Particula particula, int targetX, int targetY) {
+		if (estoyAhi(targetX, targetY)) {
 			particula.pasar();
 			return true;
 		}
 		return false;
 	}
+	
 
 }

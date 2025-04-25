@@ -154,10 +154,10 @@ private void generarAgujeros(int cantidad, Random random, Set<String> posiciones
 		for (Elemento e : elementos) {
 			if (e instanceof Demonio demonio && demonio.estoyAhi(nuevaX, nuevaY)) {
 
-				if (demonio.pasar(particula)) {
+				if (demonio.pasar(particula, nuevaX, nuevaY)) {
+    	return verificarAgujero(particula, it);
+		}
 
-					return verificarAgujero(particula, it);
-				}
 				return true;
 				}
 			}
