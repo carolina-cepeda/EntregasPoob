@@ -62,8 +62,8 @@ public DMaxwell(int h, int w, int r, int b, int o) {
 private void generarParticulas(int cantidad, boolean esRoja, Random random, Set<String> posiciones) {
     int generadas = 0;
     while (generadas < cantidad) {
-        int px = random.nextInt(w+1);
-        int py = random.nextInt(h+1);
+        int px = random.nextInt(w);
+        int py = random.nextInt(h);
 
         if (px == w / 2) continue;
         if (esRoja && px <= w / 2) continue;
@@ -86,8 +86,8 @@ private void generarParticulas(int cantidad, boolean esRoja, Random random, Set<
 private void generarAgujeros(int cantidad, Random random, Set<String> posiciones) {
     int generados = 0;
     while (generados < cantidad) {
-        int px = random.nextInt(w+1);
-        int py = random.nextInt(h+1);
+        int px = random.nextInt(w);
+        int py = random.nextInt(h);
 
         if (px == w / 2) continue;
 
@@ -127,7 +127,7 @@ private void generarAgujeros(int cantidad, Random random, Set<String> posiciones
 			}
 	
 			if (!posicionOcupadaPorParticula(nuevaX, nuevaY, particula) &&
-				nuevaX >= 0 && nuevaX < w+1 && nuevaY >= 0 && nuevaY < h) {
+				nuevaX >= 0 && nuevaX < w && nuevaY >= 0 && nuevaY < h) {
 				particula.mover(aumentoX, aumentoY);
 				if (verificarAgujero(particula, it)) return;
 			}
@@ -154,14 +154,9 @@ private void generarAgujeros(int cantidad, Random random, Set<String> posiciones
 		for (Elemento e : elementos) {
 			if (e instanceof Demonio demonio && demonio.estoyAhi(nuevaX, nuevaY)) {
 
-				int destinoX = particula.isRed() ? particula.getPx() - 1 : particula.getPx() + 1;
-				int destinoY = particula.getPy();
-				
-				if (!posicionOcupadaPorParticula(destinoX, destinoY, particula)) {
-					particula.pasar();
-					return verificarAgujero(particula, it);
-				}
-				
+				if (demonio.pasar(particula, nuevaX, nuevaY)) {
+    	return verificarAgujero(particula, it);
+		}
 
 				return true;
 				}
