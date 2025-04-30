@@ -15,6 +15,10 @@ public class Pocion extends Item {
         put("Revive",1/2);
     }};
 	
+    /**
+     * constructor de objeto poción
+     * @param nombre
+     */
 	public Pocion(String nombre) {
 		super(nombre);
 		this.puntosSanacion = (int) tiposPocion.get(nombre);
@@ -23,11 +27,11 @@ public class Pocion extends Item {
 	public void usar(Pokemon p) {
 		
 		if (p.getSalud()> 0) {
-			p.AumentoSalud(puntosSanacion);
+			p.aumentoSalud(puntosSanacion);
 		}
 		
 		else {
-			p.aumentoSalud(p.getSaludInicial() * (double) tiposPocion.get(nombre));
+			p.aumentoSalud(p.getSaludInicial() * (int) tiposPocion.get(nombre));
 		}
 
 	}

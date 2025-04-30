@@ -1,37 +1,73 @@
-package dominio;
+import java.util.ArrayList;
+import java.util.List;
 
-import tipos.String;
+public class Entrenador {
+    private String nombre;
+    private String color;
+    private Pokemon pokemonActual;
+    private List<Pokemon> pokemones;
+    private List<Item> items;
 
-public abstract class Entrenador {
+    public Entrenador(String nombre, String color) {
+        this.nombre = nombre;
+        this.color = color;
+        this.pokemones = new ArrayList<>();
+        this.items = new ArrayList<>();
+    }
 
-	public String nombre;
+    public String getNombre() {
+        return nombre;
+    }
 
-	public String color;
+    public String getColor() {
+        return color;
+    }
 
-	private Pokemon pokemonActual;
+    public void agregarPokemon(Pokemon p) {
+        if (pokemones.size() < 6) {
+            pokemones.add(p);
+            if (pokemonActual == null) {
+                pokemonActual = p;
+            }
+        } else {
+            System.out.println("El entrenador ya tiene 6 pokémon.");
+        }
+    }
 
-	private Pokemon[] pokemones;
+    public void agregarItem(Item item) {
+        items.add(item);
+    }
 
-	private Item[] items;
+    public Pokemon getPokemonActivo() {
+        return pokemonActual;
+    }
 
-	public Entrenador(String nombre, String color) {
+    public void cambiarPokemon(Pokemon nuevo) {
+        if (pokemones.contains(nuevo) && nuevo.getSalud() > 0) {
+            this.pokemonActual = nuevo;
+        } else {
+            System.out.println("No se puede cambiar a ese Pokémon.");
+        }
+    }
 
-	}
+    public void seleccionarMovimiento(int indiceMovimiento, Pokemon objetivo) {
+        if (pokemonActual != null && objetivo != null) {
+            pokemonActual.Atacar(indiceMovimiento, objetivo);
+        }
+    }
 
-	public void cambiarPokemon() {
+    public void usarItem(Item item, Pokemon objetivo) {
+        if (items.contains(item)) {
+            item.usar(objetivo);
+            items.remove(item); // lo elimina tras usarlo, como evito tener que volver  a inventar el item despues?
+        }
+    }
 
-	}
+    public List<Pokemon> getPokemones() {
+        return pokemones;
+    }
 
-	public void seleccionarMovimiento(Pokemon pokemonObjetivo) {
-
-	}
-
-	public void usarItem(Item item, Pokemon objetivo) {
-
-	}
-
-	public Pokemon getPokemonActivo() {
-		return null;
-	}
-
+    public List<Item> getItems() {
+        return items;
+    }
 }

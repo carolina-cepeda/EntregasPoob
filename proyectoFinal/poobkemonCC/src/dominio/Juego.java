@@ -10,8 +10,7 @@ public class Juego implements ModoJuego {
 
 	}
 
-	public void empezarBatalla() {
-
+	public void empezarBatalla(Entrenador e1, Entrenador e2) {
 	}
 
 	public void seleccionarModo() {
