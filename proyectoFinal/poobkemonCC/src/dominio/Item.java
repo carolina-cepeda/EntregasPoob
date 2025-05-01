@@ -9,6 +9,10 @@ public abstract class Item {
 		this.nombre = nombre;
 	}
 
+	public String getNombre() {
+		return nombre;
+	}
+
 	public abstract void usar(Pokemon p);
 
 }

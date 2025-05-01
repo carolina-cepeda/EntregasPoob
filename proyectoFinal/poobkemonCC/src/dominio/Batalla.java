@@ -2,34 +2,91 @@ package dominio;
 
 public class Batalla {
 
-	private Entrenador entrenador1;
+    private Entrenador entrenador1;
+    private Entrenador entrenador2;
+    private Entrenador turnoActual;
+    private ControladorTurno controlador;
 
-	private Entrenador entrenador2;
+    public Batalla(Entrenador e1, Entrenador e2) {
+        this.entrenador1 = e1;
+        this.entrenador2 = e2;
+        this.turnoActual = lanzarMoneda() ? entrenador1 : entrenador2;
+        this.controlador = new ControladorTurno(this);
+    }
 
-	private Entrenador turnoActual;
+    public void inicializarBatalla() {
+        System.out.println("¡Empieza la batalla entre " + entrenador1.getNombre() + " y " + entrenador2.getNombre() + "!");
+        controlador.iniciar();
+    }
 
-	private Entrenador[] entrenador;
+    /**
+     * Permite realizar la acción del turno.
+     */
+    public void ejecutarTurno(String accion, Object dato) {
+        switch (accion.toLowerCase()) {
+            case "atacar" -> {
+                int indice = (int) dato;
+                turnoActual.seleccionarMovimiento(indice, obtenerOponente().getPokemonActivo());
+            }
 
-	private ControladorTurno controladorTurno;
+            case "cambiar" -> {
+                Pokemon nuevo = (Pokemon) dato;
+                turnoActual.cambiarPokemon(nuevo);
+            }
 
-	public Batalla() {
+            case "usaritem" -> {
+                Object[] datos = (Object[]) dato; // [Item, Pokemon]
+                Item item = (Item) datos[0];
+                Pokemon objetivo = (Pokemon) datos[1];
+                turnoActual.usarItem(item, objetivo);
+            }
 
-	}
+            case "huir" -> {
+                System.out.println(turnoActual.getNombre() + " ha huido de la batalla.");
+                terminarBatalla(obtenerOponente());
+                return;
+            }
 
-	public void iniciarBatalla() {
+            default -> System.out.println("Acción no válida.");
+        }
 
-	}
+        if (verificarFin()) return;
+        cambiarTurno();
+        controlador.iniciar();
+    }
 
-	public void ComenzarTurno() {
+    private boolean lanzarMoneda() {
+        return Math.random() < 0.5;
+    }
 
-	}
+    private void cambiarTurno() {
+        turnoActual = (turnoActual == entrenador1) ? entrenador2 : entrenador1;
+        System.out.println("Turno de " + turnoActual.getNombre());
+    }
 
-	public boolean verificarFin() {
-		return false;
-	}
+    private Entrenador obtenerOponente() {
+        return (turnoActual == entrenador1) ? entrenador2 : entrenador1;
+    }
 
-	public Pokemon getPokemonActivo(Entrenador e) {
-		return null;
-	}
+    private boolean verificarFin() {
+        boolean e1SinPokemones = entrenador1.getPokemones().stream().allMatch(p -> p.getSalud() <= 0);
+        boolean e2SinPokemones = entrenador2.getPokemones().stream().allMatch(p -> p.getSalud() <= 0);
 
+        if (e1SinPokemones || e2SinPokemones) {
+            Entrenador ganador = e1SinPokemones ? entrenador2 : entrenador1;
+            terminarBatalla(ganador);
+            return true;
+        }
+        return false;
+    }
+
+    private void terminarBatalla(Entrenador ganador) {
+        controlador.detener();
+        System.out.println("¡" + ganador.getNombre() + " ha ganado la batalla!");
+    }
+
+    public Entrenador getTurnoActual() {
+        return turnoActual;
+    }
 }
+

@@ -1,42 +1,55 @@
 package dominio;
 
+public class Movimiento {
 
-public abstract class Movimiento {
+    private String nombre;
+    private int potencia;
+    private int precision;
+    private int pp;
+    private int prioridad;
+    private String tipo;
+    private String efectoSecundario;
 
-	private String nombre;
+    public Movimiento(String nombre, int potencia, int precision, int pp, int prioridad, String tipo, String efectoSecundario) {
+        this.nombre = nombre;
+        this.potencia = potencia;
+        this.precision = precision;
+        this.pp = pp;
+        this.prioridad = prioridad;
+        this.tipo = tipo;
+        this.efectoSecundario = efectoSecundario;
+    }
 
-	private int potencia;
+    public int getPP() {
+        return pp;
+    }
 
-	private int precision;
+    public String getNombre() {
+        return nombre;
+    }
 
-	private int pp;
+    public int getPotencia() {
+        return potencia;
+    }
 
-	private int ppActual;
-	
-	private int prioridad;
+    public int getPrecision() {
+        return precision;
+    }
 
-	private String tipo;
+    public int getPrioridad() {
+        return prioridad;
+    }
 
-	private String efectoSecuntario;
-	
-	public Movimiento(String nombre, int potencia, int precision, int pp, int prioridad, String tipo, String efectoSecundario) {
-	    this.nombre = nombre;
-	    this.potencia = potencia;
-	    this.precision = precision;
-	    this.pp = pp;
-	    this.ppActual = pp; 
-	    this.prioridad = prioridad;
-	    this.tipo = tipo;
-	    this.efectoSecuntario = efectoSecundario;
-	}
+    public String getTipo() {
+        return tipo;
+    }
 
+    public String getEfectoSecundario() {
+        return efectoSecundario;
+    }
 
-	public Movimiento AtaqueObjetivo(Pokemon pokemonObjetivo) {
-		return null;
-	}
-	
-	public int getPP() {
-		return this.pp;
-	}
-
+    public Movimiento AtaqueObjetivo(Pokemon objetivo) {
+        //como la hago?
+        return this;
+    }
 }

@@ -1,7 +1,10 @@
+package dominio;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Entrenador {
+
     private String nombre;
     private String color;
     private Pokemon pokemonActual;
@@ -59,7 +62,7 @@ public class Entrenador {
     public void usarItem(Item item, Pokemon objetivo) {
         if (items.contains(item)) {
             item.usar(objetivo);
-            items.remove(item); // lo elimina tras usarlo, como evito tener que volver  a inventar el item despues?
+            items.remove(item);  // elimino a los items despues de usarlos?
         }
     }
 
