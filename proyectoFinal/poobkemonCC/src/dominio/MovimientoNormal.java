@@ -2,7 +2,7 @@ package dominio;
 /**
  * clase del movimiento FISICO
  */
-class MovimientoNormal extends Movimiento { 
+public class MovimientoNormal extends Movimiento { 
 	
 	/**
 	 * constructor del movimiento fisico

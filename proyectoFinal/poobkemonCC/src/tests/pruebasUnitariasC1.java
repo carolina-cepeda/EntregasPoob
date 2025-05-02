@@ -1,10 +1,11 @@
-package test;
+package tests;
 
 import dominio.*;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
-public class pruebasUnitariasC1 {
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class pruebasUnitariasC1 { 
 
     @Test
     public void testCreacionPokemon() {
@@ -61,8 +62,8 @@ public class pruebasUnitariasC1 {
         Juego juego = new Juego();
         juego.empezarBatalla(e1, e2);
 
-        juego.ejecutarTurno("atacar", 0);  // Primer turno
-        juego.ejecutarTurno("atacar", 0);  // Segundo turno
+        juego.ejecutarTurno("atacar", 0);  
+        juego.ejecutarTurno("atacar", 0); 
 
         assertTrue(p1.getSalud() < 300 || p2.getSalud() < 300);  // Uno recibió daño
     }
@@ -74,6 +75,8 @@ public class pruebasUnitariasC1 {
         juego.seleccionarModoJuego(normal);
         assertTrue(juego.hayBatallaActiva());
     }
+
+    
 
     private Pokemon crearPokemonBasico(String nombre) {
         Movimiento[] movimientos = {

@@ -1,5 +1,7 @@
 package dominio;
 
+import java.util.ArrayList;
+
 
 /**
  * hacer abstracta ???
@@ -100,9 +102,21 @@ public class Pokemon {
 	 * @param objetivo : pokemon objetivo
 	 */
 	public void Atacar(int indiceMovimiento, Pokemon objetivo) {
-
+		if (indiceMovimiento < 0 || indiceMovimiento >= movimientos.length) return;
+		Movimiento mov = movimientos[indiceMovimiento];
+		if (ppActuales[indiceMovimiento] <= 0) return;
+	
+		ppActuales[indiceMovimiento]--;
+	
+		int daño = mov.getPotencia(); 
+		objetivo.recibirDaño(daño);
 	}
+	
 
+	public void recibirDaño(int dano) {
+		this.salud = Math.max(0, this.salud - dano);
+	}
+	
 	/**
 	 * metodo para consultar el tipo principal del pokemon
 	 * @return String
@@ -117,6 +131,14 @@ public class Pokemon {
 	 */
 	public String getTipoSecundario() {
 		return tipoSecundario;
+	}
+
+	public ArrayList<Movimiento> getMovimientos() {
+		ArrayList<Movimiento> movimientosDisponibles = new ArrayList<>();
+		for (int i = 0; i < movimientos.length; i++) {
+			movimientosDisponibles.add(movimientos[i]);
+		}
+		return movimientosDisponibles;
 	}
 
 }
