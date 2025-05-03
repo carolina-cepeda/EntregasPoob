@@ -27,8 +27,9 @@ public class Normal implements ModoJuego {
         seleccionarPokemones(scanner, entrenador1, base, nombre1);
         seleccionarPokemones(scanner, entrenador2, base, nombre2);
 
-        entrenador1.agregarItem(new Pocion("Potion"));
-        entrenador2.agregarItem(new Pocion("SuperPotion"));
+        seleccionarItems(scanner, entrenador1);
+        seleccionarItems(scanner, entrenador2);
+
 
         juego.empezarBatalla(entrenador1, entrenador2);
 
@@ -87,4 +88,68 @@ public class Normal implements ModoJuego {
             }
         }
     }
+
+    private void seleccionarItems(Scanner scanner, Entrenador entrenador) {
+        int pocionesElegidas = 0;
+        boolean reviveElegido = false;
+    
+        System.out.println("\n" + entrenador.getNombre() + ", elige hasta 2 pociones y 1 Revive:");
+    
+        while (pocionesElegidas < 2 || !reviveElegido) {
+            System.out.println("Opciones de ítems:");
+            if (pocionesElegidas < 2) {
+                System.out.println("1: Potion (recupera 20 PS)");
+                System.out.println("2: SuperPotion (recupera 50 PS)");
+                System.out.println("3: HyperPotion (recupera 200 PS)");
+            }
+            if (!reviveElegido) {
+                System.out.println("4: Revive (revive un Pokémon debilitado)");
+            }
+            System.out.println("0: Finalizar selección");
+    
+            System.out.print("Elige una opción: ");
+            int opcion = scanner.nextInt();
+            scanner.nextLine(); 
+    
+            switch (opcion) {
+                case 1 -> {
+                    if (pocionesElegidas < 2) {
+                        entrenador.agregarItem(new Pocion("Potion"));
+                        pocionesElegidas++;
+                    } else {
+                        System.out.println("Ya has elegido el máximo de pociones.");
+                    }
+                }
+                case 2 -> {
+                    if (pocionesElegidas < 2) {
+                        entrenador.agregarItem(new Pocion("SuperPotion"));
+                        pocionesElegidas++;
+                    } else {
+                        System.out.println("Ya has elegido el máximo de pociones.");
+                    }
+                }
+                case 3 -> {
+                    if (pocionesElegidas < 2) {
+                        entrenador.agregarItem(new Pocion("HyperPotion"));
+                        pocionesElegidas++;
+                    } else {
+                        System.out.println("Ya has elegido el máximo de pociones.");
+                    }
+                }
+                case 4 -> {
+                    if (!reviveElegido) {
+                        entrenador.agregarItem(new Pocion("Revive"));
+                        reviveElegido = true;
+                    } else {
+                        System.out.println("Ya has elegido un Revive.");
+                    }
+                }
+                case 0 -> {
+                    return;
+                }
+                default -> System.out.println("Opción no válida.");
+            }
+        }
+    }
+    
 }

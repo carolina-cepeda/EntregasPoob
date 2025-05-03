@@ -32,6 +32,7 @@ public class ControladorTurno {
 
     private void penalizarPorInactividad() {
         System.out.println("¡" + batalla.getTurnoActual().getNombre() + " no jugó a tiempo!");
+        batalla.getTurnoActual().getPokemonActivo().reducirPP(1);
         batalla.ejecutarTurno("pasar", null); 
     }
 }

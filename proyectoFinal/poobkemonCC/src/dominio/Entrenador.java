@@ -54,15 +54,19 @@ public class Entrenador {
     }
 
     public void seleccionarMovimiento(int indiceMovimiento, Pokemon objetivo) {
-        if (pokemonActual != null && objetivo != null) {
+        if (pokemonActual != null && objetivo != null && pokemonActual.getAtaque() > 0) {
             pokemonActual.Atacar(indiceMovimiento, objetivo);
+        } else {
+            System.out.println(nombre + " no tiene PP suficientes para atacar.");
         }
     }
-
+    
     public void usarItem(Item item, Pokemon objetivo) {
         if (items.contains(item)) {
             item.usar(objetivo);
             items.remove(item);  // elimino a los items despues de usarlos?
+        } else {
+            System.out.println("El item no está en la lista de items del entrenador.");
         }
     }
 

@@ -1,5 +1,7 @@
 package dominio;
 
+import java.util.List;
+
 public class Batalla {
 
     private Entrenador entrenador1;
@@ -26,8 +28,24 @@ public class Batalla {
         switch (accion.toLowerCase()) {
             case "atacar" -> {
                 int indice = (int) dato;
-                turnoActual.seleccionarMovimiento(indice, obtenerOponente().getPokemonActivo());
+                Pokemon objetivo = obtenerOponente().getPokemonActivo();
+                turnoActual.seleccionarMovimiento(indice, objetivo);
+
+                if (objetivo.getSalud() <= 0) {
+                    System.out.println(objetivo.nombre + " ha sido derrotado.");
+
+                    List<Pokemon> disponibles = obtenerOponente().getPokemones().stream()
+                        .filter(p -> p.getSalud() > 0)
+                        .toList();
+
+                    if (!disponibles.isEmpty()) {
+                        Pokemon nuevo = disponibles.get(0);
+                        obtenerOponente().cambiarPokemon(nuevo);
+                        System.out.println(obtenerOponente().getNombre() + " cambió a " + nuevo.nombre);
+                    }
+                }
             }
+
 
             case "cambiar" -> {
                 Pokemon nuevo = (Pokemon) dato;
@@ -89,4 +107,6 @@ public class Batalla {
         return turnoActual;
     }
 }
+
+
 

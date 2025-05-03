@@ -115,6 +115,11 @@ public class Pokemon {
 
 	public void recibirDaño(int dano) {
 		this.salud = Math.max(0, this.salud - dano);
+		if (this.salud == 0) {
+			System.out.println(nombre + " ha sido derrotado.");
+		} else {
+			System.out.println(nombre + " ha recibido " + dano + " puntos de daño. Salud restante: " + this.salud);
+		}
 	}
 	
 	/**
@@ -133,12 +138,22 @@ public class Pokemon {
 		return tipoSecundario;
 	}
 
+	public int getAtaque() {
+		return ataque;
+	}
+
 	public ArrayList<Movimiento> getMovimientos() {
 		ArrayList<Movimiento> movimientosDisponibles = new ArrayList<>();
 		for (int i = 0; i < movimientos.length; i++) {
 			movimientosDisponibles.add(movimientos[i]);
 		}
 		return movimientosDisponibles;
+	}
+
+	public void reducirPP(int cantidad) {
+		for (int i = 0; i < movimientos.length; i++) {
+			ppActuales[i] = Math.max(0, ppActuales[i] - cantidad); // toca cambiarlo a solo movimientos especiales 
+		}
 	}
 
 }
