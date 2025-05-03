@@ -15,6 +15,12 @@ public class CityGUI extends JFrame{
     private PhotoCity photo;
     private City theCity;
    
+
+
+    // menu
+    private JMenuBar menuBar;
+    private JMenu menuArchivo;
+    private JMenuItem itemNuevo, itemAbrir, itemGuardar, itemSalir, itemImportar, itemExportar;
     
     private CityGUI() {
         theCity = new City();
@@ -31,6 +37,7 @@ public class CityGUI extends JFrame{
         add(photo,BorderLayout.NORTH);
         add(ticTacButton,BorderLayout.SOUTH);
         setSize(new Dimension(SIDE*SIZE+15,SIDE*SIZE+72)); 
+        prepareElementsMenu();
         setResizable(false);
         photo.repaint();
     }
@@ -44,6 +51,7 @@ public class CityGUI extends JFrame{
                 }
             });
 
+        prepareActionsMenu();
     }
 
     private void ticTacButtonAction() {
@@ -59,7 +67,113 @@ public class CityGUI extends JFrame{
         CityGUI cg=new CityGUI();
         cg.setVisible(true);
     }  
+
+    /**
+     * * Método para preparar los elementos del menu
+     * 
+     */
+    private void prepareElementsMenu() {
+        menuBar = new JMenuBar();
+        menuArchivo = new JMenu("Archivo");
+    
+        itemNuevo = new JMenuItem("Nuevo");
+        itemAbrir = new JMenuItem("Abrir");
+        itemGuardar = new JMenuItem("Guardar");
+        itemSalir = new JMenuItem("Salir");
+        itemImportar = new JMenuItem("Importar");
+        itemExportar = new JMenuItem("Exportar");
+
+        menuArchivo.add(itemNuevo);
+        menuArchivo.add(itemAbrir);
+        menuArchivo.add(itemGuardar);
+        menuArchivo.add(itemImportar);
+        menuArchivo.add(itemExportar);
+
+        menuArchivo.add(new JSeparator()); 
+        menuArchivo.add(itemSalir);
+    
+        menuBar.add(menuArchivo);
+        setJMenuBar(menuBar);
+
+    }
+    
+    /**
+     * metodo de creacion mientras tanto
+     */
+    private void crear(){
+
+    }
+     /**
+     * * Método para preparar las acciones del menú.
+     * se utiliza un listener para cada elemento del menú.
+     */
+    private void prepareActionsMenu() {
+        itemNuevo.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Nuevo archivo creado.");
+            crear();
+        });
+    
+        itemAbrir.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                String fileName = fileChooser.getSelectedFile().getName();
+                try {
+                    City.open(new File(fileName));
+                    JOptionPane.showMessageDialog(this, "Archivo abierto exitosamente.");
+                } catch (CityException ex) {
+                    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+    
+        itemGuardar.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showSaveDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                String fileName = fileChooser.getSelectedFile().getName();
+                try {
+                    theCity.save(new File(fileName));
+                    JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente.");
+                } catch (CityException ex) {
+                    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+    
+        itemImportar.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                String fileName = fileChooser.getSelectedFile().getName();
+                try {
+                    City.importar(new File(fileName));
+                    JOptionPane.showMessageDialog(this, "Archivo importado exitosamente.");
+                } catch (CityException ex) {
+                    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+    
+        itemExportar.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showSaveDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                String fileName = fileChooser.getSelectedFile().getName();
+                try {
+                    theCity.exportar(new File(fileName)); 
+                    JOptionPane.showMessageDialog(this, "Archivo exportado exitosamente.");
+                } catch (CityException ex) {
+                    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+    }
 }
+
+
+
+
 
 class PhotoCity extends JPanel{
     private CityGUI gui;
@@ -112,4 +226,6 @@ class PhotoCity extends JPanel{
             }
         }
     }
+
+      
 }

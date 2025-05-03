@@ -1,5 +1,7 @@
 package domain;
 
+import java.io.File;
+
 /*No olviden adicionar la documentacion*/
 public class City{
     static private int SIZE=25;
@@ -39,23 +41,23 @@ public class City{
      */
 
     public void someItems(){   
-      Person Adam = new Person(this,10, 10);
-        setItem(10, 10, Adam);  
+      //Person Adam = new Person(this,10, 10);
+        //setItem(10, 10, Adam);  
     
-        Person Eva = new Person(this,15, 15);
-        setItem(15, 15, Eva); 
+    //    Person Eva = new Person(this,15, 15);
+      //  setItem(15, 15, Eva); 
         
-        Walker messner = new Walker(this,10,15);
-        setItem(10,15, messner);  
+        //Walker messner = new Walker(this,10,15);
+        //setItem(10,15, messner);  
     
-        Walker kukuczka = new Walker (this,10,7);
-        setItem(10,7,kukuczka);
+   //     Walker kukuczka = new Walker (this,10,7);
+     //   setItem(10,7,kukuczka);
         
-        TrafficLight alarm = new TrafficLight(this,0,0);
-        setItem(0,0,alarm);
+       // TrafficLight alarm = new TrafficLight(this,0,0);
+        //setItem(0,0,alarm);
         
-        TrafficLight alert = new TrafficLight(this,0,24);
-        setItem(0,24,alarm);
+        //TrafficLight alert = new TrafficLight(this,0,24);
+        //setItem(0,24,alarm);
 
         Solitaria Cepeda = new Solitaria(this, 24, 15);
         setItem(24, 15, Cepeda);
@@ -75,8 +77,8 @@ public class City{
         Hole objeto2 = new Hole(this, 15, 10);
         setItem(15,10,objeto2) ;
 
-        Walker walker = new Walker(this, 10, 20);
-        setItem(10, 20, walker);
+        //Walker walker = new Walker(this, 10, 20);
+        //setItem(10, 20, walker);
 
         Hole obstaculo = new Hole(this, 9, 20);
         setItem(9, 20, obstaculo);
@@ -157,4 +159,29 @@ public class City{
         }
     }
 
+    public static  City open (File archivo) throws CityException{
+
+        throw new CityException(CityException.ERROR_ABRIR + archivo.getName());
+    }
+    
+
+    public void save (File archivo) throws CityException{
+
+        throw new CityException(CityException.ERROR_GUARDAR + archivo.getName());
+
+    }
+
+   
+    public static City importar (File archivo) throws CityException{
+
+        throw new CityException(CityException.ERROR_IMPORTAR + archivo.getName());
+
+    }
+
+    
+    public void exportar (File archivo) throws CityException{
+
+        throw new CityException(CityException.ERROR_EXPORTAR + archivo.getName());
+
+    }
 }
