@@ -62,8 +62,8 @@ public class pruebasUnitariasC1 {
         Juego juego = new Juego();
         juego.empezarBatalla(e1, e2);
 
-        juego.ejecutarTurno("atacar", 0);  
-        juego.ejecutarTurno("atacar", 0); 
+        juego.comenzarTurno("atacar", 0);  
+        juego.comenzarTurno("atacar", 0); 
 
         assertTrue(p1.getSalud() < 300 || p2.getSalud() < 300);  // Uno recibió daño
     }

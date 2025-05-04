@@ -113,12 +113,12 @@ public class Pokemon {
 	}
 	
 
-	public void recibirDaño(int dano) {
-		this.salud = Math.max(0, this.salud - dano);
+	public void recibirDaño(int daño) {
+		this.salud = Math.max(0, this.salud - daño);
 		if (this.salud == 0) {
 			System.out.println(nombre + " ha sido derrotado.");
 		} else {
-			System.out.println(nombre + " ha recibido " + dano + " puntos de daño. Salud restante: " + this.salud);
+			System.out.println(nombre + " ha recibido " + daño + " puntos de daño. Salud restante: " + this.salud);
 		}
 	}
 	

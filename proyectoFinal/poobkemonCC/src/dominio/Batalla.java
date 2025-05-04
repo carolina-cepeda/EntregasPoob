@@ -16,7 +16,7 @@ public class Batalla {
         this.controlador = new ControladorTurno(this);
     }
 
-    public void inicializarBatalla() {
+    public void iniciarBatalla() {
         System.out.println("¡Empieza la batalla entre " + entrenador1.getNombre() + " y " + entrenador2.getNombre() + "!");
         controlador.iniciar();
     }
@@ -24,10 +24,10 @@ public class Batalla {
     /**
      * Permite realizar la acción del turno.
      */
-    public void ejecutarTurno(String accion, Object dato) {
+    public void comenzarTurno(String accion, Object obj) {
         switch (accion.toLowerCase()) {
             case "atacar" -> {
-                int indice = (int) dato;
+                int indice = (int) obj;
                 Pokemon objetivo = obtenerOponente().getPokemonActivo();
                 turnoActual.seleccionarMovimiento(indice, objetivo);
 
@@ -48,12 +48,12 @@ public class Batalla {
 
 
             case "cambiar" -> {
-                Pokemon nuevo = (Pokemon) dato;
+                Pokemon nuevo = (Pokemon) obj;
                 turnoActual.cambiarPokemon(nuevo);
             }
 
             case "usaritem" -> {
-                Object[] datos = (Object[]) dato; // [Item, Pokemon]
+                Object[] datos = (Object[]) obj; // [Item, Pokemon]
                 Item item = (Item) datos[0];
                 Pokemon objetivo = (Pokemon) datos[1];
                 turnoActual.usarItem(item, objetivo);
@@ -74,11 +74,11 @@ public class Batalla {
     }
 
     private boolean lanzarMoneda() {
-        return Math.random() < 0.5;
+        return Math.random() < 0.5; //implementar bien
     }
 
     private void cambiarTurno() {
-        turnoActual = (turnoActual == entrenador1) ? entrenador2 : entrenador1;
+        turnoActual = (turnoActual == entrenador1) ? entrenador2 : entrenador1; // deberia manejarlo controladorTurno
         System.out.println("Turno de " + turnoActual.getNombre());
     }
 

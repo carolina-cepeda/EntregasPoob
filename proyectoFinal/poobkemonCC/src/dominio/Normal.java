@@ -47,7 +47,7 @@ public class Normal implements ModoJuego {
             System.out.print("Elige un ataque (0-" + (movimientos.size() - 1) + "): ");
             int opcion = scanner.nextInt();
 
-            juego.ejecutarTurno("atacar", opcion);
+            juego.comenzarTurno("atacar", opcion);
         }
 
         scanner.close();
@@ -60,7 +60,7 @@ public class Normal implements ModoJuego {
             new MovimientoNormal("Ascuas", 40, 100, 25, 0, "Fuego", "Quemar"),
             new MovimientoNormal("Lanzallamas", 90, 100, 15, 0, "Fuego", "Quemar")
         };
-
+        
         ArrayList<Pokemon> lista = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
             lista.add(new Pokemon("Pokemon" + i, 300 + i * 5, 30, "Normal", null, 150 + i, 100, 120, 110, 160, 100, 100, comunes));

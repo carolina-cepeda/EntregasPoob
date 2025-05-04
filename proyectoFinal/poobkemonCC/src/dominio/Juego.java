@@ -22,7 +22,7 @@ public class Juego {
      */
     public void empezarBatalla(Entrenador entrenador1, Entrenador entrenador2) {
         this.batalla = new Batalla(entrenador1, entrenador2);
-        batalla.inicializarBatalla();
+        batalla.iniciarBatalla();
     }
 
     /**
@@ -30,9 +30,9 @@ public class Juego {
      * @param accion La acción a ejecutar: atacar, cambiar, usaritem, huir, pasar
      * @param dato Parámetro adicional necesario según la acción
      */
-    public void ejecutarTurno(String accion, Object dato) {
+    public void comenzarTurno(String accion, Object dato) {
         if (batalla != null) {
-            batalla.ejecutarTurno(accion, dato);
+            batalla.comenzarTurno(accion, dato);
         }
     }
 
