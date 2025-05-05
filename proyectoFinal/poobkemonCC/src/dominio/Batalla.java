@@ -100,6 +100,8 @@ public class Batalla {
     private void terminarBatalla(Entrenador ganador) {
         controlador.detener();
         System.out.println("¡" + ganador.getNombre() + " ha ganado la batalla!");
+        System.exit(0);
+        
     }
 
     public Entrenador getTurnoActual() {

@@ -1,53 +1,73 @@
 package dominio;
 
+import java.util.*;
+
 public class Juego {
 
     private ModoJuego modoJuego;
     private Batalla batalla;
+    private List<Movimiento> movimientosBase;
+    private List<Pokemon> pokemonesBase;
+    private List<Item> itemsBase;
 
     public Juego() {
-        // Constructor vacío, espera que se configure el modo
+        inicializarDatosBase();
     }
 
-    /**
-     * Define el modo de juego y configura el juego (entrenadores, pokémones, ítems, etc.)
-     */
+    private void inicializarDatosBase() {
+        movimientosBase = new ArrayList<>();
+        movimientosBase.add(new Movimiento("Placaje", 40, 100, 35, 0, "Normal", null));
+        movimientosBase.add(new Movimiento("Gruñido", 0, 100, 40, 0, "Normal", "Bajar ataque"));
+        movimientosBase.add(new Movimiento("Ascuas", 40, 100, 25, 0, "Fuego", "Quemar"));
+        movimientosBase.add(new Movimiento("Lanzallamas", 90, 100, 15, 0, "Fuego", "Quemar"));
+
+        pokemonesBase = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            pokemonesBase.add(new Pokemon("Pokemon" + i, 300 + i * 5, 30, "Normal", null, 
+                150 + i, 100, 120, 110, 160, 100, 100, new Movimiento[0]));
+        }
+
+        itemsBase = new ArrayList<>();
+        itemsBase.add(new Pocion("Potion"));
+        itemsBase.add(new Pocion("SuperPotion"));
+        itemsBase.add(new Pocion("HyperPotion"));
+        itemsBase.add(new Pocion("Revive"));
+    }
+
     public void seleccionarModoJuego(ModoJuego modo) {
         this.modoJuego = modo;
-        modoJuego.configurarJuego(this); //¨???
+        modoJuego.configurarJuego(this); 
     }
 
-    /**
-     * Inicia la batalla entre los entrenadores configurados por el modo de juego.
-     */
     public void empezarBatalla(Entrenador entrenador1, Entrenador entrenador2) {
         this.batalla = new Batalla(entrenador1, entrenador2);
         batalla.iniciarBatalla();
     }
 
-    /**
-     * Ejecuta la acción de un turno desde la interfaz o IA
-     * @param accion La acción a ejecutar: atacar, cambiar, usaritem, huir, pasar
-     * @param dato Parámetro adicional necesario según la acción
-     */
     public void comenzarTurno(String accion, Object dato) {
         if (batalla != null) {
             batalla.comenzarTurno(accion, dato);
         }
     }
 
-    /**
-     * Retorna el entrenador cuyo turno está activo
-     */
     public Entrenador getTurnoActual() {
         return batalla != null ? batalla.getTurnoActual() : null;
     }
 
-    /**
-     * Verifica si hay una batalla activa
-     */
     public boolean hayBatallaActiva() {
         return batalla != null;
     }
-}
 
+    
+    public List<Movimiento> getMovimientosBase() {
+        return movimientosBase;
+    }
+
+    public List<Pokemon> getPokemonesBaseCopia() {
+        return new ArrayList<>(pokemonesBase); 
+    }
+
+    public List<Item> getItemsBase() {
+        return itemsBase;
+    }
+}

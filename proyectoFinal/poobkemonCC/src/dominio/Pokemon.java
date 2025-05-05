@@ -62,11 +62,32 @@ public class Pokemon {
 		 this.movimientos = new Movimiento[4];
 		 this.ppActuales = new int[4];
 		
-		 for (int i = 0; i < 4; i++) {
-		     this.movimientos[i] = movimientosAsignados[i];
-		     this.ppActuales[i] = movimientosAsignados[i].getPP(); // asigna el PP máximo como valor inicial
-		 }
+		//quite asignacion de moviminetos
 }
+
+	public Pokemon(Pokemon base, Movimiento[] nuevosMovimientos) {
+		this.nombre = base.nombre;
+		this.salud = base.saludInicial;
+		this.saludInicial = base.saludInicial;
+		this.nivel = base.nivel;
+		this.tipoPrincipal = base.tipoPrincipal;
+		this.tipoSecundario = base.tipoSecundario;
+		this.ataque = base.ataque;
+		this.defensa = base.defensa;
+		this.ataqueEspecial = base.ataqueEspecial;
+		this.defensaEspecial = base.defensaEspecial;
+		this.velocidad = base.velocidad;
+		this.precision = base.precision;
+		this.evasion = base.evasion;
+
+		this.movimientos = new Movimiento[4];
+		this.ppActuales = new int[4];
+		for (int i = 0; i < 4; i++) {
+			this.movimientos[i] = nuevosMovimientos[i];
+			this.ppActuales[i] = nuevosMovimientos[i].getPP();
+		}
+	}
+
 
 
 	/**
