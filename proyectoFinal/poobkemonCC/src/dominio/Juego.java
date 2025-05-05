@@ -14,7 +14,7 @@ public class Juego {
      */
     public void seleccionarModoJuego(ModoJuego modo) {
         this.modoJuego = modo;
-        modoJuego.configurarJuego(this);
+        modoJuego.configurarJuego(this); //¨???
     }
 
     /**

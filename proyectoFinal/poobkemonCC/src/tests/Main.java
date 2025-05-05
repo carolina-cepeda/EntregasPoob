@@ -31,7 +31,7 @@ public class Main {
                         int submodo = scanner.nextInt();
     
                         if (submodo == 1) {
-                            juego.seleccionarModoJuego(new Normal());
+                            juego.seleccionarModoJuego(new Normal()); //mala delegación
                         } else if (submodo == 2) {
                             System.out.println("\n[Modo Player vs Máquina en construcción]");
                         } else {

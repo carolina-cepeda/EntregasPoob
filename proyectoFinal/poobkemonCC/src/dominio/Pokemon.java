@@ -106,9 +106,9 @@ public class Pokemon {
 		Movimiento mov = movimientos[indiceMovimiento];
 		if (ppActuales[indiceMovimiento] <= 0) return;
 	
-		ppActuales[indiceMovimiento]--;
+		int daño = mov.getPotencia() ; 
+		daño = Math.max(0, daño); 
 	
-		int daño = mov.getPotencia(); 
 		objetivo.recibirDaño(daño);
 	}
 	

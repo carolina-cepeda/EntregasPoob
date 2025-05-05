@@ -53,16 +53,15 @@ public class Batalla {
             }
 
             case "usaritem" -> {
-                Object[] datos = (Object[]) obj; // [Item, Pokemon]
-                Item item = (Item) datos[0];
-                Pokemon objetivo = (Pokemon) datos[1];
+                Item item = (Item) obj;
+                Pokemon objetivo = turnoActual.getPokemonActivo();
                 turnoActual.usarItem(item, objetivo);
             }
 
             case "huir" -> {
                 System.out.println(turnoActual.getNombre() + " ha huido de la batalla.");
                 terminarBatalla(obtenerOponente());
-                return;
+                return; 
             }
 
             default -> System.out.println("Acción no válida.");
@@ -74,7 +73,7 @@ public class Batalla {
     }
 
     private boolean lanzarMoneda() {
-        return Math.random() < 0.5; //implementar bien
+        return Math.random() < 0.5; 
     }
 
     private void cambiarTurno() {

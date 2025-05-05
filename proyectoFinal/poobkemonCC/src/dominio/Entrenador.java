@@ -6,6 +6,7 @@ import java.util.List;
 public class Entrenador {
 
     private String nombre;
+    private int PP;
     private String color;
     private Pokemon pokemonActual;
     private List<Pokemon> pokemones;
@@ -33,7 +34,7 @@ public class Entrenador {
                 pokemonActual = p;
             }
         } else {
-            System.out.println("El entrenador ya tiene 6 pokémon.");
+            System.out.println("El entrenador ya tiene 6 pokémones.");
         }
     }
 
