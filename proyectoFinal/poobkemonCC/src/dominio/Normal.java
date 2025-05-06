@@ -8,6 +8,10 @@ public class Normal implements ModoJuego {
     private List<Movimiento> movimientosBase;
     private List<Item> itemsBase;
 
+    /**
+     * metodo para configurar le juego
+     * podria hacerse la mitad de este en juego , como pokemones base
+     */
     @Override
     public void configurarJuego(Juego juego) {
         this.juego = juego;

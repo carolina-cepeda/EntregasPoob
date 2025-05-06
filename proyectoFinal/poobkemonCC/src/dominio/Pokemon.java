@@ -43,7 +43,7 @@ public class Pokemon {
 	 * 
 	 */
 	public Pokemon(String nombre, int salud, int nivel, String tipoPrincipal, String tipoSecundario, int ataque, int defensa, int ataqueEspecial, int defensaEspecial,
-            int velocidad, int precision, int evasion, Movimiento[] movimientosAsignados) {
+            int velocidad, int precision, int evasion) {
 
 		 this.nombre = nombre;
 		 this.salud = salud;

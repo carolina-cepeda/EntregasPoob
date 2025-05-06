@@ -22,10 +22,7 @@ public class Juego {
         movimientosBase.add(new Movimiento("Lanzallamas", 90, 100, 15, 0, "Fuego", "Quemar"));
 
         pokemonesBase = new ArrayList<>();
-        for (int i = 1; i <= 12; i++) {
-            pokemonesBase.add(new Pokemon("Pokemon" + i, 300 + i * 5, 30, "Normal", null, 
-                150 + i, 100, 120, 110, 160, 100, 100, new Movimiento[0]));
-        }
+        pokemonesBase.add(new Pokemon("Charizard", 360,20,"fuego","volador",293,280,348,295,0,0,0));
 
         itemsBase = new ArrayList<>();
         itemsBase.add(new Pocion("Potion"));

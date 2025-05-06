@@ -17,7 +17,8 @@ public class pruebasUnitariasC1 {
             new MovimientoNormal("Gruñido", 0, 100, 40, 0, "Normal", "Bajar ataque"),
             new MovimientoNormal("Lanzallamas", 90, 100, 15, 0, "Fuego", "Quemar")
         };
-        Pokemon charmander = new Pokemon("Charmander", 200, 30, "Fuego", null, 150, 100, 120, 110, 160, 100, 100, movimientos);
+        Pokemon baseCharmander = new Pokemon("Charmander", 200, 30, "Fuego", null, 150, 100, 120, 110, 160, 100, 100);
+        Pokemon charmander = new Pokemon(baseCharmander, movimientos);
 
         assertEquals("Charmander", charmander.nombre);
         assertEquals("Fuego", charmander.getTipoPrincipal());
@@ -72,8 +73,11 @@ public class pruebasUnitariasC1 {
             new MovimientoNormal("Nada3", 0, 100, 40, 0, "Normal", null),
         };
 
-        Pokemon atacante = new Pokemon("Atacante", 300, 50, "Normal", null, 200, 150, 150, 150, 150, 100, 100, movimientos);
-        Pokemon defensor = new Pokemon("Defensor", 300, 50, "Normal", null, 150, 100, 100, 100, 100, 100, 100, movimientos);
+        Pokemon atacante = new Pokemon("Atacante", 300, 50, "Normal", null, 200, 150, 150, 150, 150, 100, 100);
+        Pokemon defensor = new Pokemon("Defensor", 300, 50, "Normal", null, 150, 100, 100, 100, 100, 100, 100);
+
+        atacante = new Pokemon(atacante, movimientos);
+        defensor = new Pokemon(defensor, movimientos);
 
         Entrenador e1 = new Entrenador("Rojo", "Rojo");
         Entrenador e2 = new Entrenador("Azul", "Azul");
@@ -131,19 +135,27 @@ public class pruebasUnitariasC1 {
             new MovimientoNormal("Nada2", 2, 100, 40, 0, "Normal", null),
             new MovimientoNormal("Nada3", 2, 100, 40, 0, "Normal", null)
         };
-        return new Pokemon(nombre, 200, 30, "Normal", null, 150, 100, 120, 110, 160, 100, 100, movimientos);
+        Pokemon retorno = new Pokemon(nombre, 200, 30, "Normal", null, 150, 100, 120, 110, 160, 100, 100);
+
+        return new Pokemon(retorno, movimientos);
     }
 
- // Mock del modo juego para evitar el uso de Scanner
- private static class ModoJuegoMock implements ModoJuego {
+// Mock del modo juego para evitar el uso de Scanner
+private static class ModoJuegoMock implements ModoJuego {
     @Override
     public void configurarJuego(Juego juego) {
         Entrenador e1 = new Entrenador("Mock1", "Rojo");
         Entrenador e2 = new Entrenador("Mock2", "Azul");
-        e1.agregarPokemon(new Pokemon("Poke1", 100, 10, "Normal", null, 50, 50, 50, 50, 50, 50, 50,
-                new Movimiento[]{new MovimientoNormal("Ataque", 40, 100, 30, 0, "Normal", null)}));
-        e2.agregarPokemon(new Pokemon("Poke2", 100, 10, "Normal", null, 50, 50, 50, 50, 50, 50, 50,
-                new Movimiento[]{new MovimientoNormal("Ataque", 40, 100, 30, 0, "Normal", null)}));
+        Pokemon poke1 = new Pokemon("Poke1", 100, 10, "Normal", null, 50, 50, 50, 50, 50, 50, 50);
+        poke1 = new Pokemon(poke1, new Movimiento[]{
+            new MovimientoNormal("Ataque", 40, 100, 30, 0, "Normal", null)
+        });
+        Pokemon poke2 = new Pokemon("Poke2", 100, 10, "Normal", null, 50, 50, 50, 50, 50, 50, 50);
+        poke2 = new Pokemon(poke2, new Movimiento[]{
+            new MovimientoNormal("Ataque", 40, 100, 30, 0, "Normal", null)
+        });
+        e1.agregarPokemon(poke1);
+        e2.agregarPokemon(poke2);
         juego.empezarBatalla(e1, e2);
     }
 }
