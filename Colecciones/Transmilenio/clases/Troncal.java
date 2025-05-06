@@ -1,5 +1,8 @@
 package clases;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -45,5 +48,26 @@ public class Troncal {
 
 	public void agregarRuta(Ruta ruta) {
 		rutas.put(ruta.getNombre(), ruta);
+	}
+
+
+	public void guardarInformacion(String rutaArchivo) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(rutaArchivo))) {
+			writer.write("Nombre de la Troncal: " + nombre);
+			writer.newLine();
+			writer.write("Velocidad Promedio: " + velocidadPromedio);
+			writer.newLine();
+			writer.write("Rutas:");
+			writer.newLine();
+			
+			for (Ruta ruta : rutas.values()) {
+				writer.write(" - " + ruta.getNombre());
+				writer.newLine();
+			}
+			
+			System.out.println("Información de la troncal guardada correctamente en " + rutaArchivo);
+		} catch (IOException e) {
+			System.out.println("Error al escribir en el archivo: " + e.getMessage());
+		}
 	}
 }

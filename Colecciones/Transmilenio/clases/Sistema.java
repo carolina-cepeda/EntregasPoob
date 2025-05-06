@@ -2,6 +2,9 @@ package clases;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Sistema {
 
@@ -67,5 +70,31 @@ public class Sistema {
 		estaciones.put(nombre, estacion);
 	}
 
+	
+	public void exportarRutas(String inicio, String destino, String rutaArchivo) {
+		ArrayList<String> rutas = RutasViaje(inicio, destino);
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(rutaArchivo))) {
+			if (rutas != null && !rutas.isEmpty()) {
+				for (String ruta : rutas) {
+					writer.write(ruta);
+					writer.newLine();
+				}
+				System.out.println("Rutas exportadas correctamente a " + rutaArchivo);
+			} else {
+				System.out.println("No se encontraron rutas para el viaje de " + inicio + " a " + destino);
+			}
+		} catch (IOException e) {
+			System.out.println("Error al escribir en el archivo: " + e.getMessage());
+		}
+	}
 
+	public void guardarTroncal(String nombreTroncal, String rutaArchivo) {
+		Troncal troncal = getTroncal(nombreTroncal);
+		if (troncal != null) {
+			troncal.guardarInformacion(rutaArchivo);
+		} else {
+			System.out.println("La troncal '" + nombreTroncal + "' no existe.");
+		}
+	}
 }

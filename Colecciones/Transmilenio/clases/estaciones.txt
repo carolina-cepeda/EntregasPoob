@@ -1,0 +1,16 @@
+Portal del Sur - JFK Coop.Financiera,3,Media,B
+Perdomo,2,Baja,B
+General Santander,4,Alta,B
+Comuneros,3,Media,B
+Ricaurte (NQS),5,Alta,B
+AV. El Dorado,2,Baja,B
+U. Nacional,4,Alta,B
+7 de agosto,3,Media,B
+NQS Calle 75 - Zona M,3,Media,B
+La Castellana,2,Baja,B
+Calle 100 - Marketmedios,3,Media,B
+Calle 127,2,Baja,B
+Prado,3,Media,B
+Calle 142,2,Baja,B
+Toberín - Foundever,3,Media,B
+Portal del Norte,4,Alta,B

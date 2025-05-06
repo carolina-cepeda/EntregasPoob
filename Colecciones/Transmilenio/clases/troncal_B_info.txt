@@ -1,0 +1,4 @@
+Nombre de la Troncal: B
+Velocidad Promedio: 10.0
+Rutas:
+ - B12

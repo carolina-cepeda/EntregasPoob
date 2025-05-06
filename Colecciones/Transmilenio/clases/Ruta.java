@@ -1,13 +1,12 @@
 package clases;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 public class Ruta {
 
 	private String nombre;
-	private HashMap<String, Estacion> paradas = new HashMap<String, Estacion>();
+	private List< Estacion > paradas;
 
 	/**
 	 * * Constructor de la clase Ruta
@@ -15,8 +14,10 @@ public class Ruta {
 	 * @param destino
 	 * @return
 	 */
-		public Ruta(String nombre,HashMap<String, Estacion> paradas) {
+		public Ruta(String nombre,List<Estacion> paradas) {
 			this.nombre = nombre;
+			this.paradas = paradas;
+
 		}
 
 	/**
@@ -26,23 +27,30 @@ public class Ruta {
 	 * @param destino
 	 * @return ruta
 	 */
-	public String Viaje(String Inicio, String destino) {
-		
-		for (String nombreEstacion : paradas.keySet()) {
-			if (nombreEstacion.equals(Inicio) && paradas.containsKey(destino)) {
-				return nombre;
+	public String Viaje(String inicio, String destino) {
+		boolean inicioEncontrado = false;
+	
+		for (Estacion estacion : paradas) {
+			if (estacion.getNombre().equals(inicio)) {
+				inicioEncontrado = true;
+			}
+	
+			if (inicioEncontrado && estacion.getNombre().equals(destino)) {
+				return nombre; 
 			}
 		}
-		return null; // No se encontró una ruta directa entre las estaciones
+		return null;
 	}
-
+	
 	/**
-	 * * metodo para agregar una estacion a la ruta
-	 * @param estacion
+	 * metodo para añadir una estación
+	 * @param estacion 
+	 * @return
 	 */
 	public void agregarEstacion(Estacion estacion) {
-		paradas.put(estacion.getNombre(), estacion);
+		paradas.add(estacion);
 	}
+	
 
 	/**
 	 * metodo para obtener el nombre de la ruta
