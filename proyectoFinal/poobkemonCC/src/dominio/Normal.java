@@ -144,41 +144,49 @@ public class Normal implements ModoJuego {
             }
         }
     }
-
     private void seleccionarItems(Scanner scanner, Entrenador entrenador) {
-        int pocionesElegidas = 0;
+        int potions = 0;
+        int superPotions = 0;
+        int hyperPotions = 0;
         boolean reviveElegido = false;
-
-        System.out.println("\n" + entrenador.getNombre() + ", elige hasta 2 pociones y 1 Revive:");
-
-        while (pocionesElegidas < 2 || !reviveElegido) {
+    
+        System.out.println("\n" + entrenador.getNombre() + ", elige hasta 2 de cada tipo de poción y 1 Revive:");
+    
+        while ((potions < 2 || superPotions < 2 || hyperPotions < 2) || !reviveElegido) {
             System.out.println("Opciones de ítems:");
-            if (pocionesElegidas < 2) {
-                System.out.println("1: Potion");
-                System.out.println("2: SuperPotion");
-                System.out.println("3: HyperPotion");
-            }
-            if (!reviveElegido) {
-                System.out.println("4: Revive");
-            }
+            if (potions < 2) System.out.println("1: Potion (" + potions + "/2)");
+            if (superPotions < 2) System.out.println("2: SuperPotion (" + superPotions + "/2)");
+            if (hyperPotions < 2) System.out.println("3: HyperPotion (" + hyperPotions + "/2)");
+            if (!reviveElegido) System.out.println("4: Revive");
             System.out.println("0: Finalizar selección");
-
+    
             System.out.print("Elige una opción: ");
             int opcion = scanner.nextInt();
             scanner.nextLine();
-
+    
             switch (opcion) {
-                case 1, 2, 3 -> {
-                    if (pocionesElegidas < 2) {
-                        String nombre = switch (opcion) {
-                            case 1 -> "Potion";
-                            case 2 -> "SuperPotion";
-                            default -> "HyperPotion";
-                        };
-                        entrenador.agregarItem(new Pocion(nombre));
-                        pocionesElegidas++;
+                case 1 -> {
+                    if (potions < 2) {
+                        entrenador.agregarItem(new Pocion("Potion"));
+                        potions++;
                     } else {
-                        System.out.println("Ya has elegido el máximo de pociones.");
+                        System.out.println("Ya has elegido 2 Potions.");
+                    }
+                }
+                case 2 -> {
+                    if (superPotions < 2) {
+                        entrenador.agregarItem(new Pocion("SuperPotion"));
+                        superPotions++;
+                    } else {
+                        System.out.println("Ya has elegido 2 SuperPotions.");
+                    }
+                }
+                case 3 -> {
+                    if (hyperPotions < 2) {
+                        entrenador.agregarItem(new Pocion("HyperPotion"));
+                        hyperPotions++;
+                    } else {
+                        System.out.println("Ya has elegido 2 HyperPotions.");
                     }
                 }
                 case 4 -> {
@@ -196,4 +204,5 @@ public class Normal implements ModoJuego {
             }
         }
     }
+    
 }
