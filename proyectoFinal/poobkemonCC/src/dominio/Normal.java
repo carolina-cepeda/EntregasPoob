@@ -40,19 +40,63 @@ public class Normal implements ModoJuego {
         while (juego.hayBatallaActiva()) {
             Entrenador actual = juego.getTurnoActual();
             Pokemon activo = actual.getPokemonActivo();
-
+        
             System.out.println("\nTurno de " + actual.getNombre() + " | Pokémon activo: " + activo.nombre);
-            ArrayList<Movimiento> movimientos = activo.getMovimientos();
-
-            for (int i = 0; i < movimientos.size(); i++) {
-                System.out.println(i + ": " + movimientos.get(i).getNombre() + " (PP: " + movimientos.get(i).getPP() + ")");
+            System.out.println("¿Qué deseas hacer?");
+            System.out.println("1. Atacar");
+            System.out.println("2. Cambiar Pokémon");
+            System.out.println("3. Usar ítem");
+            System.out.println("4. Huir");
+            System.out.print("Selecciona una opción: ");
+            int accion = scanner.nextInt();
+            scanner.nextLine();  // limpiar buffer
+        
+            switch (accion) {
+                case 1 -> {
+                    ArrayList<Movimiento> movimientos = activo.getMovimientos();
+                    for (int i = 0; i < movimientos.size(); i++) {
+                        System.out.println(i + ": " + movimientos.get(i).getNombre() + " (PP: " + movimientos.get(i).getPP() + ")");
+                    }
+                    System.out.print("Elige un ataque (0-" + (movimientos.size() - 1) + "): ");
+                    int opcion = scanner.nextInt();
+                    scanner.nextLine();
+                    juego.comenzarTurno("atacar", opcion);
+                }
+        
+                case 2 -> {
+                    List<Pokemon> pokemones = actual.getPokemones();
+                    System.out.println("Pokémon disponibles:");
+                    for (int i = 0; i < pokemones.size(); i++) {
+                        System.out.println(i + ": " + pokemones.get(i).nombre + " (Salud: " + pokemones.get(i).getSalud() + ")");
+                    }
+                    System.out.print("Elige el Pokémon al que quieres cambiar: ");
+                    int opcion = scanner.nextInt();
+                    scanner.nextLine();
+                    juego.comenzarTurno("cambiar", pokemones.get(opcion));
+                }
+        
+                case 3 -> {
+                    List<Item> items = actual.getItems();
+                    if (items.isEmpty()) {
+                        System.out.println("No tienes ítems.");
+                        break;
+                    }
+                    System.out.println("Ítems disponibles:");
+                    for (int i = 0; i < items.size(); i++) {
+                        System.out.println(i + ": " + items.get(i).getNombre());
+                    }
+                    System.out.print("Elige el ítem a usar: ");
+                    int opcion = scanner.nextInt();
+                    scanner.nextLine();
+                    juego.comenzarTurno("usaritem", items.get(opcion));
+                }
+        
+                case 4 -> juego.comenzarTurno("huir", null);
+        
+                default -> System.out.println("Opción no válida.");
             }
-
-            System.out.print("Elige un ataque (0-" + (movimientos.size() - 1) + "): ");
-            int opcion = scanner.nextInt();
-
-            juego.comenzarTurno("atacar", opcion);
         }
+        
 
         scanner.close();
     }
