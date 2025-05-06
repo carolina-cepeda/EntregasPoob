@@ -138,7 +138,6 @@ public class Normal implements ModoJuego {
 
                 Pokemon personalizado = new Pokemon(base, movsElegidos);
                 entrenador.agregarPokemon(personalizado);
-                disponibles.remove(index);
                 count++;
             } else {
                 System.out.println("Índice inválido.");
