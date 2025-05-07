@@ -1,6 +1,8 @@
 package clases;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -53,24 +55,145 @@ public class Sistema {
 		return null;
 	}
 
-	// metodos que no estan en el diagrama de clases pero son necesarios para la persistencia
+
+	/**
+	 * * metodo para encontrar una lista de rutas que permiten el viaje entre dos estaciones sin hacer transbordo
+	 * @param inicio
+	 * @param destino
+	 * @return
+	 */
+	public List<Ruta> rutasSinTransbordo(String inicio, String destino) {
+
+		List<Ruta> rutasValidas = new ArrayList<>();
+	
+		for (Troncal troncal : troncales.values()) {
+			Map<String, Ruta> rutasTroncal = troncal.getRutas();
+
+			for (Ruta ruta : rutasTroncal.values()) {
+				List<Estacion> estacionesRuta = getEstacionesRuta(ruta);
+				boolean inicioEncontrado = false;
+				boolean destinoEncontrado = false;
+	
+				for (Estacion estacion : estacionesRuta) {
+					if (estacion.getNombre().equals(inicio)) {
+						inicioEncontrado = true;
+					}
+					if (inicioEncontrado && estacion.getNombre().equals(destino)) {
+						destinoEncontrado = true;
+						break; // mejorable
+					}
+				}
+	
+				if (inicioEncontrado && destinoEncontrado) {
+					rutasValidas.add(ruta);
+				}
+			}
+		}
+		return rutasValidas;
+	}
+
+	/**
+	 * * metodo para encontrar la mejor ruta sin transbordo entre dos estaciones
+	 * @param inicio
+	 * @param destino
+	 * @return nombre de la mejor ruta sin transbordo
+	 */
+	public String mejorRutaSinTransbordo(String inicio, String destino) {
+		List<Ruta> rutasValidas = rutasSinTransbordo(inicio, destino);
+
+		if (rutasValidas.isEmpty()) {
+			return null;
+		}
+		double tiempoMinimo = Double.MAX_VALUE;
+		Ruta rutaMejor = null;
+	
+		for (Ruta ruta : rutasValidas) {
+			List<Estacion> estacionesRuta = getEstacionesRuta(ruta);
+			int idxInicio = -1, idxDestino = -1;
+	
+			for (int i = 0; i < estacionesRuta.size(); i++) {
+				if (estacionesRuta.get(i).getNombre().equals(inicio)) idxInicio = i;
+				if (estacionesRuta.get(i).getNombre().equals(destino)) idxDestino = i;
+			}
+	
+			if (idxInicio == -1 || idxDestino == -1 || idxDestino <= idxInicio) continue;
+	
+			double velocidadPromedio = getVelocidadPromedioTroncal(estacionesRuta.get(idxInicio).getnombreTroncal());
+			double tiempoTotal = (1.0 / velocidadPromedio) * 60.0 * (idxDestino - idxInicio);
+	
+			if (tiempoTotal < tiempoMinimo) {
+				tiempoMinimo = tiempoTotal;
+				rutaMejor = ruta;
+			}
+		}
+		return (rutaMejor != null) ?rutaMejor.getNombre() : null;
+	}
+
+	/**
+	 * Obtiene la lista de estaciones de una ruta
+	 */
+	private List<Estacion> getEstacionesRuta(Ruta ruta) {
+		if (ruta != null) {
+			return ruta.getParadas(); 
+		}
+		return new ArrayList<>();
+	}
+
+
+	/**
+	 * Obtiene la velocidad promedio (km/h) de la troncal a la que pertenece una ruta
+	 */
+	private double getVelocidadPromedioTroncal(String nombreTroncal) {
+		Troncal troncal = troncales.get(nombreTroncal); 
+		if (troncal != null) {
+			return troncal.getVelocidadPromedio(); 
+		}
+		return 20.0;
+	}
+		
+
+	/**
+	 * * metodo para obtener la troncal asociada a una estacion
+	 * @param nombreTroncal
+	 * @return
+	 */
     public Troncal getTroncal(String nombreTroncal) {
         return troncales.get(nombreTroncal);
     }
 
+	/**
+	 * * metodo para obtener la estacion asociada a una troncal
+	 * @param nombreEstacion
+	 * @return
+	 */
     public Estacion getEstacion(String nombreEstacion) {
         return estaciones.get(nombreEstacion);
     }
 
+	/**
+	 * * metodo para agregar una troncal al sistema
+	 * @param nombre
+	 * @param troncal
+	 */
 	public void agregarTroncal(String nombre, Troncal troncal) {
 		troncales.put(nombre, troncal);
 	}
 
+	/**
+	 * * metodo para agregar una estacion al sistema
+	 * @param nombre
+	 * @param estacion
+	 */
 	public void agregarEstacion(String nombre, Estacion estacion) {
 		estaciones.put(nombre, estacion);
 	}
 
-	
+	/**
+	 * * metodo para exportar las rutas a un archivo de texto
+	 * @param inicio
+	 * @param destino
+	 * @param rutaArchivo
+	 */
 	public void exportarRutas(String inicio, String destino, String rutaArchivo) {
 		ArrayList<String> rutas = RutasViaje(inicio, destino);
 		
@@ -89,6 +212,11 @@ public class Sistema {
 		}
 	}
 
+	/**
+	 * * metodo para guardar la informacion de una troncal en un archivo de texto
+	 * @param nombreTroncal
+	 * @param rutaArchivo
+	 */
 	public void guardarTroncal(String nombreTroncal, String rutaArchivo) {
 		Troncal troncal = getTroncal(nombreTroncal);
 		if (troncal != null) {

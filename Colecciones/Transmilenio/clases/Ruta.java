@@ -59,4 +59,11 @@ public class Ruta {
 	public String getNombre() {
 		return nombre;
 	}
+
+	/**
+	 * metodo que retorna las paradas 
+	 */
+	public List<Estacion> getParadas() {
+		return paradas;
+	}
 }

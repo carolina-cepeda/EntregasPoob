@@ -14,6 +14,11 @@ public class transmilenioPersistencia {
     public transmilenioPersistencia(Sistema sistema) {
         this.sistema = sistema;
     }
+
+    /**
+     * * Método para importar estaciones desde un archivo txt.
+     * @param rutaArchivo
+     */
     public void importarEstaciones(String rutaArchivo) {
         try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
             String linea;
@@ -49,7 +54,11 @@ public class transmilenioPersistencia {
         }
     }
     
-
+    /**
+     * * Método para importar rutas desde un archivo txt.
+     * @param nombreTroncal
+     * @param rutaArchivo
+     */
     public void importarRuta(String nombreTroncal, String rutaArchivo) {
         try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
             String nombreRuta = br.readLine();

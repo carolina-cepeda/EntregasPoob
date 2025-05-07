@@ -70,4 +70,20 @@ public class Troncal {
 			System.out.println("Error al escribir en el archivo: " + e.getMessage());
 		}
 	}
+
+	/**
+	 * metodo para obtener las rutas de la troncal
+	 * @return rutas de la troncal
+	 */
+	public TreeMap<String,Ruta> getRutas() {
+		return rutas;
+	}
+	
+	/**
+	 * metodo para obtener la velocidad promedio de la troncal
+	 * @return velocidad promedio
+	 */
+	public double getVelocidadPromedio() {
+		return velocidadPromedio;
+	}
 }
