@@ -128,7 +128,7 @@ public class Pokemon {
 		if (ppActuales[indiceMovimiento] <= 0) return;
 
 		String tipoAtaque = mov.getTipo();
-		double multiplicador1 = TipoEfectividad.getMultiplicador(tipoAtaque, objetivo.getTipoPrincipal());
+		double multiplicador1 = TipoEfectividad.getMultiplicador(tipoAtaque.toUpperCase(), objetivo.getTipoPrincipal().toUpperCase());
 	
 		double efectividad = multiplicador1;
 		int dañoBase = mov.getPotencia(); 
