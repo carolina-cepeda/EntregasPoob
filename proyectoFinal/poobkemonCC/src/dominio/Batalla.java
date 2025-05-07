@@ -77,7 +77,7 @@ public class Batalla {
     }
 
     private void cambiarTurno() {
-        turnoActual = (turnoActual == entrenador1) ? entrenador2 : entrenador1; // deberia manejarlo controladorTurno
+        turnoActual = (turnoActual == entrenador1) ? entrenador2 : entrenador1; // deberia manejarlo controladorTurno??
         System.out.println("Turno de " + turnoActual.getNombre());
     }
 

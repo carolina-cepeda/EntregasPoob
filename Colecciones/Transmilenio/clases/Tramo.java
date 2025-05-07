@@ -4,4 +4,5 @@ public class Tramo {
 
 	private int distancia;
 
+
 }

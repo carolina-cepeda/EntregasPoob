@@ -15,9 +15,9 @@ public class Sistema {
 	private TreeMap<String, Estacion> estaciones = new TreeMap<String, Estacion>();
 
 	/**
-	 * * Constructor de la clase Sistema
+	 * * metodo para obtner el tiempo de espera en una estacion
 	 * @param nombreEstacion
-	 * @return
+	 * @return tiempo de espera 
 	 */
 	public int getTiempoDeEspera(String nombreEstacion) {
 		Estacion estacion = estaciones.get(nombreEstacion);
@@ -44,16 +44,6 @@ public class Sistema {
 		return troncalDestino.RutasViaje(Inicio, destino);
 	}
 
-	/**
-	 * metodo para encontrar una lista de rutas que permiten el viaje entre dos
-	 * estaciones haciendo transbordo siendo el viaje mas corto
-	 * @param Inicio
-	 * @param destino
-	 * @return
-	 */
-	public ArrayList<String> Recorrido(String Inicio, String destino) {
-		return null;
-	}
 
 
 	/**
@@ -61,10 +51,10 @@ public class Sistema {
 	 * @param inicio
 	 * @param destino
 	 * @return
-	 */
-	public List<Ruta> rutasSinTransbordo(String inicio, String destino) {
+	 */	
+	public ArrayList<Ruta> rutasSinTransbordo(String inicio, String destino) {
 
-		List<Ruta> rutasValidas = new ArrayList<>();
+		ArrayList<Ruta> rutasValidas = new ArrayList<>();
 	
 		for (Troncal troncal : troncales.values()) {
 			Map<String, Ruta> rutasTroncal = troncal.getRutas();
@@ -99,7 +89,7 @@ public class Sistema {
 	 * @return nombre de la mejor ruta sin transbordo
 	 */
 	public String mejorRutaSinTransbordo(String inicio, String destino) {
-		List<Ruta> rutasValidas = rutasSinTransbordo(inicio, destino);
+		ArrayList<Ruta> rutasValidas = rutasSinTransbordo(inicio, destino);
 
 		if (rutasValidas.isEmpty()) {
 			return null;
