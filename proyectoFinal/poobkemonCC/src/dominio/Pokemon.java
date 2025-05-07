@@ -126,12 +126,18 @@ public class Pokemon {
 		if (indiceMovimiento < 0 || indiceMovimiento >= movimientos.length) return;
 		Movimiento mov = movimientos[indiceMovimiento];
 		if (ppActuales[indiceMovimiento] <= 0) return;
+
+		String tipoAtaque = mov.getTipo();
+		double multiplicador1 = TipoEfectividad.getMultiplicador(tipoAtaque, objetivo.getTipoPrincipal());
 	
-		int daño = mov.getPotencia() ; 
-		daño = Math.max(0, daño); 
+		double efectividad = multiplicador1;
+		int dañoBase = mov.getPotencia(); 
+		int daño = (int)(dañoBase * efectividad);
 	
-		objetivo.recibirDaño(daño);
+		System.out.println("¡El ataque fue " + (efectividad > 1 ? "super efectivo!" : efectividad < 1 ? "poco efectivo..." : "normal.") + " x" + efectividad);
+		objetivo.recibirDaño(Math.max(0, daño));
 	}
+	
 	
 
 	public void recibirDaño(int daño) {

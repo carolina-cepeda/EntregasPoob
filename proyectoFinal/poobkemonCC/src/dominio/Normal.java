@@ -46,6 +46,8 @@ public class Normal implements ModoJuego {
             Pokemon activo = actual.getPokemonActivo();
         
             System.out.println("\nTurno de " + actual.getNombre() + " | Pokémon activo: " + activo.nombre);
+            System.out.println("\n" + actual.getNombre() + " | puntos restantes: " + actual.getPP());
+
             System.out.println("¿Qué deseas hacer?");
             System.out.println("1. Atacar");
             System.out.println("2. Cambiar Pokémon");

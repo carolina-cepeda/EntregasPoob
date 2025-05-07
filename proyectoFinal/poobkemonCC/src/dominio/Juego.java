@@ -16,12 +16,12 @@ public class Juego {
 
     private void inicializarDatosBase() {
         movimientosBase = new ArrayList<>();
-        movimientosBase.add(new MovimientoNormal("Bubble", 40, 100, 30, 0, "agua", null));
-        movimientosBase.add(new MovimientoNormal("Dragon Rage", 40, 100, 10, 0, "dragón", null)); 
-        movimientosBase.add(new MovimientoNormal("Flamethrower", 90, 100, 15, 0, "fuego", null));
-        movimientosBase.add(new MovimientoNormal("Placaje", 40, 100, 35, 0, "normal", null));
-        movimientosBase.add(new MovimientoNormal("Stun Spore", 0, 75, 30, 0, "planta", null));
-        movimientosBase.add(new MovimientoNormal("Peck", 35, 100, 35, 0, "volador", null));
+        movimientosBase.add(new Movimiento("Bubble", 40, 100, 30, 0, "agua", null));
+        movimientosBase.add(new Movimiento("Dragon Rage", 40, 100, 10, 0, "dragón", null)); 
+        movimientosBase.add(new Movimiento("Flamethrower", 90, 100, 15, 0, "fuego", null));
+        movimientosBase.add(new Movimiento("Placaje", 40, 100, 35, 0, "normal", null));
+        movimientosBase.add(new Movimiento("Stun Spore", 0, 75, 30, 0, "planta", null));
+        movimientosBase.add(new Movimiento("Peck", 35, 100, 35, 0, "volador", null));
         
 
         pokemonesBase = new ArrayList<>();

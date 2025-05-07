@@ -12,10 +12,10 @@ public class pruebasUnitariasC1 {
     @Test
     public void testCreacionPokemonConMovimientos() {
         Movimiento[] movimientos = {
-            new MovimientoNormal("Placaje", 40, 100, 35, 0, "Normal", null),
-            new MovimientoNormal("Ascuas", 40, 100, 25, 0, "Fuego", null),
-            new MovimientoNormal("Gruñido", 0, 100, 40, 0, "Normal", "Bajar ataque"),
-            new MovimientoNormal("Lanzallamas", 90, 100, 15, 0, "Fuego", "Quemar")
+            new Movimiento("Placaje", 40, 100, 35, 0, "Normal", null),
+            new Movimiento("Ascuas", 40, 100, 25, 0, "Fuego", null),
+            new Movimiento("Gruñido", 0, 100, 40, 0, "Normal", "Bajar ataque"),
+            new Movimiento("Lanzallamas", 90, 100, 15, 0, "Fuego", "Quemar")
         };
         Pokemon baseCharmander = new Pokemon("Charmander", 200, 30, "Fuego", null, 150, 100, 120, 110, 160, 100, 100);
         Pokemon charmander = new Pokemon(baseCharmander, movimientos);
@@ -67,10 +67,10 @@ public class pruebasUnitariasC1 {
    
     public void testBatallaEntreDosPokemones() {
         Movimiento[] movimientos = {
-            new MovimientoNormal("Placaje", 40, 100, 35, 0, "Normal", null),
-            new MovimientoNormal("Nada", 0, 100, 40, 0, "Normal", null),
-            new MovimientoNormal("Nada2", 0, 100, 40, 0, "Normal", null),
-            new MovimientoNormal("Nada3", 0, 100, 40, 0, "Normal", null),
+            new Movimiento("Placaje", 40, 100, 35, 0, "Normal", null),
+            new Movimiento("Nada", 0, 100, 40, 0, "Normal", null),
+            new Movimiento("Nada2", 0, 100, 40, 0, "Normal", null),
+            new Movimiento("Nada3", 0, 100, 40, 0, "Normal", null),
         };
 
         Pokemon atacante = new Pokemon("Atacante", 300, 50, "Normal", null, 200, 150, 150, 150, 150, 100, 100);
@@ -130,10 +130,10 @@ public class pruebasUnitariasC1 {
 
     private Pokemon crearPokemonBasico(String nombre) {
         Movimiento[] movimientos = {
-            new MovimientoNormal("Placaje", 40, 100, 35, 0, "Normal", null),
-            new MovimientoNormal("Nada", 3, 100, 40, 0, "Normal", null),
-            new MovimientoNormal("Nada2", 2, 100, 40, 0, "Normal", null),
-            new MovimientoNormal("Nada3", 2, 100, 40, 0, "Normal", null)
+            new Movimiento("Placaje", 40, 100, 35, 0, "Normal", null),
+            new Movimiento("Nada", 3, 100, 40, 0, "Normal", null),
+            new Movimiento("Nada2", 2, 100, 40, 0, "Normal", null),
+            new Movimiento("Nada3", 2, 100, 40, 0, "Normal", null)
         };
         Pokemon retorno = new Pokemon(nombre, 200, 30, "Normal", null, 150, 100, 120, 110, 160, 100, 100);
 
@@ -148,11 +148,11 @@ private static class ModoJuegoMock implements ModoJuego {
         Entrenador e2 = new Entrenador("Mock2", "Azul");
         Pokemon poke1 = new Pokemon("Poke1", 100, 10, "Normal", null, 50, 50, 50, 50, 50, 50, 50);
         poke1 = new Pokemon(poke1, new Movimiento[]{
-            new MovimientoNormal("Ataque", 40, 100, 30, 0, "Normal", null)
+            new Movimiento("Ataque", 40, 100, 30, 0, "Normal", null)
         });
         Pokemon poke2 = new Pokemon("Poke2", 100, 10, "Normal", null, 50, 50, 50, 50, 50, 50, 50);
         poke2 = new Pokemon(poke2, new Movimiento[]{
-            new MovimientoNormal("Ataque", 40, 100, 30, 0, "Normal", null)
+            new Movimiento("Ataque", 40, 100, 30, 0, "Normal", null)
         });
         e1.agregarPokemon(poke1);
         e2.agregarPokemon(poke2);

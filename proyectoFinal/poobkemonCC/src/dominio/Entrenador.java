@@ -17,6 +17,7 @@ public class Entrenador {
         this.color = color;
         this.pokemones = new ArrayList<>();
         this.items = new ArrayList<>();
+        this.PP = 1000;
     }
 
     public String getNombre() {
@@ -26,6 +27,11 @@ public class Entrenador {
     public String getColor() {
         return color;
     }
+
+    public int getPP() {
+        return PP;
+    }
+
 
     public void agregarPokemon(Pokemon p) {
         if (pokemones.size() < 6) {
@@ -55,8 +61,9 @@ public class Entrenador {
     }
 
     public void seleccionarMovimiento(int indiceMovimiento, Pokemon objetivo) {
-        if (pokemonActual != null && objetivo != null && pokemonActual.getAtaque() > 0) {
+        if (pokemonActual != null && objetivo != null && this.PP > 0) {
             pokemonActual.Atacar(indiceMovimiento, objetivo);
+            this.PP -= pokemonActual.getMovimientos().get(indiceMovimiento).getPP(); // Disminuir PP del movimiento
         } else {
             System.out.println(nombre + " no tiene PP suficientes para atacar.");
         }
