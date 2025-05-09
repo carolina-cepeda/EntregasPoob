@@ -1,12 +1,12 @@
-package Tests;
+package pruebas;
 
-import com.sun.source.tree.AssertTree;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import domain.* ;
 import java.awt.Color;
+import java.io.File;
 /**
  * The test class Tests.
  *
@@ -17,7 +17,7 @@ import java.awt.Color;
 public class Tests{
     private City ciudad;
 
-    @BeforeEach 
+    @Before
     public void setUp() {
         ciudad = new City();
     }
@@ -28,7 +28,7 @@ public class Tests{
         char estadoInicial = persona1.getState();
         ciudad.ticTac();
         char nuevoEstado = persona1.getState();
-        assertNotEquals(estadoInicial,nuevoEstado,"el estado de la persona debe cambiar");
+        assertTrue("El estado de la persona debe cambiar", estadoInicial != nuevoEstado);
 
     }
 
@@ -42,7 +42,7 @@ public class Tests{
             int nuevaRow = persona2.getRow();
             int nuevaColumna = persona2.getColumn();
 
-            assertTrue(AnteriorRow==nuevaRow && Anteriorcolumn==nuevaColumna,"la persona no debe moverse si esta insatisfecha");
+            assertTrue("La persona no debe moverse si está insatisfecha", AnteriorRow == nuevaRow && Anteriorcolumn == nuevaColumna);
         }
     }
     @Test
@@ -132,6 +132,38 @@ public class Tests{
         assertTrue( fila1 == fila2);
     }
 
+    @Test
+public void shouldSaveCityToFile() {
+    try {
+        File archivo = new File("oneCity.dat");
+        ciudad.save(archivo);
+        assertTrue("El archivo no fue creado.", archivo.exists());
+        assertTrue("El archivo está vacío.", archivo.length() > 0);
+        archivo.delete(); 
+    } catch (CityException e) {
+        fail("No se esperaba excepción al guardar: " + e.getMessage());
+    }
+}
+
+@Test
+public void shouldOpenCityFromFile() {
+    try {
+       
+        ciudad.setItem(5, 5, new Solitaria(ciudad, 5, 5));
+        File archivo = new File("oneCity.dat");
+        ciudad.save(archivo);
+
+        City ciudadCargada = City.open(archivo);
+        assertTrue("El item no fue restaurado correctamente", ciudadCargada.getItem(5, 5) != null);
+        assertTrue("El tipo de objeto no coincide", Solitaria.class.equals(ciudadCargada.getItem(5, 5).getClass()));
+        archivo.delete(); 
+    } catch (CityException e) {
+        fail("No se esperaba excepción al abrir: " + e.getMessage());
+    }
+}
+
+
+    @After
     public void tearDown() {
         ciudad = null;
     }

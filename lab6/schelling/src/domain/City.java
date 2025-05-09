@@ -1,9 +1,10 @@
 package domain;
 
-import java.io.File;
+import java.io.*;
+
 
 /*No olviden adicionar la documentacion*/
-public class City{
+public class City implements Serializable{
     static private int SIZE=25;
     private Item[][] locations;
 
@@ -159,16 +160,50 @@ public class City{
         }
     }
 
-    public static  City open (File archivo) throws CityException{
+    /**
+     * metodo inicial open 00
+     * @param archivo
+     * @return
+     * @throws CityException
+     */
+    public static  City open00 (File archivo) throws CityException{
 
         throw new CityException(CityException.ERROR_ABRIR + archivo.getName());
     }
     
+    /**
+     * metodo inicial save00
+     * @param archivo
+     * @throws CityException
+     */
 
-    public void save (File archivo) throws CityException{
+    public void save00 (File archivo) throws CityException{
 
         throw new CityException(CityException.ERROR_GUARDAR + archivo.getName());
 
+    }
+
+    /**
+     * implementacion de save con serializacion 
+     * @param archivo
+     * @return City guardada
+     * @throws CityException
+     */
+    public void save(File archivo) throws CityException {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
+            oos.writeObject(this);
+        } catch (IOException e) {
+            throw new CityException(CityException.ERROR_GUARDAR + archivo.getName());
+        }
+    }
+
+
+    public static City open(File archivo) throws CityException {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+            return (City) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new CityException(CityException.ERROR_ABRIR + archivo.getName());
+        }
     }
 
    

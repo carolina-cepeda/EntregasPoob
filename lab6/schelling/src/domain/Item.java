@@ -1,8 +1,10 @@
 package domain;
 import java.awt.Color;
+import java.io.Serializable;
+
 
 /*No olviden adicionar la documentacion*/
-public interface Item{
+public interface Item extends Serializable {
   public static final int ROUND = 1;
   public static final int SQUARE = 2;
 

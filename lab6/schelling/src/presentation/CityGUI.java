@@ -112,63 +112,111 @@ public class CityGUI extends JFrame{
             JOptionPane.showMessageDialog(this, "Nuevo archivo creado.");
             crear();
         });
-    
-        itemAbrir.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            int result = fileChooser.showOpenDialog(this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                String fileName = fileChooser.getSelectedFile().getName();
-                try {
-                    City.open(new File(fileName));
-                    JOptionPane.showMessageDialog(this, "Archivo abierto exitosamente.");
-                } catch (CityException ex) {
-                    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-    
-        itemGuardar.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            int result = fileChooser.showSaveDialog(this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                String fileName = fileChooser.getSelectedFile().getName();
-                try {
-                    theCity.save(new File(fileName));
-                    JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente.");
-                } catch (CityException ex) {
-                    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-    
-        itemImportar.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            int result = fileChooser.showOpenDialog(this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                String fileName = fileChooser.getSelectedFile().getName();
-                try {
-                    City.importar(new File(fileName));
-                    JOptionPane.showMessageDialog(this, "Archivo importado exitosamente.");
-                } catch (CityException ex) {
-                    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-    
-        itemExportar.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            int result = fileChooser.showSaveDialog(this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                String fileName = fileChooser.getSelectedFile().getName();
-                try {
-                    theCity.exportar(new File(fileName)); 
-                    JOptionPane.showMessageDialog(this, "Archivo exportado exitosamente.");
-                } catch (CityException ex) {
-                    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+
+        itemAbrir.addActionListener(e -> optionOpen());
+
+        itemGuardar.addActionListener(e -> optionSave());
+
+        itemImportar.addActionListener(e -> optionImport());
+
+        itemExportar.addActionListener(e -> optionExport());
+
+        itemSalir.addActionListener(e -> optionExit());
+
+        itemNuevo.addActionListener(n-> optionNew());
     }
+
+    private void optionOpen() {
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String fileName = fileChooser.getSelectedFile().getName();
+            try {
+                theCity = City.open(new File(fileName));
+                photo.repaint();
+                JOptionPane.showMessageDialog(this, "Archivo abierto exitosamente.");
+            } catch (CityException ex) {
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    /**
+     * metodo para abrir un archivo 
+     */
+    private void optionSave() {
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String fileName = fileChooser.getSelectedFile().getName();
+            try {
+                theCity.save(new File(fileName));
+                JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente.");
+            } catch (CityException ex) {
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    /**
+     * metodo para importar un archivo
+     */
+    private void optionImport() {
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String fileName = fileChooser.getSelectedFile().getName();
+            try {
+                City.importar(new File(fileName));
+                JOptionPane.showMessageDialog(this, "Archivo importado exitosamente.");
+            } catch (CityException ex) {
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    /**
+     * metodo para exportar un archivo 
+     */
+
+    private void optionExport() {
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String fileName = fileChooser.getSelectedFile().getName();
+            try {
+                theCity.exportar(new File(fileName));
+                JOptionPane.showMessageDialog(this, "Archivo exportado exitosamente.");
+            } catch (CityException ex) {
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    /**
+     * metodo para salir
+     */
+    private void optionExit() {
+        System.exit(0);
+    }
+
+    /**
+     * metodo para empezar una nueva ciudad 
+     */
+    private void optionNew() {
+    int confirm = JOptionPane.showConfirmDialog(
+        this,
+        "¿Estás seguro de que deseas crear una nueva ciudad? Se perderán los cambios no guardados.",
+        "Confirmar",
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        theCity = new City(); 
+        photo.repaint(); 
+        JOptionPane.showMessageDialog(this, "Nueva ciudad creada exitosamente.");
+    }
+}
 }
 
 
