@@ -1,0 +1,10 @@
+Hole 9 20
+Hole 12 13
+Hole 15 10
+Solitaria 23 14
+Solitaria 23 15
+Solitaria 24 14
+Solitaria 24 15
+Person 5 5
+Walker 8 8
+Hole 3 3

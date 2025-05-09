@@ -167,7 +167,8 @@ public class CityGUI extends JFrame{
         if (result == JFileChooser.APPROVE_OPTION) {
             String fileName = fileChooser.getSelectedFile().getName();
             try {
-                City.importar(new File(fileName));
+                theCity =City.importar(new File(fileName));
+                photo.repaint();
                 JOptionPane.showMessageDialog(this, "Archivo importado exitosamente.");
             } catch (CityException ex) {
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

@@ -206,17 +206,88 @@ public class City implements Serializable{
         }
     }
 
+    /**
+     * version inicial 
+     * @param archivo
+     * @return
+     * @throws CityException
+     */
    
-    public static City importar (File archivo) throws CityException{
+    public static City importar00 (File archivo) throws CityException{
 
         throw new CityException(CityException.ERROR_IMPORTAR + archivo.getName());
 
     }
 
+    /**
+     * version inicial
+     * @param archivo
+     * @throws CityException
+     */
     
-    public void exportar (File archivo) throws CityException{
+    public void exportar00 (File archivo) throws CityException{
 
         throw new CityException(CityException.ERROR_EXPORTAR + archivo.getName());
 
     }
+
+    /**
+     * exportar 01
+     * @param archivo
+     * @throws CityException
+     */
+    public void exportar(File archivo) throws CityException {
+    try (PrintWriter writer = new PrintWriter(new FileWriter(archivo))) {
+        for (int i = 0; i < getSize(); i++) {
+            for (int j = 0; j < getSize(); j++) {
+                Item item = getItem(i, j);
+                if (item != null) {
+                    writer.println(item.getClass().getSimpleName() + " " + i + " " + j);
+                }
+            }
+        }
+    } catch (IOException e) {
+        throw new CityException(CityException.ERROR_EXPORTAR + archivo.getName());
+    }
+}
+
+    /**
+     * metodo para importar un a ciudad
+     * @param archivo
+     * @return
+     * @throws CityException
+     */
+    public static City importar(File archivo) throws CityException {
+    City nuevaCiudad = new City(); 
+    try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+        while ((linea = reader.readLine()) != null) {
+            linea = linea.trim();
+            if (linea.isEmpty()) continue;
+            String[] partes = linea.split("\\s+");
+            if (partes.length != 3) continue;
+
+            String tipo = partes[0];
+            int fila = Integer.parseInt(partes[1]);
+            int columna = Integer.parseInt(partes[2]);
+
+            switch (tipo) {
+                case "Person" -> nuevaCiudad.setItem(fila, columna, new Person(nuevaCiudad, fila, columna));
+                case "Walker" -> nuevaCiudad.setItem(fila, columna, new Walker(nuevaCiudad, fila, columna));
+                case "Hole" -> nuevaCiudad.setItem(fila, columna, new Hole(nuevaCiudad, fila, columna));
+                case "Solitaria" -> nuevaCiudad.setItem(fila, columna, new Solitaria(nuevaCiudad, fila, columna));
+                case "TrafficLight" -> nuevaCiudad.setItem(fila, columna, new TrafficLight(nuevaCiudad, fila, columna));
+                default -> {
+                }
+            }
+        }
+        return nuevaCiudad;
+    } catch (IOException | NumberFormatException e) {
+        throw new CityException(CityException.ERROR_IMPORTAR + archivo.getName());
+    }
+}
+
+
+    
+    
 }

@@ -6,7 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 import domain.* ;
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.PrintWriter;
 /**
  * The test class Tests.
  *
@@ -159,6 +162,64 @@ public void shouldOpenCityFromFile() {
         archivo.delete(); 
     } catch (CityException e) {
         fail("No se esperaba excepción al abrir: " + e.getMessage());
+    }
+}
+
+@Test
+public void shouldExportCityToTextFile() {
+    try {
+        File archivo = new File("cityTestExport.txt");
+
+        // Poner algunos elementos en la ciudad
+        ciudad.setItem(5, 5, new Person(ciudad, 5, 5));
+        ciudad.setItem(10, 10, new Walker(ciudad, 10, 10));
+        ciudad.setItem(15, 15, new Hole(ciudad, 15, 15));
+        ciudad.setItem(20, 20, new Solitaria(ciudad, 20, 20));
+
+        ciudad.exportar(archivo);
+        assertTrue(archivo.exists());
+        assertTrue(archivo.length() > 0);
+
+        // Leer archivo para verificar contenido
+        BufferedReader reader = new BufferedReader(new FileReader(archivo));
+        String line;
+        boolean foundPerson = false, foundWalker = false, foundHole = false, foundSolitaria = false;
+        while ((line = reader.readLine()) != null) {
+            if (line.equals("Person 5 5")) foundPerson = true;
+            if (line.equals("Walker 10 10")) foundWalker = true;
+            if (line.equals("Hole 15 15")) foundHole = true;
+            if (line.equals("Solitaria 20 20")) foundSolitaria = true;
+        }
+        reader.close();
+        archivo.delete();
+
+        assertTrue(foundPerson && foundWalker && foundHole && foundSolitaria);
+    } catch (Exception e) {
+        fail("No se esperaba excepción: " + e.getMessage());
+    }
+}
+
+@Test
+public void shouldImportCityFromTextFile() {
+    try {
+        File archivo = new File("cityTestImport.txt");
+
+        PrintWriter writer = new PrintWriter(archivo);
+        writer.println("Person 6 6");
+        writer.println("Walker 7 7");
+        writer.println("Hole 8 8");
+        writer.println("Solitaria 9 9");
+        writer.close();
+
+        City nuevaCiudad = City.importar(archivo);
+        archivo.delete();
+
+        assertTrue(nuevaCiudad.getItem(6, 6) instanceof Person);
+        assertTrue(nuevaCiudad.getItem(7, 7) instanceof Walker);
+        assertTrue(nuevaCiudad.getItem(8, 8) instanceof Hole);
+        assertTrue(nuevaCiudad.getItem(9, 9) instanceof Solitaria);
+    } catch (Exception e) {
+        fail("No se esperaba excepción: " + e.getMessage());
     }
 }
 
