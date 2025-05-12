@@ -120,26 +120,7 @@ public class Normal implements ModoJuego {
             int index = scanner.nextInt();
             if (index >= 0 && index < disponibles.size()) {
                 Pokemon base = disponibles.get(index);
-
-                System.out.println("Selecciona 4 movimientos para " + base.nombre + ":");
-                for (int j = 0; j < movimientosBase.size(); j++) {
-                    System.out.println(j + ": " + movimientosBase.get(j).getNombre());
-                }
-
-                Movimiento[] movsElegidos = new Movimiento[4];
-                int movsSeleccionados = 0;
-                while (movsSeleccionados < 4) {
-                    System.out.print("Movimiento #" + (movsSeleccionados + 1) + ": ");
-                    int movIndex = scanner.nextInt();
-                    if (movIndex >= 0 && movIndex < movimientosBase.size()) {
-                        movsElegidos[movsSeleccionados++] = movimientosBase.get(movIndex);
-                    } else {
-                        System.out.println("Índice inválido.");
-                    }
-                }
-
-                Pokemon personalizado = new Pokemon(base, movsElegidos);
-                entrenador.agregarPokemon(personalizado);
+                entrenador.agregarPokemon(base);
                 count++;
             } else {
                 System.out.println("Índice inválido.");

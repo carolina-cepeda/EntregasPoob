@@ -32,9 +32,9 @@ public class Supervivencia implements ModoJuego {
             new Movimiento("Movimiento4", 100, 80, 5, 0, "Fuerte", null)
         };
 
-        Pokemon poke = new Pokemon(nombre, 400, 100, "Tipo1", "Tipo2", 300, 300, 300, 300, 300, 100, 100);
+        Pokemon poke = new Pokemon(nombre, 400, 100, "Tipo1", "Tipo2", 300, 300, 300, 300, 300, 100, 100,movimientos);
 
-        return new Pokemon(poke, movimientos);
+        return poke;
     }
 }
 

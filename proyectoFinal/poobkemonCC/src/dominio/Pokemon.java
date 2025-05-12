@@ -43,7 +43,7 @@ public class Pokemon {
 	 * 
 	 */
 	public Pokemon(String nombre, int salud, int nivel, String tipoPrincipal, String tipoSecundario, int ataque, int defensa, int ataqueEspecial, int defensaEspecial,
-            int velocidad, int precision, int evasion) {
+			int velocidad, int precision, int evasion, Movimiento[] nuevosMovimientos) {
 
 		 this.nombre = nombre;
 		 this.salud = salud;
@@ -62,34 +62,15 @@ public class Pokemon {
 		 this.movimientos = new Movimiento[4];
 		 this.ppActuales = new int[4];
 		
-		//quite asignacion de moviminetos
-}
-
-	public Pokemon(Pokemon base, Movimiento[] nuevosMovimientos) {
-		this.nombre = base.nombre;
-		this.salud = base.saludInicial;
-		this.saludInicial = base.saludInicial;
-		this.nivel = base.nivel;
-		this.tipoPrincipal = base.tipoPrincipal;
-		this.tipoSecundario = base.tipoSecundario;
-		this.ataque = base.ataque;
-		this.defensa = base.defensa;
-		this.ataqueEspecial = base.ataqueEspecial;
-		this.defensaEspecial = base.defensaEspecial;
-		this.velocidad = base.velocidad;
-		this.precision = base.precision;
-		this.evasion = base.evasion;
-
 		this.movimientos = new Movimiento[4];
 		this.ppActuales = new int[4];
 		for (int i = 0; i < 4; i++) {
 			this.movimientos[i] = nuevosMovimientos[i];
 			this.ppActuales[i] = nuevosMovimientos[i].getPP();
 		}
-	}
+}
 
-
-
+	
 	/**
 	 * metodo para aumentar la salud de un pokemon
 	 * se hace uso de este metodo con un item.
@@ -181,6 +162,10 @@ public class Pokemon {
 		for (int i = 0; i < movimientos.length; i++) {
 			ppActuales[i] = Math.max(0, ppActuales[i] - cantidad); // toca cambiarlo a solo movimientos especiales 
 		}
+	}
+
+	public String getNombre(){
+		return this.nombre;
 	}
 
 }

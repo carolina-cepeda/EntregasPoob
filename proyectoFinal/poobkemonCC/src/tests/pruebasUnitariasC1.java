@@ -17,13 +17,13 @@ public class pruebasUnitariasC1 {
             new Movimiento("Gruñido", 0, 100, 40, 0, "Normal", "Bajar ataque"),
             new Movimiento("Lanzallamas", 90, 100, 15, 0, "Fuego", "Quemar")
         };
-        Pokemon baseCharmander = new Pokemon("Charmander", 200, 30, "Fuego", null, 150, 100, 120, 110, 160, 100, 100);
-        Pokemon charmander = new Pokemon(baseCharmander, movimientos);
+        Pokemon charmander = new Pokemon("Charmander", 200, 30, "Fuego", null, 150, 100, 120, 110, 160, 100, 100, movimientos);
 
-        assertEquals("Charmander", charmander.nombre);
+        assertEquals("Charmander", charmander.getNombre());
         assertEquals("Fuego", charmander.getTipoPrincipal());
         assertEquals(200, charmander.getSalud());
         assertEquals(4, charmander.getMovimientos().size());
+
     }
 
     // --------- ENTRENADOR E ÍTEMS ---------
@@ -37,7 +37,7 @@ public class pruebasUnitariasC1 {
 
         assertEquals("Ash", ash.getNombre());
         assertEquals(1, ash.getPokemones().size());
-        assertEquals("Pikachu", ash.getPokemonActivo().nombre);
+        assertEquals("Pikachu", ash.getPokemonActivo().getNombre());
         assertEquals(1, ash.getItems().size());
     }
 
@@ -63,8 +63,6 @@ public class pruebasUnitariasC1 {
     // --------- BATALLA ---------
 
     @Test
-    //fallando
-   
     public void testBatallaEntreDosPokemones() {
         Movimiento[] movimientos = {
             new Movimiento("Placaje", 40, 100, 35, 0, "Normal", null),
@@ -73,12 +71,8 @@ public class pruebasUnitariasC1 {
             new Movimiento("Nada3", 0, 100, 40, 0, "Normal", null),
         };
 
-        Pokemon atacante = new Pokemon("Atacante", 300, 50, "Normal", null, 200, 150, 150, 150, 150, 100, 100);
-        Pokemon defensor = new Pokemon("Defensor", 300, 50, "Normal", null, 150, 100, 100, 100, 100, 100, 100);
-
-        atacante = new Pokemon(atacante, movimientos);
-        defensor = new Pokemon(defensor, movimientos);
-
+        Pokemon atacante = new Pokemon("Atacante", 300, 50, "Normal", null, 200, 150, 150, 150, 150, 100, 100, movimientos);
+        Pokemon defensor = new Pokemon("Defensor", 300, 50, "Normal", null, 150, 100, 100, 100, 100, 100, 100, movimientos);
         Entrenador e1 = new Entrenador("Rojo", "Rojo");
         Entrenador e2 = new Entrenador("Azul", "Azul");
         e1.agregarPokemon(atacante);
@@ -135,9 +129,7 @@ public class pruebasUnitariasC1 {
             new Movimiento("Nada2", 2, 100, 40, 0, "Normal", null),
             new Movimiento("Nada3", 2, 100, 40, 0, "Normal", null)
         };
-        Pokemon retorno = new Pokemon(nombre, 200, 30, "Normal", null, 150, 100, 120, 110, 160, 100, 100);
-
-        return new Pokemon(retorno, movimientos);
+        return new Pokemon(nombre, 200, 30, "Normal", null, 150, 100, 120, 110, 160, 100, 100, movimientos);
     }
 
 // Mock del modo juego para evitar el uso de Scanner
@@ -146,14 +138,15 @@ private static class ModoJuegoMock implements ModoJuego {
     public void configurarJuego(Juego juego) {
         Entrenador e1 = new Entrenador("Mock1", "Rojo");
         Entrenador e2 = new Entrenador("Mock2", "Azul");
-        Pokemon poke1 = new Pokemon("Poke1", 100, 10, "Normal", null, 50, 50, 50, 50, 50, 50, 50);
-        poke1 = new Pokemon(poke1, new Movimiento[]{
+        Movimiento[] movimientosPoke1 = {
             new Movimiento("Ataque", 40, 100, 30, 0, "Normal", null)
-        });
-        Pokemon poke2 = new Pokemon("Poke2", 100, 10, "Normal", null, 50, 50, 50, 50, 50, 50, 50);
-        poke2 = new Pokemon(poke2, new Movimiento[]{
+        };
+        Pokemon poke1 = new Pokemon("Poke1", 100, 10, "Normal", null, 50, 50, 50, 50, 50, 50, 50, movimientosPoke1);
+
+        Movimiento[] movimientosPoke2 = {
             new Movimiento("Ataque", 40, 100, 30, 0, "Normal", null)
-        });
+        };
+        Pokemon poke2 = new Pokemon("Poke2", 100, 10, "Normal", null, 50, 50, 50, 50, 50, 50, 50, movimientosPoke2);
         e1.agregarPokemon(poke1);
         e2.agregarPokemon(poke2);
         juego.empezarBatalla(e1, e2);

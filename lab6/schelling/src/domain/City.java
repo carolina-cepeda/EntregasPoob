@@ -184,12 +184,12 @@ public class City implements Serializable{
     }
 
     /**
-     * implementacion de save con serializacion 
+     * implementacion de save01 con serializacion 
      * @param archivo
      * @return City guardada
      * @throws CityException
      */
-    public void save(File archivo) throws CityException {
+    public void saveo1(File archivo) throws CityException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
             oos.writeObject(this);
         } catch (IOException e) {
@@ -197,14 +197,57 @@ public class City implements Serializable{
         }
     }
 
+    /**
+     * metodo para abrir sin mejor manejo de excepciones
+     * @param archivo
+     * @return
+     * @throws CityException
+     */
 
-    public static City open(File archivo) throws CityException {
+    public static City open01(File archivo) throws CityException {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
             return (City) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             throw new CityException(CityException.ERROR_ABRIR + archivo.getName());
         }
     }
+
+    /**
+     * metodo guardar con mejor manejo de excepciones
+     * @param archivo
+     * @throws CityException
+     */
+    public void save(File archivo) throws CityException {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
+            oos.writeObject(this);
+        } catch (FileNotFoundException e) {
+            throw new CityException(CityException.ERROR_GUARDAR + archivo.getAbsolutePath());
+        } catch (IOException e) {
+            throw new CityException("Error al guardar la ciudad en " + archivo.getAbsolutePath());
+        }
+    }
+
+    /**
+     * metodo para abrir archivo con mejor manejo de excepciones
+     * @param archivo
+     * @return
+     * @throws CityException
+     */
+    public static City open(File archivo) throws CityException {
+    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+        return (City) ois.readObject();
+    } catch (FileNotFoundException e) {
+        throw new CityException(CityException.ERROR_ABRIR + archivo.getAbsolutePath());
+    } catch (ClassNotFoundException e) {
+        throw new CityException("Clase no encontrada al abrir el archivo: " + e.getMessage());
+    } catch (IOException e) {
+        throw new CityException("Error al abrir la ciudad desde " + archivo.getAbsolutePath());
+    }
+}
+
+
+
+
 
     /**
      * version inicial 
@@ -236,7 +279,7 @@ public class City implements Serializable{
      * @param archivo
      * @throws CityException
      */
-    public void exportar(File archivo) throws CityException {
+    public void exportar01(File archivo) throws CityException {
     try (PrintWriter writer = new PrintWriter(new FileWriter(archivo))) {
         for (int i = 0; i < getSize(); i++) {
             for (int j = 0; j < getSize(); j++) {
@@ -257,7 +300,7 @@ public class City implements Serializable{
      * @return
      * @throws CityException
      */
-    public static City importar(File archivo) throws CityException {
+    public static City importar01(File archivo) throws CityException {
     City nuevaCiudad = new City(); 
     try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
         String linea;
@@ -287,6 +330,67 @@ public class City implements Serializable{
     }
 }
 
+/*
+ * metodo exportar con mejor manejo de excepciones
+ */
+public void exportar(File archivo) throws CityException {
+    try (PrintWriter writer = new PrintWriter(new FileWriter(archivo))) {
+        for (int i = 0; i < getSize(); i++) {
+            for (int j = 0; j < getSize(); j++) {
+                Item item = getItem(i, j);
+                if (item != null) {
+                    writer.println(item.getClass().getSimpleName() + " " + i + " " + j);
+                }
+            }
+        }
+    } catch (IOException e) {
+        throw new CityException(CityException.ERROR_EXPORTAR + archivo.getAbsolutePath());
+    }
+}
+
+/**
+ * metodo importar archivos con mejor manejo de excepciones
+ */
+public static City importar(File archivo) throws CityException {
+    City nuevaCiudad = new City(); 
+    try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+        int numLinea = 0;
+        while ((linea = reader.readLine()) != null) {
+            numLinea++;
+            linea = linea.trim();
+            if (linea.isEmpty()) continue;
+
+            String[] partes = linea.split("\\s+");
+            if (partes.length != 3) {
+                throw new CityException(CityException.FORMATO_INVALIDO + numLinea + ": '" + linea + "'");
+            }
+
+            int fila, columna;
+            try {
+                fila = Integer.parseInt(partes[1]);
+                columna = Integer.parseInt(partes[2]);
+            } catch (NumberFormatException e) {
+                throw new CityException(CityException.COORDENADAS_INVALIDAS + numLinea + ": '" + linea + "'");
+            }
+
+            String tipo = partes[0];
+            Item nuevoItem = switch (tipo) {
+                case "Person" -> new Person(nuevaCiudad, fila, columna);
+                case "Walker" -> new Walker(nuevaCiudad, fila, columna);
+                case "Hole" -> new Hole(nuevaCiudad, fila, columna);
+                case "Solitaria" -> new Solitaria(nuevaCiudad, fila, columna);
+                case "TrafficLight" -> new TrafficLight(nuevaCiudad, fila, columna);
+                default -> throw new CityException(CityException.TIPO_DESCONOCIDO + numLinea + ": '" + tipo + "'");
+            };
+
+            nuevaCiudad.setItem(fila, columna, nuevoItem);
+        }
+        return nuevaCiudad;
+    } catch (IOException e) {
+        throw new CityException(CityException.ERROR_IMPORTAR + archivo.getAbsolutePath());
+    }
+}
 
     
     

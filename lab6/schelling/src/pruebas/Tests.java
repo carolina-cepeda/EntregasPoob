@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 /**
  * The test class Tests.
@@ -222,6 +223,73 @@ public void shouldImportCityFromTextFile() {
         fail("No se esperaba excepción: " + e.getMessage());
     }
 }
+
+@Test
+public void shouldThrowExceptionWhenSavingToInvalidPath() {
+    City ciudad = new City();
+    File archivo = new File("/no/existe/city.save");  // Ruta inválida
+
+    CityException thrown = assertThrows(CityException.class, () -> {
+        ciudad.save(archivo);
+    });
+
+    assertTrue(thrown.getMessage().contains("Error al guardar el archivo"));
+}
+
+@Test
+public void shouldThrowExceptionWhenOpeningNonexistentFile() {
+    File archivo = new File("archivo_que_no_existe.save");
+
+    CityException thrown = assertThrows(CityException.class, () -> {
+        City.open(archivo);
+    });
+
+    assertTrue(thrown.getMessage().contains("Error al abrir el archivo"));
+}
+
+@Test
+public void shouldThrowExceptionWhenInexistentToProtectedPath() {
+    City ciudad = new City();
+    File archivo = new File("/ab/city.txt");  
+
+    CityException thrown = assertThrows(CityException.class, () -> {
+        ciudad.exportar(archivo);
+    });
+
+    assertTrue(thrown.getMessage().contains("Error al exportar la ciudad"));
+}
+
+
+@Test
+public void shouldThrowExceptionWhenImportingWithInvalidCoordinates() throws IOException {
+    File archivo = new File("ciudad_mal.txt");
+    try (PrintWriter writer = new PrintWriter(archivo)) {
+        writer.println("Person a b");  // Coordenadas inválidas
+    }
+
+    CityException thrown = assertThrows(CityException.class, () -> {
+        City.importar(archivo);
+    });
+
+    assertTrue(thrown.getMessage().contains("Coordenadas inválidas en línea"));
+    archivo.delete();  // Limpieza
+}
+
+@Test
+public void shouldThrowExceptionWhenImportingUnknownItemType() throws IOException {
+    File archivo = new File("ciudad_tipo_desconocido.txt");
+    try (PrintWriter writer = new PrintWriter(archivo)) {
+        writer.println("Alien 10 10");  // Tipo inválido
+    }
+
+    CityException thrown = assertThrows(CityException.class, () -> {
+        City.importar(archivo);
+    });
+
+    assertTrue(thrown.getMessage().contains("Tipo de ítem desconocido en línea"));
+    archivo.delete();  // Limpieza
+}
+
 
 
     @After
