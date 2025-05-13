@@ -168,4 +168,8 @@ public class Pokemon {
 		return this.nombre;
 	}
 
+	public int[] getPP(){
+		return this.ppActuales ;
+	}
+
 }

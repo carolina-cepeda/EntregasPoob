@@ -1,6 +1,7 @@
 package dominio;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Entrenador {
@@ -85,4 +86,34 @@ public class Entrenador {
     public List<Item> getItems() {
         return items;
     }
+
+    public void seleccionarPokemonesAuto(List<Pokemon> disponibles) {
+    Collections.shuffle(disponibles); // Mezcla los Pokémon disponibles para q sea mas aleatorio
+    int seleccionados = 0;
+    for (Pokemon p : disponibles) {
+        if (seleccionados >= 3) break;
+        this.agregarPokemon(p);
+            seleccionados++;
+        }
+    }
+
+    public void seleccionarItemsAuto(List<Item> itemsBase) {
+
+    int potions = 0, superPotions = 0;
+    boolean reviveUsado = false;
+
+    for (Item item : itemsBase) {
+        if (item.getNombre().equals("Potion") && potions < 2) {
+            this.agregarItem(new Pocion("Potion"));
+            potions++;
+        } else if (item.getNombre().equals("SuperPotion") && superPotions < 1) {
+            this.agregarItem(new Pocion("SuperPotion"));
+            superPotions++;
+        } else if (item.getNombre().equals("Revive") && !reviveUsado) {
+            this.agregarItem(new Pocion("Revive"));
+            reviveUsado = true;
+        }
+        if (potions == 2 && superPotions == 1 && reviveUsado) break;
+    }
+}
 }

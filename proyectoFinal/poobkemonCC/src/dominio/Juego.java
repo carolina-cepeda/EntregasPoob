@@ -75,4 +75,8 @@ public class Juego {
     public List<Item> getItemsBase() {
         return itemsBase;
     }
+
+    public Entrenador obtenerOponente(Entrenador entrenador){
+        return batalla.obtenerOponente();
+    }
 }

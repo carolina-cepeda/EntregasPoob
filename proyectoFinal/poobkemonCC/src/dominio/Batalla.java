@@ -81,7 +81,7 @@ public class Batalla {
         System.out.println("Turno de " + turnoActual.getNombre());
     }
 
-    private Entrenador obtenerOponente() {
+    public Entrenador obtenerOponente() {
         return (turnoActual == entrenador1) ? entrenador2 : entrenador1;
     }
 

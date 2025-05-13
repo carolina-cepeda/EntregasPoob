@@ -48,8 +48,5 @@ public class Movimiento {
         return efectoSecundario;
     }
 
-    public Movimiento AtaqueObjetivo(Pokemon objetivo) {
-        //como la hago?
-        return this;
-    }
+    
 }
