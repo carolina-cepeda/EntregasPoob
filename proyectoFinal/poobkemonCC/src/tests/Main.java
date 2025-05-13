@@ -23,7 +23,7 @@ public class Main {
 
             switch (modo) {
                 case 1 -> {
-                    Normal normal = new Normal();
+                    ModoJuego normal = new Normal();
                     juego.seleccionarModoJuego(normal);  // Esto ya llama a configurarJuego()
                     normal.configurarJuego(juego);       // Aquí se elige el submodo
                 }

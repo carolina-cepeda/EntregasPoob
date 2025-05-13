@@ -17,7 +17,9 @@ public class Supervivencia implements ModoJuego {
 
         // No se agregan ítems
 
-        juego.empezarBatalla(entrenador1, entrenador2);
+        juego.setEntrenadores(entrenador1, entrenador2);
+        juego.comenzarBatalla();
+
     }
 
     private Pokemon generarPokemonAleatorio() {

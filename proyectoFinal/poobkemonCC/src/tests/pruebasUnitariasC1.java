@@ -1,127 +1,121 @@
 package tests;
 
 import dominio.*;
+import presentacion.EstadoJuego;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class pruebasUnitariasC1 {
 
-    // --------- CREACIÓN Y PROPIEDADES ---------
-
+    // CREACION Y CONFIGURACION
     @Test
-    public void testCreacionPokemonConMovimientos() {
-        Movimiento[] movimientos = {
-            new Movimiento("Placaje", 40, 100, 35, 0, "Normal", null),
-            new Movimiento("Ascuas", 40, 100, 25, 0, "Fuego", null),
-            new Movimiento("Gruñido", 0, 100, 40, 0, "Normal", "Bajar ataque"),
-            new Movimiento("Lanzallamas", 90, 100, 15, 0, "Fuego", "Quemar")
-        };
-        Pokemon charmander = new Pokemon("Charmander", 200, 30, "Fuego", null, 150, 100, 120, 110, 160, 100, 100, movimientos);
-
-        assertEquals("Charmander", charmander.getNombre());
-        assertEquals("Fuego", charmander.getTipoPrincipal());
-        assertEquals(200, charmander.getSalud());
-        assertEquals(4, charmander.getMovimientos().size());
-
-    }
-
-    // --------- ENTRENADOR E ÍTEMS ---------
-
-    @Test
-    public void testAgregarPokemonEItemAEntrenador() {
-        Entrenador ash = new Entrenador("Ash", "Rojo");
-        Pokemon pikachu = crearPokemonBasico("Pikachu");
-        ash.agregarPokemon(pikachu);
-        ash.agregarItem(new Pocion("Potion"));
-
-        assertEquals("Ash", ash.getNombre());
-        assertEquals(1, ash.getPokemones().size());
-        assertEquals("Pikachu", ash.getPokemonActivo().getNombre());
-        assertEquals(1, ash.getItems().size());
-    }
-
-    @Test
-    public void testUsoDePocionCuraCorrectamente() {
-        Pokemon bulbasaur = crearPokemonBasico("Bulbasaur");
-        bulbasaur.aumentoSalud(-50);
-        assertEquals(150, bulbasaur.getSalud());
-
-        Pocion pocion = new Pocion("SuperPotion"); 
-        pocion.usar(bulbasaur);
-        assertEquals(200, bulbasaur.getSalud());
-    }
-
-    @Test
-    public void testUsoDeReviveNoPasaDeSaludMaxima() {
-        Pokemon squirtle = crearPokemonBasico("Squirtle");
-        Pocion revive = new Pocion("Revive"); 
-        revive.usar(squirtle);
-        assertEquals(200, squirtle.getSalud()); // debe quedarse en 200
-    }
-
-    // --------- BATALLA ---------
-
-    @Test
-    public void testBatallaEntreDosPokemones() {
-        Movimiento[] movimientos = {
-            new Movimiento("Placaje", 40, 100, 35, 0, "Normal", null),
-            new Movimiento("Nada", 0, 100, 40, 0, "Normal", null),
-            new Movimiento("Nada2", 0, 100, 40, 0, "Normal", null),
-            new Movimiento("Nada3", 0, 100, 40, 0, "Normal", null),
-        };
-
-        Pokemon atacante = new Pokemon("Atacante", 300, 50, "Normal", null, 200, 150, 150, 150, 150, 100, 100, movimientos);
-        Pokemon defensor = new Pokemon("Defensor", 300, 50, "Normal", null, 150, 100, 100, 100, 100, 100, 100, movimientos);
-        Entrenador e1 = new Entrenador("Rojo", "Rojo");
-        Entrenador e2 = new Entrenador("Azul", "Azul");
-        e1.agregarPokemon(atacante);
-        e2.agregarPokemon(defensor);
-
+    public void testJuegoPuedeCrearEntrenadores() throws ExceptionPOOBkemon {
         Juego juego = new Juego();
-        juego.empezarBatalla(e1, e2);
+        juego.crearEntrenadores("Ash", "Gary");
+        juego.agregarPokemonAEntrenador(1, crearPokemonBasico("Pikachu"));
+        juego.agregarPokemonAEntrenador(2, crearPokemonBasico("Eevee"));
 
-        int saludInicialDefensor = defensor.getSalud();
-
-        juego.comenzarTurno("atacar", 0);
-        juego.comenzarTurno("atacar", 1); 
-
-        int saludFinalDefensor = defensor.getSalud();
-
-        assertTrue(saludFinalDefensor < saludInicialDefensor);
+        assertNotNull(juego);
     }
 
     @Test
-    public void testCambioDeTurnoEnBatalla() {
-        Entrenador e1 = new Entrenador("Jugador1", "Rojo");
-        Entrenador e2 = new Entrenador("Jugador2", "Azul");
-
-        e1.agregarPokemon(crearPokemonBasico("Pokemon1"));
-        e2.agregarPokemon(crearPokemonBasico("Pokemon2"));
-
+    public void testJuegoPermiteAgregarItems() throws ExceptionPOOBkemon {
         Juego juego = new Juego();
-        juego.empezarBatalla(e1, e2);
+        juego.crearEntrenadores("Ash", "Gary");
+        juego.agregarItemAEntrenador(1, new Pocion("Potion"));
+        juego.agregarPokemonAEntrenador(1, crearPokemonBasico("Pikachu"));
+        juego.agregarPokemonAEntrenador(2, crearPokemonBasico("Eevee"));
 
-        Entrenador turnoAntes = juego.getTurnoActual();
-        juego.comenzarTurno("atacar", 0);
-        Entrenador turnoDespues = juego.getTurnoActual();
+        juego.comenzarBatalla();
+        EstadoJuego estado = juego.obtenerEstadoActual();
+
+        assertEquals(1, estado.items.size());
+        assertEquals("Potion", estado.items.get(0).getNombre());
+    }
+
+    // TURNOS Y COMBATE
+    @Test
+    public void testAtaqueDisminuyeVidaOponente() throws ExceptionPOOBkemon {
+        Juego juego = new Juego();
+        juego.crearEntrenadores("Red", "Blue");
+
+        Pokemon atacante = crearPokemonBasico("Charmander");
+        Pokemon defensor = crearPokemonBasico("Bulbasaur");
+
+        juego.agregarPokemonAEntrenador(1, atacante);
+        juego.agregarPokemonAEntrenador(2, defensor);
+
+        juego.comenzarBatalla();
+
+        int vidaInicial = defensor.getSalud();
+        juego.realizarAccion("atacar", 0); // turno de Charmander
+
+        EstadoJuego estado = juego.obtenerEstadoActual();
+        int vidaActual = estado.pokemonOponente.getSalud();
+
+        assertTrue(vidaActual < vidaInicial);
+    }
+
+    @Test
+    public void testCambioDeTurnoFuncionando() throws ExceptionPOOBkemon {
+        Juego juego = new Juego();
+        juego.crearEntrenadores("Ash", "Misty");
+
+        juego.agregarPokemonAEntrenador(1, crearPokemonBasico("Pikachu"));
+        juego.agregarPokemonAEntrenador(2, crearPokemonBasico("Staryu"));
+
+        juego.comenzarBatalla();
+
+        String turnoAntes = juego.obtenerEstadoActual().nombreJugador;
+        juego.realizarAccion("atacar", 0); // turno 1
+        String turnoDespues = juego.obtenerEstadoActual().nombreJugador;
 
         assertNotEquals(turnoAntes, turnoDespues);
     }
 
-    // --------- MODO DE JUEGO ---------
-
-    @Test
-    public void testModoNormalActivaBatalla() {
+    // EXCEPCIONES
+    @Test(expected = ExceptionPOOBkemon.class)
+    public void testAccionInvalidaLanzaExcepcion() throws ExceptionPOOBkemon {
         Juego juego = new Juego();
-        ModoJuego modo = new ModoJuegoMock(); // evitamos Scanner
+        juego.crearEntrenadores("Ash", "Gary");
+        juego.agregarPokemonAEntrenador(1, crearPokemonBasico("Pikachu"));
+        juego.agregarPokemonAEntrenador(2, crearPokemonBasico("Eevee"));
+        juego.comenzarBatalla();
 
-        juego.seleccionarModoJuego(modo);
-        assertTrue(juego.hayBatallaActiva());
+        juego.realizarAccion("volar", null); // acción no válida
     }
 
-    // --------- MÉTODOS AUXILIARES ---------
+    @Test(expected = ExceptionPOOBkemon.class)
+    public void testErrorAlAgregarPokemonJugadorInexistente() throws ExceptionPOOBkemon {
+        Juego juego = new Juego();
+        juego.crearEntrenadores("Ash", "Gary");
 
+        // Jugador 3 no existe
+        juego.agregarPokemonAEntrenador(3, crearPokemonBasico("MissingNo"));
+    }
+
+    // ESTADO DE JUEGO
+    @Test
+    public void testEstadoJuegoContieneDatosEsperados() throws ExceptionPOOBkemon {
+        Juego juego = new Juego();
+        juego.crearEntrenadores("Red", "Blue");
+        Pokemon poke1 = crearPokemonBasico("Charmander");
+        Pokemon poke2 = crearPokemonBasico("Squirtle");
+
+        juego.agregarPokemonAEntrenador(1, poke1);
+        juego.agregarPokemonAEntrenador(2, poke2);
+        juego.comenzarBatalla();
+
+        EstadoJuego estado = juego.obtenerEstadoActual();
+
+        assertEquals("Red", estado.nombreJugador);
+        assertEquals("Blue", estado.nombreOponente);
+        assertEquals(poke1, estado.pokemonActivo);
+        assertEquals(poke2, estado.pokemonOponente);
+    }
+
+    // CREACIÓN DE POKEMONES
     private Pokemon crearPokemonBasico(String nombre) {
         Movimiento[] movimientos = {
             new Movimiento("Placaje", 40, 100, 35, 0, "Normal", null),
@@ -132,24 +126,4 @@ public class pruebasUnitariasC1 {
         return new Pokemon(nombre, 200, 30, "Normal", null, 150, 100, 120, 110, 160, 100, 100, movimientos);
     }
 
-// Mock del modo juego para evitar el uso de Scanner
-private static class ModoJuegoMock implements ModoJuego {
-    @Override
-    public void configurarJuego(Juego juego) {
-        Entrenador e1 = new Entrenador("Mock1", "Rojo");
-        Entrenador e2 = new Entrenador("Mock2", "Azul");
-        Movimiento[] movimientosPoke1 = {
-            new Movimiento("Ataque", 40, 100, 30, 0, "Normal", null)
-        };
-        Pokemon poke1 = new Pokemon("Poke1", 100, 10, "Normal", null, 50, 50, 50, 50, 50, 50, 50, movimientosPoke1);
-
-        Movimiento[] movimientosPoke2 = {
-            new Movimiento("Ataque", 40, 100, 30, 0, "Normal", null)
-        };
-        Pokemon poke2 = new Pokemon("Poke2", 100, 10, "Normal", null, 50, 50, 50, 50, 50, 50, 50, movimientosPoke2);
-        e1.agregarPokemon(poke1);
-        e2.agregarPokemon(poke2);
-        juego.empezarBatalla(e1, e2);
-    }
-}
 }

@@ -17,10 +17,17 @@ public class ControladorTurno {
         detener(); // Por si había un tiempo anterior corriendo
         temporizador = new Timer();
         temporizador.schedule(new TimerTask() {
-            @Override
-            public void run() {
+
+        @Override
+        public void run() {
+            try {
                 penalizarPorInactividad();
+            } catch (ExceptionPOOBkemon e) {
+                System.err.println("penalidad por inactividad: " + e.getMessage());
             }
+}
+
+
         }, LIMITE_TIEMPO);
     }
 
@@ -30,10 +37,10 @@ public class ControladorTurno {
         }
     }
 
-    private void penalizarPorInactividad() {
-        System.out.println("¡" + batalla.getTurnoActual().getNombre() + " no jugó a tiempo!"); //plantear turnos en esta clase
+    private void penalizarPorInactividad() throws ExceptionPOOBkemon {
         batalla.getTurnoActual().getPokemonActivo().reducirPP(1);
         batalla.comenzarTurno("pasar", null); 
+        throw new ExceptionPOOBkemon("¡" + batalla.getTurnoActual().getNombre() + " no jugó a tiempo!");
     }
 }
 

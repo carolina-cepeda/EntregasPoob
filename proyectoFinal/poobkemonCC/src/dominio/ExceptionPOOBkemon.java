@@ -5,7 +5,10 @@ package dominio;
 public class ExceptionPOOBkemon extends Exception{
 	
 	public static final String MESSAGE_ERROR = "error";
+	public static final String GANADOR= "Ha ganado la batalla";
+	public static final String accionInvalida = "la accion es invalida";
 
+	
 	/**
 	 * constructor
 	 * @param mensaje
