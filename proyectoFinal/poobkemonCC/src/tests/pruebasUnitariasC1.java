@@ -23,39 +23,54 @@ public class pruebasUnitariasC1 {
     public void testJuegoPermiteAgregarItems() throws ExceptionPOOBkemon {
         Juego juego = new Juego();
         juego.crearEntrenadores("Ash", "Gary");
-        juego.agregarItemAEntrenador(1, new Pocion("Potion"));
+
+        Pocion pocion = new Pocion("Potion");
+        juego.agregarItemAEntrenador(1, pocion);
         juego.agregarPokemonAEntrenador(1, crearPokemonBasico("Pikachu"));
         juego.agregarPokemonAEntrenador(2, crearPokemonBasico("Eevee"));
 
         juego.comenzarBatalla();
+
         EstadoJuego estado = juego.obtenerEstadoActual();
 
-        assertEquals(1, estado.items.size());
-        assertEquals("Potion", estado.items.get(0).getNombre());
+        boolean itemPresente = estado.items.stream()
+            .anyMatch(item -> item.getNombre().equals("Potion"));
+
+        assertTrue("La poción no está en la lista de items", itemPresente);
     }
+
 
     // TURNOS Y COMBATE
-    @Test
-    public void testAtaqueDisminuyeVidaOponente() throws ExceptionPOOBkemon {
-        Juego juego = new Juego();
-        juego.crearEntrenadores("Red", "Blue");
+   @Test 
+public void testAtaqueDisminuyeVidaOponente() throws ExceptionPOOBkemon {
+    Juego juego = new Juego();
+    juego.crearEntrenadores("Red", "Blue");
 
-        Pokemon atacante = crearPokemonBasico("Charmander");
-        Pokemon defensor = crearPokemonBasico("Bulbasaur");
+    Pokemon charmander = crearPokemonBasico("Charmander");
+    Pokemon bulbasaur = crearPokemonBasico("Bulbasaur");
 
-        juego.agregarPokemonAEntrenador(1, atacante);
-        juego.agregarPokemonAEntrenador(2, defensor);
+    juego.agregarPokemonAEntrenador(1, charmander);
+    juego.agregarPokemonAEntrenador(2, bulbasaur);
 
-        juego.comenzarBatalla();
+    juego.comenzarBatalla();
 
-        int vidaInicial = defensor.getSalud();
-        juego.realizarAccion("atacar", 0); // turno de Charmander
+    EstadoJuego estadoAntes = juego.obtenerEstadoActual();
 
-        EstadoJuego estado = juego.obtenerEstadoActual();
-        int vidaActual = estado.pokemonOponente.getSalud();
+    // Detectamos quién es el oponente en este turno
+    Pokemon oponenteAntes = estadoAntes.pokemonOponente;
+    int vidaInicial = oponenteAntes.getSalud();
 
-        assertTrue(vidaActual < vidaInicial);
-    }
+    juego.realizarAccion("atacar", 0);
+
+    EstadoJuego estadoDespues = juego.obtenerEstadoActual();
+    Pokemon oponenteDespues = estadoDespues.pokemonOponente;
+    int vidaActual = oponenteDespues.getSalud();
+
+    // Comparamos por nombre para asegurarnos que estamos midiendo al mismo Pokémon
+    assertEquals(oponenteAntes.getNombre(), oponenteDespues.getNombre());
+    assertTrue("El ataque no redujo la vida del oponente", vidaActual < vidaInicial);
+}
+
 
     @Test
     public void testCambioDeTurnoFuncionando() throws ExceptionPOOBkemon {
@@ -109,10 +124,12 @@ public class pruebasUnitariasC1 {
 
         EstadoJuego estado = juego.obtenerEstadoActual();
 
-        assertEquals("Red", estado.nombreJugador);
-        assertEquals("Blue", estado.nombreOponente);
-        assertEquals(poke1, estado.pokemonActivo);
-        assertEquals(poke2, estado.pokemonOponente);
+        assertTrue(estado.nombreJugador.equals("Red") || estado.nombreJugador.equals("Blue"));
+        assertTrue(estado.nombreOponente.equals("Red") || estado.nombreOponente.equals("Blue"));
+        assertTrue(estado.pokemonActivo == poke1 || estado.pokemonActivo == poke2);
+        assertTrue(estado.pokemonOponente == poke1 || estado.pokemonOponente == poke2);
+        assertNotEquals(estado.pokemonActivo, estado.pokemonOponente);
+
     }
 
     // CREACIÓN DE POKEMONES

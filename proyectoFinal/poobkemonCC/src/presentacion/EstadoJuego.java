@@ -1,7 +1,6 @@
 package presentacion;
 
 import dominio.*;
-
 import java.util.List;
 
 public class EstadoJuego {
@@ -13,7 +12,7 @@ public class EstadoJuego {
     public Pokemon pokemonOponente;
 
     public EstadoJuego(String nombreJugador, Pokemon activo, List<Pokemon> equipo,
-                       List<Item> items, String nombreOponente, Pokemon pokemonOponente) {
+                     List<Item> items, String nombreOponente, Pokemon pokemonOponente) {
         this.nombreJugador = nombreJugador;
         this.pokemonActivo = activo;
         this.equipo = equipo;
@@ -22,4 +21,3 @@ public class EstadoJuego {
         this.pokemonOponente = pokemonOponente;
     }
 }
-
