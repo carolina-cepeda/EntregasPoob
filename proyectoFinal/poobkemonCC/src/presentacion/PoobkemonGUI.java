@@ -618,25 +618,30 @@ public class PoobkemonGUI {
             );
 
             if (seleccion != null) {
-                Movimiento movimientoSeleccionado = movimientos.stream()
-                    .filter(m -> m.getNombre().equals(seleccion))
-                    .findFirst()
-                    .orElse(null);
+                int indiceMovimiento = -1;
+                for (int i = 0; i < movimientos.size(); i++) {
+                    if (movimientos.get(i).getNombre().equals(seleccion)) {
+                        indiceMovimiento = i;
+                        break;
+                    }
+                }
 
-				if (movimientoSeleccionado != null) {
-					juego.realizarAccion("atacar", movimientoSeleccionado);
-					estadoActual = juego.obtenerEstadoActual();
+                if (indiceMovimiento != -1) {
+                    juego.realizarAccion("atacar", indiceMovimiento);
+                    estadoActual = juego.obtenerEstadoActual();
 
-					// Actualizar barras de salud
-					actualizarBarraDeSalud(playerHealthBar, estadoActual.pokemonActivo.getSalud(), estadoActual.pokemonActivo.getSaludInicial());
-					actualizarBarraDeSalud(opponentHealthBar, estadoActual.pokemonOponente.getSalud(), estadoActual.pokemonOponente.getSaludInicial());
+                    // Actualizar barras de salud
+                    actualizarBarraDeSalud(playerHealthBar, estadoActual.pokemonActivo.getSalud(), estadoActual.pokemonActivo.getSaludInicial());
+                    actualizarBarraDeSalud(opponentHealthBar, estadoActual.pokemonOponente.getSalud(), estadoActual.pokemonOponente.getSaludInicial());
 
-					if (estadoActual.pokemonOponente.getSalud() <= 0) {
-						JOptionPane.showMessageDialog(mainFrame, "¡Has derrotado al Pokémon oponente!");
-					} else if (estadoActual.pokemonActivo.getSalud() <= 0) {
-						JOptionPane.showMessageDialog(mainFrame, "Tu Pokémon ha sido derrotado.");
-					}
-				}
+                    if (estadoActual.pokemonOponente.getSalud() <= 0) {
+                        JOptionPane.showMessageDialog(mainFrame, "¡Has derrotado al Pokémon oponente!");
+                    } else if (estadoActual.pokemonActivo.getSalud() <= 0) {
+                        JOptionPane.showMessageDialog(mainFrame, "Tu Pokémon ha sido derrotado.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(mainFrame, "Movimiento no válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         } catch (ExceptionPOOBkemon e) {
             JOptionPane.showMessageDialog(mainFrame, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -706,13 +711,14 @@ public class PoobkemonGUI {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, 
                                                     boolean isSelected, boolean cellHasFocus) {
-            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-           
-			if (value instanceof Pokemon pokemon) {
+            Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+            if (value instanceof Pokemon) {
+                Pokemon pokemon = (Pokemon) value;
                 setText(pokemon.getNombre());
                 setFont(new Font("Arial", Font.BOLD, 14));
             }
-            return this;
+            return component;
         }
     }
 
