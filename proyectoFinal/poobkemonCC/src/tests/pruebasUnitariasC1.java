@@ -56,12 +56,6 @@ public void testAtaqueDisminuyeVidaOponente() throws ExceptionPOOBkemon {
 
     EstadoJuego estadoAntes = juego.obtenerEstadoActual();
 
-    // Imprimir estado inicial
-    System.out.println("Estado inicial: ");
-    System.out.println("Jugador activo: " + estadoAntes.nombreJugador);
-    System.out.println("Pokémon activo: " + estadoAntes.pokemonActivo.getNombre());
-    System.out.println("Pokémon oponente: " + estadoAntes.pokemonOponente.getNombre());
-
     // Detectamos quién es el oponente en este turno
     Pokemon oponenteAntes = estadoAntes.pokemonOponente;
     int vidaInicial = oponenteAntes.getSalud();
@@ -69,13 +63,6 @@ public void testAtaqueDisminuyeVidaOponente() throws ExceptionPOOBkemon {
     juego.realizarAccion("atacar", 0);
 
     EstadoJuego estadoDespues = juego.obtenerEstadoActual();
-
-    // Imprimir estado después del ataque
-    System.out.println("Estado después del ataque: ");
-    System.out.println("Jugador activo: " + estadoDespues.nombreJugador);
-    System.out.println("Pokémon activo: " + estadoDespues.pokemonActivo.getNombre());
-    System.out.println("Pokémon oponente: " + estadoDespues.pokemonOponente.getNombre());
-
     Pokemon oponenteDespues = estadoDespues.pokemonOponente;
     int vidaActual = oponenteDespues.getSalud();
 

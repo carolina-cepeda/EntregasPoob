@@ -536,12 +536,12 @@ public class PoobkemonGUI {
         // Panel para Pokémon del oponente (esquina superior derecha)
         JPanel opponentPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         opponentPanel.setOpaque(false);
-        JLabel opponentLabel = new JLabel(estadoActual.nombreOponente);
-        opponentLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        opponentLabel.setForeground(Color.WHITE);
-        opponentPanel.add(opponentLabel);
 
-        // Imagen del Pokémon oponente
+        JLabel opponentPokemonName = new JLabel(estadoActual.pokemonOponente.getNombre());
+        opponentPokemonName.setFont(new Font("Arial", Font.BOLD, 14));
+        opponentPokemonName.setForeground(Color.WHITE);
+        opponentPanel.add(opponentPokemonName);
+
         JLabel opponentPokemonImage = new JLabel();
         try {
             ImageIcon icon = loadImage("/pokemon/" + estadoActual.pokemonOponente.getNombre().toLowerCase() + ".png");
@@ -555,10 +555,9 @@ public class PoobkemonGUI {
         }
         opponentPanel.add(opponentPokemonImage);
 
-        // Barra de salud del oponente
         opponentHealthBar = new JProgressBar(0, 100);
-        opponentHealthBar.setValue(50); // Valor por defecto
-        opponentHealthBar.setString("50/100");
+        opponentHealthBar.setValue(estadoActual.pokemonOponente.getSalud());
+        opponentHealthBar.setString(estadoActual.pokemonOponente.getSalud() + "/" + estadoActual.pokemonOponente.getSaludInicial());
         opponentHealthBar.setStringPainted(true);
         opponentHealthBar.setForeground(Color.GREEN);
         opponentPanel.add(opponentHealthBar);
@@ -566,10 +565,17 @@ public class PoobkemonGUI {
         battlePanel.add(opponentPanel, BorderLayout.NORTH);
 
         // Panel para Pokémon del jugador (esquina inferior izquierda)
-        JPanel playerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel playerPanel = new JPanel(new BorderLayout());
         playerPanel.setOpaque(false);
 
-        // Imagen del Pokémon del jugador
+        JPanel playerInfoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        playerInfoPanel.setOpaque(false);
+
+        JLabel playerPokemonName = new JLabel(estadoActual.pokemonActivo.getNombre());
+        playerPokemonName.setFont(new Font("Arial", Font.BOLD, 14));
+        playerPokemonName.setForeground(Color.WHITE);
+        playerInfoPanel.add(playerPokemonName);
+
         JLabel playerPokemonImage = new JLabel();
         try {
             ImageIcon pokemonIcon = loadImage("/pokemon/" + estadoActual.pokemonActivo.getNombre().toLowerCase() + ".png");
@@ -581,46 +587,43 @@ public class PoobkemonGUI {
         } catch (Exception e) {
             playerPokemonImage.setText("Imagen no encontrada");
         }
-        playerPanel.add(playerPokemonImage);
+        playerInfoPanel.add(playerPokemonImage);
 
         JLabel playerLabel = new JLabel(estadoActual.nombreJugador);
         playerLabel.setFont(new Font("Arial", Font.BOLD, 16));
         playerLabel.setForeground(Color.WHITE);
-        playerPanel.add(playerLabel);
+        playerInfoPanel.add(playerLabel);
 
-        // Barra de salud del jugador
         playerHealthBar = new JProgressBar(0, 100);
-        playerHealthBar.setValue(50); // Valor por defecto
-        playerHealthBar.setString("50/100");
+        playerHealthBar.setValue(estadoActual.pokemonActivo.getSalud());
+        playerHealthBar.setString(estadoActual.pokemonActivo.getSalud() + "/" + estadoActual.pokemonActivo.getSaludInicial());
         playerHealthBar.setStringPainted(true);
         playerHealthBar.setForeground(Color.GREEN);
-        playerPanel.add(playerHealthBar);
+        playerInfoPanel.add(playerHealthBar);
 
-        battlePanel.add(playerPanel, BorderLayout.SOUTH);
+        playerPanel.add(playerInfoPanel, BorderLayout.NORTH);
 
-        // Panel de acciones
-        JPanel actionPanel = new JPanel(new GridLayout(4, 1, 5, 5));
-        actionPanel.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
+        // Panel de acciones con botones más pequeños debajo de la barra de salud
+        JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         actionPanel.setOpaque(false);
 
-        JLabel turnLabel = new JLabel("Turno de " + estadoActual.nombreJugador, SwingConstants.CENTER);
-        turnLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        turnLabel.setForeground(Color.WHITE);
-        actionPanel.add(turnLabel);
-
-        JButton attackBtn = createStyledButton("1. Atacar");
+        JButton attackBtn = createStyledButton("Atacar");
+        attackBtn.setPreferredSize(new Dimension(100, 30));
         attackBtn.addActionListener(e -> showAttackOptions());
         actionPanel.add(attackBtn);
 
-        JButton itemBtn = createStyledButton("2. Usar Item");
+        JButton itemBtn = createStyledButton("Item");
+        itemBtn.setPreferredSize(new Dimension(100, 30));
         itemBtn.addActionListener(e -> showItemOptions());
         actionPanel.add(itemBtn);
 
-        JButton changePokemonBtn = createStyledButton("3. Cambiar Pokémon");
+        JButton changePokemonBtn = createStyledButton("Cambiar");
+        changePokemonBtn.setPreferredSize(new Dimension(100, 30));
         changePokemonBtn.addActionListener(e -> showChangePokemonOptions());
         actionPanel.add(changePokemonBtn);
 
-        JButton fleeBtn = createStyledButton("4. Huir");
+        JButton fleeBtn = createStyledButton("Huir");
+        fleeBtn.setPreferredSize(new Dimension(100, 30));
         fleeBtn.addActionListener(e -> {
             int option = JOptionPane.showConfirmDialog(mainFrame,
                 "¿Estás seguro de que quieres huir?",
@@ -635,7 +638,9 @@ public class PoobkemonGUI {
         });
         actionPanel.add(fleeBtn);
 
-        battlePanel.add(actionPanel, BorderLayout.CENTER);
+        playerPanel.add(actionPanel, BorderLayout.SOUTH);
+
+        battlePanel.add(playerPanel, BorderLayout.SOUTH);
 
         mainFrame.add(battlePanel);
         mainFrame.revalidate();
