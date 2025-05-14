@@ -62,13 +62,18 @@ public class Entrenador {
     }
 
     public void seleccionarMovimiento(int indiceMovimiento, Pokemon objetivo) {
-        if (pokemonActual != null && objetivo != null && this.PP > 0) {
+    if (pokemonActual != null && objetivo != null) {
+        Movimiento mov = pokemonActual.getMovimientos().get(indiceMovimiento);
+        if (mov.getPP() > 0) {
             pokemonActual.Atacar(indiceMovimiento, objetivo);
-            this.PP -= pokemonActual.getMovimientos().get(indiceMovimiento).getPP(); // Disminuir PP del movimiento
         } else {
-            System.out.println(nombre + " no tiene PP suficientes para atacar.");
+            System.out.println(getNombre() + " no tiene PP suficientes para el movimiento: " + mov.getNombre());
         }
+    } else {
+        System.out.println(getNombre() + " no puede atacar porque no tiene un Pokémon o el objetivo es nulo.");
     }
+}
+
     
     public void usarItem(Item item, Pokemon objetivo) {
         if (items.contains(item)) {
