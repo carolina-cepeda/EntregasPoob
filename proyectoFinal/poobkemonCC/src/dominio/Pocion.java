@@ -36,4 +36,9 @@ public class Pocion extends Item {
 
 	}
 
+	@Override
+	public String toString() {
+	    return nombre;
+	}
+
 }

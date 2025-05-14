@@ -358,18 +358,22 @@ public class PoobkemonGUI {
         dialog.setSize(800, 600);
         dialog.setLocationRelativeTo(mainFrame);
 
-        JTabbedPane tabbedPane = new JTabbedPane();
-        
-        // Panel para jugador 1
+        // Panel principal con dos columnas
+        JPanel mainPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Panel para Jugador 1
         JPanel player1Panel = createItemSelectionPanel(player1Name, 1);
-        tabbedPane.addTab(player1Name, player1Panel);
-        
-        // Panel para jugador 2
+        player1Panel.setBorder(BorderFactory.createTitledBorder(player1Name));
+
+        // Panel para Jugador 2
         JPanel player2Panel = createItemSelectionPanel(player2Name, 2);
-        tabbedPane.addTab(player2Name, player2Panel);
+        player2Panel.setBorder(BorderFactory.createTitledBorder(player2Name));
 
-        dialog.add(tabbedPane, BorderLayout.CENTER);
+        mainPanel.add(player1Panel);
+        mainPanel.add(player2Panel);
 
+        // Botón para finalizar
         JButton finishBtn = createStyledButton("Terminar");
         finishBtn.addActionListener(e -> {
             dialog.dispose();
@@ -383,65 +387,62 @@ public class PoobkemonGUI {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(finishBtn);
-        dialog.add(buttonPanel, BorderLayout.SOUTH);
 
+        dialog.add(mainPanel, BorderLayout.CENTER);
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
         dialog.setVisible(true);
     }
 
     private JPanel createItemSelectionPanel(String playerName, int playerNumber) {
-        JPanel panel = new JPanel(new BorderLayout());
-        
-        // Panel con imagen de fondo
-        JPanel backgroundPanel = new JPanel(new BorderLayout()) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                try {
-					ImageIcon icon = new ImageIcon(getClass().getResource("/fondoInicial.png"));
-                    g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
-                } catch (Exception e) {
-                    g.setColor(new Color(240, 240, 240));
-                    g.fillRect(0, 0, getWidth(), getHeight());
-                }
-            }
-        };
-        
-        JLabel title = new JLabel(playerName + " - Elige tus ítems", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 16));
-        title.setForeground(Color.WHITE);
-        backgroundPanel.add(title, BorderLayout.NORTH);
-        
+        JPanel itemPanel = new JPanel(new BorderLayout());
+
+        // Lista de ítems con renderizador personalizado
         DefaultListModel<Item> listModel = new DefaultListModel<>();
         JList<Item> itemList = new JList<>(listModel);
-        
+        itemList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        itemList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Item) {
+                    setText(value.toString());
+                }
+                return renderer;
+            }
+        });
+
         // Obtener lista de ítems disponibles
         List<Item> availableItems = juego.getItemsBase();
         for (Item item : availableItems) {
             listModel.addElement(item);
         }
-        
+
         JScrollPane scrollPane = new JScrollPane(itemList);
-        backgroundPanel.add(scrollPane, BorderLayout.CENTER);
-        
-        JPanel buttonPanel = new JPanel();
-        JButton addButton = createStyledButton("Agregar");
-        addButton.addActionListener(e -> {
-            Item selected = itemList.getSelectedValue();
-            if (selected != null) {
+        itemPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // Botón para agregar ítems
+        JButton addItemButton = createStyledButton("Agregar");
+        addItemButton.addActionListener(e -> {
+            List<Item> selectedItems = itemList.getSelectedValuesList();
+            if (!selectedItems.isEmpty()) {
                 try {
-                    juego.agregarItemAEntrenador(playerNumber, selected);
-                    JOptionPane.showMessageDialog(panel, "Ítem agregado: " + selected.getNombre());
+                    for (Item item : selectedItems) {
+                        juego.agregarItemAEntrenador(playerNumber, item);
+                    }
+                    JOptionPane.showMessageDialog(itemPanel, "Ítems agregados correctamente.");
                 } catch (ExceptionPOOBkemon ex) {
-                    JOptionPane.showMessageDialog(panel, "Error al agregar ítem: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(itemPanel, "Error al agregar ítems: " + ex.getMessage());
                 }
+            } else {
+                JOptionPane.showMessageDialog(itemPanel, "Selecciona al menos un ítem.");
             }
         });
-        buttonPanel.add(addButton);
-        
-        backgroundPanel.add(buttonPanel, BorderLayout.SOUTH);
-        panel.add(backgroundPanel);
-        
-        return panel;
+
+        JPanel addButtonPanel = new JPanel();
+        addButtonPanel.add(addItemButton);
+        itemPanel.add(addButtonPanel, BorderLayout.SOUTH);
+
+        return itemPanel;
     }
 
     private void startBattle() {
@@ -547,7 +548,11 @@ public class PoobkemonGUI {
         itemBtn.addActionListener(e -> showItemOptions());
         actionPanel.add(itemBtn);
         
-        JButton fleeBtn = createStyledButton("3. Huir");
+        JButton changePokemonBtn = createStyledButton("3. Cambiar Pokémon");
+        changePokemonBtn.addActionListener(e -> showChangePokemonOptions());
+        actionPanel.add(changePokemonBtn);
+        
+        JButton fleeBtn = createStyledButton("4. Huir");
         fleeBtn.addActionListener(e -> {
             int option = JOptionPane.showConfirmDialog(mainFrame, 
                 "¿Estás seguro de que quieres huir?", 
@@ -691,19 +696,75 @@ public class PoobkemonGUI {
         dialog.setVisible(true);
     }
 
+    private void showChangePokemonOptions() {
+        JDialog dialog = new JDialog(mainFrame, "Cambiar Pokémon", true);
+        dialog.setLayout(new BorderLayout());
+        dialog.setSize(400, 300);
+        dialog.setLocationRelativeTo(mainFrame);
+
+        // Lista de Pokémon disponibles
+        DefaultListModel<Pokemon> listModel = new DefaultListModel<>();
+        JList<Pokemon> pokemonList = new JList<>(listModel);
+        pokemonList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        pokemonList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Pokemon) {
+                    Pokemon pokemon = (Pokemon) value;
+                    setText(pokemon.getNombre() + " - Salud: " + pokemon.getSalud());
+                }
+                return renderer;
+            }
+        });
+
+        // Cargar Pokémon disponibles
+        List<Pokemon> availablePokemons = estadoActual.equipo;
+        for (Pokemon pokemon : availablePokemons) {
+            if (pokemon.getSalud() > 0 && !pokemon.equals(estadoActual.pokemonActivo)) {
+                listModel.addElement(pokemon);
+            }
+        }
+
+        JScrollPane scrollPane = new JScrollPane(pokemonList);
+        dialog.add(scrollPane, BorderLayout.CENTER);
+
+        // Botón para confirmar el cambio
+        JButton changeButton = createStyledButton("Cambiar");
+        changeButton.addActionListener(e -> {
+            Pokemon selectedPokemon = pokemonList.getSelectedValue();
+            if (selectedPokemon != null) {
+                try {
+                    juego.realizarAccion("cambiar", selectedPokemon);
+                    estadoActual = juego.obtenerEstadoActual();
+                    dialog.dispose();
+                    updateBattleScreen();
+                } catch (ExceptionPOOBkemon ex) {
+                    JOptionPane.showMessageDialog(dialog, "Error al cambiar Pokémon: " + ex.getMessage());
+                }
+            } else {
+                JOptionPane.showMessageDialog(dialog, "Selecciona un Pokémon para cambiar.");
+            }
+        });
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(changeButton);
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        dialog.setVisible(true);
+    }
+
     private void updateBattleScreen() {
         estadoActual = juego.obtenerEstadoActual();
-        
+
         if (estadoActual == null || !juego.hayBatallaActiva()) {
-            // La batalla ha terminado
             String ganador = "Jugador"; // Esto debería obtenerse del juego
             JOptionPane.showMessageDialog(mainFrame, 
                 "El jugador " + ganador + " ha ganado el juego, felicidades!!");
             showMainMenu();
             return;
         }
-        
-        // Actualizar la pantalla de batalla
+
         startBattle();
     }
 
