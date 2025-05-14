@@ -2,6 +2,7 @@ package presentacion;
 
 import dominio.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 
@@ -167,85 +168,129 @@ public class PoobkemonGUI {
 }
 
     private void showPokemonSelection(String player1Name, String player2Name) {
-		JDialog dialog = new JDialog(mainFrame, "Selección de Pokémon", true);
-		dialog.setLayout(new BorderLayout());
-		dialog.setSize(800, 500);
-		dialog.setLocationRelativeTo(mainFrame);
+    JDialog dialog = new JDialog(mainFrame, "Selección de Pokémon", true);
+    dialog.setLayout(new BorderLayout());
+    dialog.setSize(800, 600);
+    dialog.setLocationRelativeTo(mainFrame);
 
-		// Panel principal con dos columnas
-		JPanel mainPanel = new JPanel(new GridLayout(1, 2, 10, 10));
-		mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    // Panel principal con dos columnas
+    JPanel mainPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+    mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-		// Panel para Jugador 1
-		JPanel player1Panel = new JPanel(new BorderLayout());
-		player1Panel.setBorder(BorderFactory.createTitledBorder(player1Name));
-		
-		DefaultListModel<Pokemon> listModel1 = new DefaultListModel<>();
-		JList<Pokemon> pokemonList1 = new JList<>(listModel1);
-		pokemonList1.setCellRenderer(new PokemonListRenderer());
-		
-		List<Pokemon> availablePokemons = juego.getPokemonesBaseCopia();
-		for (Pokemon p : availablePokemons) {
-			listModel1.addElement(p);
-		}
-		
-		JScrollPane scrollPane1 = new JScrollPane(pokemonList1);
-		player1Panel.add(scrollPane1, BorderLayout.CENTER);
-		
-		JLabel countLabel1 = new JLabel("0/3 Pokémon seleccionados");
-		player1Panel.add(countLabel1, BorderLayout.SOUTH);
+    // Listas para mantener los Pokémon seleccionados
+    List<Pokemon> selectedPokemons1 = new ArrayList<>();
+    List<Pokemon> selectedPokemons2 = new ArrayList<>();
 
-		// Panel para Jugador 2
-		JPanel player2Panel = new JPanel(new BorderLayout());
-		player2Panel.setBorder(BorderFactory.createTitledBorder(player2Name));
-		
-		DefaultListModel<Pokemon> listModel2 = new DefaultListModel<>();
-		JList<Pokemon> pokemonList2 = new JList<>(listModel2);
-		pokemonList2.setCellRenderer(new PokemonListRenderer());
-		
-		for (Pokemon p : availablePokemons) {
-			listModel2.addElement(p);
-		}
-		
-		JScrollPane scrollPane2 = new JScrollPane(pokemonList2);
-		player2Panel.add(scrollPane2, BorderLayout.CENTER);
-		
-		JLabel countLabel2 = new JLabel("0/3 Pokémon seleccionados");
-		player2Panel.add(countLabel2, BorderLayout.SOUTH);
+    // Panel para Jugador 1
+    JPanel player1Panel = new JPanel(new BorderLayout());
+    player1Panel.setBorder(BorderFactory.createTitledBorder(player1Name));
+    
+    // Usar DefaultListModel para la lista de Pokémon
+    DefaultListModel<Pokemon> listModel1 = new DefaultListModel<>();
+    JList<Pokemon> pokemonList1 = new JList<>(listModel1);
+    
+    // Configurar selección múltiple
+    pokemonList1.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    pokemonList1.setLayoutOrientation(JList.VERTICAL);
+    pokemonList1.setVisibleRowCount(-1);
+    pokemonList1.setCellRenderer(new PokemonListRenderer());
+    
+    // Obtener Pokémon disponibles
+    List<Pokemon> availablePokemons = juego.getPokemonesBaseCopia();
+    for (Pokemon p : availablePokemons) {
+        listModel1.addElement(p);
+    }
+    
+    JScrollPane scrollPane1 = new JScrollPane(pokemonList1);
+    player1Panel.add(scrollPane1, BorderLayout.CENTER);
+    
+    JLabel countLabel1 = new JLabel("0/3 Pokémon seleccionados");
+    player1Panel.add(countLabel1, BorderLayout.SOUTH);
 
-		mainPanel.add(player1Panel);
-		mainPanel.add(player2Panel);
+    // Panel para Jugador 2 (similar al jugador 1)
+    JPanel player2Panel = new JPanel(new BorderLayout());
+    player2Panel.setBorder(BorderFactory.createTitledBorder(player2Name));
+    
+    DefaultListModel<Pokemon> listModel2 = new DefaultListModel<>();
+    JList<Pokemon> pokemonList2 = new JList<>(listModel2);
+    pokemonList2.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    pokemonList2.setLayoutOrientation(JList.VERTICAL);
+    pokemonList2.setVisibleRowCount(-1);
+    pokemonList2.setCellRenderer(new PokemonListRenderer());
+    
+    for (Pokemon p : availablePokemons) {
+        listModel2.addElement(p);
+    }
+    
+    JScrollPane scrollPane2 = new JScrollPane(pokemonList2);
+    player2Panel.add(scrollPane2, BorderLayout.CENTER);
+    
+    JLabel countLabel2 = new JLabel("0/3 Pokémon seleccionados");
+    player2Panel.add(countLabel2, BorderLayout.SOUTH);
 
-		// Panel inferior con botón y mensaje
-		JPanel bottomPanel = new JPanel(new BorderLayout());
-		
-		JLabel messageLabel = new JLabel("Selecciona al menos 3 Pokémon por jugador", SwingConstants.CENTER);
-		bottomPanel.add(messageLabel, BorderLayout.NORTH);
-		
-		JPanel buttonPanel = new JPanel();
-		JButton acceptBtn = new JButton("Aceptar");
-		acceptBtn.addActionListener(e -> {
-			int selectedCount1 = 0; // Aquí deberías obtener la cuenta real de Pokémon seleccionados
-			int selectedCount2 = 0; // Aquí deberías obtener la cuenta real de Pokémon seleccionados
-			
-			if (selectedCount1 < 3) {
-				messageLabel.setText(player1Name + " no ha seleccionado suficientes Pokémon");
-				return;
-			}
-			if (selectedCount2 < 3) {
-				messageLabel.setText(player2Name + " no ha seleccionado suficientes Pokémon");
-				return;
-			}
-			
-			dialog.dispose();
-			showItemSelection(player1Name, player2Name);
-		});
-		buttonPanel.add(acceptBtn);
-		bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
+    mainPanel.add(player1Panel);
+    mainPanel.add(player2Panel);
 
-		dialog.add(mainPanel, BorderLayout.CENTER);
-		dialog.add(bottomPanel, BorderLayout.SOUTH);
-		dialog.setVisible(true);
+    // Panel inferior con botón y mensaje
+    JPanel bottomPanel = new JPanel(new BorderLayout());
+    
+    JLabel messageLabel = new JLabel(" ", SwingConstants.CENTER);
+    bottomPanel.add(messageLabel, BorderLayout.NORTH);
+    
+    JPanel buttonPanel = new JPanel();
+    JButton acceptBtn = new JButton("Aceptar");
+    
+    // Listeners para actualizar las selecciones
+    pokemonList1.addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            selectedPokemons1.clear();
+            // Obtener TODOS los Pokémon seleccionados
+            selectedPokemons1.addAll(pokemonList1.getSelectedValuesList());
+            countLabel1.setText(selectedPokemons1.size() + "/3 Pokémon seleccionados");
+        }
+    });
+    
+    pokemonList2.addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            selectedPokemons2.clear();
+            selectedPokemons2.addAll(pokemonList2.getSelectedValuesList());
+            countLabel2.setText(selectedPokemons2.size() + "/3 Pokémon seleccionados");
+        }
+    });
+    
+    acceptBtn.addActionListener(e -> {
+        if (selectedPokemons1.size() < 3) {
+            messageLabel.setText(player1Name + " no ha seleccionado suficientes Pokémon");
+            return;
+        }
+        if (selectedPokemons2.size() < 3) {
+            messageLabel.setText(player2Name + " no ha seleccionado suficientes Pokémon");
+            return;
+        }
+        
+        // Asignar Pokémon a los jugadores
+        try {
+            
+            for (Pokemon p : selectedPokemons1) {
+                juego.agregarPokemonAEntrenador(1, p);
+            }
+            for (Pokemon p : selectedPokemons2) {
+                juego.agregarPokemonAEntrenador(2, p);
+            }
+            
+            dialog.dispose();
+            showItemSelection(player1Name, player2Name);
+        } catch (ExceptionPOOBkemon ex) {
+            JOptionPane.showMessageDialog(dialog, "Error al asignar Pokémon: " + ex.getMessage());
+        }
+    });
+    
+    buttonPanel.add(acceptBtn);
+    bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+    dialog.add(mainPanel, BorderLayout.CENTER);
+    dialog.add(bottomPanel, BorderLayout.SOUTH);
+    dialog.setVisible(true);
 }
 
     private JPanel createPokemonSelectionPanel(String playerName, int playerNumber) {
