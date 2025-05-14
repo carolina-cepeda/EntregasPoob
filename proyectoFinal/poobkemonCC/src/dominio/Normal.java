@@ -45,6 +45,42 @@ public class Normal implements ModoJuego {
         }
     }
 
+    public void iniciarBatalla() throws ExceptionPOOBkemon {
+        switch (tipoJuego) {
+            case 2 -> { // PvM
+                while (juego.hayBatallaActiva()) {
+                    if (juego.esTurnoJugador()) {
+                        // Esperar acción del jugador humano (guiado por la GUI)
+                        juego.esperarAccionJugador();
+                    } else {
+                        // Acción automática de la máquina
+                        EntrenadorMaquina cpu = (EntrenadorMaquina) juego.getEntrenadorActual();
+                        cpu.realizarAccionAutomatica(juego);
+                    }
+                    juego.comenzarTurno();
+                }
+            }
+
+            case 3 -> { // MvM
+                while (juego.hayBatallaActiva()) {
+                    // Acción automática de la máquina 1
+                    EntrenadorMaquina cpu1 = (EntrenadorMaquina) juego.getEntrenadorActual();
+                    cpu1.realizarAccionAutomatica(juego);
+                    juego.comenzarTurno();
+
+                    if (!juego.hayBatallaActiva()) break;
+
+                    // Acción automática de la máquina 2
+                    EntrenadorMaquina cpu2 = (EntrenadorMaquina) juego.getEntrenadorActual();
+                    cpu2.realizarAccionAutomatica(juego);
+                    juego.comenzarTurno();
+                }
+            }
+
+            default -> throw new ExceptionPOOBkemon("Modo de juego no soportado para iniciar batalla.");
+        }
+    }
+
     private EntrenadorMaquina crearEntrenadorMaquina(int tipo, String nombre, String color) {
         return switch (tipo) {
             case 1 -> new defensiveTrainer(nombre, color);

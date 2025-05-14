@@ -106,9 +106,112 @@ public class PoobkemonGUI {
 
         JButton pvcBtn = createStyledButton("Player vs Máquina");
         pvcBtn.addActionListener(e -> {
-            JOptionPane.showMessageDialog(dialog, "Modo Player vs Máquina no implementado aún");
+            dialog.dispose();
+            showPlayerVsMachineSetup();
         });
         dialog.add(pvcBtn, gbc);
+
+        JButton mvmBtn = createStyledButton("Máquina vs Máquina");
+        mvmBtn.addActionListener(e -> {
+            dialog.dispose();
+            showMachineVsMachineSetup();
+        });
+        dialog.add(mvmBtn, gbc);
+
+        dialog.setVisible(true);
+    }
+
+    private void showMachineVsMachineSetup() {
+        JDialog dialog = new JDialog(mainFrame, "Configuración Máquina vs Máquina", true);
+        dialog.setLayout(new GridBagLayout());
+        dialog.setSize(400, 300);
+        dialog.setLocationRelativeTo(mainFrame);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 0, 10, 0);
+
+        JLabel title = new JLabel("Seleccione los tipos de IA para las máquinas", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 16));
+        dialog.add(title, gbc);
+
+        JComboBox<String> machine1Type = new JComboBox<>(new String[]{"Defensiva", "Ofensiva", "Cambio", "Experta"});
+        dialog.add(new JLabel("Máquina 1:"), gbc);
+        dialog.add(machine1Type, gbc);
+
+        JComboBox<String> machine2Type = new JComboBox<>(new String[]{"Defensiva", "Ofensiva", "Cambio", "Experta"});
+        dialog.add(new JLabel("Máquina 2:"), gbc);
+        dialog.add(machine2Type, gbc);
+
+        JButton startBtn = createStyledButton("Iniciar Batalla");
+        startBtn.addActionListener(e -> {
+            int tipoIA1 = machine1Type.getSelectedIndex() + 1;
+            int tipoIA2 = machine2Type.getSelectedIndex() + 1;
+
+            try {
+                Normal modoNormal = new Normal();
+                juego.seleccionarModoJuego(modoNormal);
+                modoNormal.setTipoJuego(3); // MvM
+                modoNormal.prepararBatalla("Máquina 1", "Máquina 2", tipoIA1, tipoIA2);
+                modoNormal.iniciarBatalla();
+            } catch (ExceptionPOOBkemon ex) {
+                JOptionPane.showMessageDialog(dialog, "Error al iniciar batalla: " + ex.getMessage());
+            }
+
+            dialog.dispose();
+        });
+        dialog.add(startBtn, gbc);
+
+        dialog.setVisible(true);
+    }
+
+    private void showPlayerVsMachineSetup() {
+        JDialog dialog = new JDialog(mainFrame, "Configuración Player vs Máquina", true);
+        dialog.setLayout(new GridBagLayout());
+        dialog.setSize(400, 300);
+        dialog.setLocationRelativeTo(mainFrame);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 0, 10, 0);
+
+        JLabel title = new JLabel("Seleccione el tipo de IA para la máquina", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 16));
+        dialog.add(title, gbc);
+
+        JComboBox<String> machineType = new JComboBox<>(new String[]{"Defensiva", "Ofensiva", "Cambio", "Experta"});
+        dialog.add(new JLabel("Máquina:"), gbc);
+        dialog.add(machineType, gbc);
+
+        JTextField playerNameField = new JTextField();
+        dialog.add(new JLabel("Nombre del Jugador:"), gbc);
+        dialog.add(playerNameField, gbc);
+
+        JButton startBtn = createStyledButton("Iniciar Batalla");
+        startBtn.addActionListener(e -> {
+            int tipoIA = machineType.getSelectedIndex() + 1;
+            String playerName = playerNameField.getText().trim();
+
+            if (playerName.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "El nombre del jugador no puede estar vacío.");
+                return;
+            }
+
+            try {
+                Normal modoNormal = new Normal();
+                juego.seleccionarModoJuego(modoNormal);
+                modoNormal.setTipoJuego(2); // PvM
+                modoNormal.prepararBatalla(playerName, "Máquina", tipoIA, 0);
+                modoNormal.iniciarBatalla();
+            } catch (ExceptionPOOBkemon ex) {
+                JOptionPane.showMessageDialog(dialog, "Error al iniciar batalla: " + ex.getMessage());
+            }
+
+            dialog.dispose();
+        });
+        dialog.add(startBtn, gbc);
 
         dialog.setVisible(true);
     }

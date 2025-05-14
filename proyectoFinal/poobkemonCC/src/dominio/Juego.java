@@ -100,6 +100,23 @@ public class Juego {
         );
     }
 
+    public boolean esTurnoJugador() {
+        return batalla.getTurnoActual() instanceof EntrenadorHumano;
+    }
+
+    public void esperarAccionJugador() {
+        // Este método puede ser implementado para esperar la acción desde la GUI
+        System.out.println("Esperando acción del jugador humano...");
+    }
+
+    public Entrenador getEntrenadorActual() {
+        return batalla.getTurnoActual();
+    }
+
+    public void comenzarTurno() throws ExceptionPOOBkemon {
+        batalla.comenzarTurno("pasar", null);
+    }
+
     // Getters base
     public List<Movimiento> getMovimientosBase() {
         return movimientosBase;
