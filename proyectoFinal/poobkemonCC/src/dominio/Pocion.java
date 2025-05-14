@@ -21,19 +21,22 @@ public class Pocion extends Item {
      */
 	public Pocion(String nombre) {
 		super(nombre);
+		if (!tiposPocion.containsKey(nombre)) {
+			throw new IllegalArgumentException("El nombre de la poción no es válido: " + nombre);
+		}
 		this.puntosSanacion = (int) tiposPocion.get(nombre);
 	}
 
 	public void usar(Pokemon p) {
-		
-		if (p.getSalud()> 0) {
-			p.aumentoSalud(puntosSanacion);
-		}
-		
-		else {
-			p.aumentoSalud(p.getSaludInicial() * (int) tiposPocion.get(nombre));
+		if (!tiposPocion.containsKey(nombre)) {
+			throw new IllegalArgumentException("El nombre de la poción no es válido: " + nombre);
 		}
 
+		if (p.getSalud() > 0) {
+			p.aumentoSalud(puntosSanacion);
+		} else {
+			p.aumentoSalud(p.getSaludInicial() * (int) tiposPocion.get(nombre));
+		}
 	}
 
 	@Override

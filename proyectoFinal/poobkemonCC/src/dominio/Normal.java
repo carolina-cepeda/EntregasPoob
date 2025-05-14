@@ -53,31 +53,28 @@ public class Normal implements ModoJuego {
                         // Esperar acción del jugador humano (guiado por la GUI)
                         juego.esperarAccionJugador();
                     } else {
-                        // Acción automática de la máquina
-                        EntrenadorMaquina cpu = (EntrenadorMaquina) juego.getEntrenadorActual();
-                        cpu.realizarAccionAutomatica(juego);
+                        Entrenador actual = juego.getEntrenadorActual();
+                        if (actual instanceof EntrenadorMaquina cpu) {
+                            cpu.realizarAccionAutomatica(juego);
+                        } else {
+                            throw new ExceptionPOOBkemon("El entrenador actual no es una máquina.");
+                        }
                     }
                     juego.comenzarTurno();
                 }
             }
-
             case 3 -> { // MvM
                 while (juego.hayBatallaActiva()) {
-                    // Acción automática de la máquina 1
-                    EntrenadorMaquina cpu1 = (EntrenadorMaquina) juego.getEntrenadorActual();
-                    cpu1.realizarAccionAutomatica(juego);
-                    juego.comenzarTurno();
-
-                    if (!juego.hayBatallaActiva()) break;
-
-                    // Acción automática de la máquina 2
-                    EntrenadorMaquina cpu2 = (EntrenadorMaquina) juego.getEntrenadorActual();
-                    cpu2.realizarAccionAutomatica(juego);
+                    Entrenador actual = juego.getEntrenadorActual();
+                    if (actual instanceof EntrenadorMaquina cpu) {
+                        cpu.realizarAccionAutomatica(juego);
+                    } else {
+                        throw new ExceptionPOOBkemon("El entrenador actual no es una máquina.");
+                    }
                     juego.comenzarTurno();
                 }
             }
-
-            default -> throw new ExceptionPOOBkemon("Modo de juego no soportado para iniciar batalla.");
+            default -> throw new ExceptionPOOBkemon("Modo de juego inválido.");
         }
     }
 
