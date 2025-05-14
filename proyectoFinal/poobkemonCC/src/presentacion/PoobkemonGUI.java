@@ -10,6 +10,8 @@ public class PoobkemonGUI {
     private JFrame mainFrame;
     private Juego juego;
     private EstadoJuego estadoActual;
+    private JProgressBar playerHealthBar;
+    private JProgressBar opponentHealthBar;
 
     public PoobkemonGUI() {
         juego = new Juego();
@@ -32,8 +34,8 @@ public class PoobkemonGUI {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 try {
-                    ImageIcon icon = new ImageIcon(getClass().getResource("/resources/fondo_menu.png"));
-                    g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
+					ImageIcon icon = new ImageIcon(getClass().getResource("/fondoInicial.png"));
+					g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
                 } catch (Exception e) {
                     // Si no hay imagen, mostrar fondo sólido
                     g.setColor(new Color(240, 240, 240));
@@ -302,7 +304,7 @@ public class PoobkemonGUI {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 try {
-                    ImageIcon icon = new ImageIcon(getClass().getResource("/resources/fondo_seleccion.png"));
+                   ImageIcon icon = new ImageIcon(getClass().getResource("/fondoInicial.png"));
                     g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
                 } catch (Exception e) {
                     g.setColor(new Color(240, 240, 240));
@@ -395,7 +397,7 @@ public class PoobkemonGUI {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 try {
-                    ImageIcon icon = new ImageIcon(getClass().getResource("/resources/fondo_items.png"));
+					ImageIcon icon = new ImageIcon(getClass().getResource("/fondoInicial.png"));
                     g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
                 } catch (Exception e) {
                     g.setColor(new Color(240, 240, 240));
@@ -459,8 +461,8 @@ public class PoobkemonGUI {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 try {
-                    ImageIcon icon = new ImageIcon(getClass().getResource("/resources/fondo_batalla.png"));
-                    g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
+					ImageIcon icon = new ImageIcon(getClass().getResource("/fondoBatalla.png"));
+					g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
                 } catch (Exception e) {
                     g.setColor(new Color(240, 240, 240));
                     g.fillRect(0, 0, getWidth(), getHeight());
@@ -480,7 +482,7 @@ public class PoobkemonGUI {
         JLabel opponentPokemonImage = new JLabel();
         try {
             ImageIcon icon = new ImageIcon(getClass().getResource(
-                "/resources/pokemon/" + estadoActual.pokemonOponente.getNombre().toLowerCase() + ".png"));
+    "/" + estadoActual.pokemonOponente.getNombre().toLowerCase() + ".png"));
             opponentPokemonImage.setIcon(icon);
         } catch (Exception e) {
             opponentPokemonImage.setText("Imagen no encontrada");
@@ -488,7 +490,7 @@ public class PoobkemonGUI {
         opponentPanel.add(opponentPokemonImage);
         
         // Barra de salud del oponente
-        JProgressBar opponentHealthBar = new JProgressBar(0, 100);
+        opponentHealthBar = new JProgressBar(0, 100);
         opponentHealthBar.setValue(50); // Valor por defecto
         opponentHealthBar.setString("50/100");
         opponentHealthBar.setStringPainted(true);
@@ -518,7 +520,7 @@ public class PoobkemonGUI {
         playerPanel.add(playerLabel);
         
         // Barra de salud del jugador
-        JProgressBar playerHealthBar = new JProgressBar(0, 100);
+        playerHealthBar = new JProgressBar(0, 100);
         playerHealthBar.setValue(50); // Valor por defecto
         playerHealthBar.setString("50/100");
         playerHealthBar.setStringPainted(true);
@@ -567,6 +569,11 @@ public class PoobkemonGUI {
         mainFrame.repaint();
     }
 
+    private void actualizarBarraDeSalud(JProgressBar barra, int vidaActual, int vidaMaxima) {
+        barra.setValue((int) ((vidaActual / (double) vidaMaxima) * 100));
+        barra.setString(vidaActual + "/" + vidaMaxima);
+        barra.setForeground(vidaActual > vidaMaxima * 0.5 ? Color.GREEN : vidaActual > vidaMaxima * 0.2 ? Color.ORANGE : Color.RED);
+    }
 
     private JPanel createPokemonBattlePanel(String trainerName, Pokemon pokemon, boolean isPlayer) {
         JPanel panel = new JPanel(new BorderLayout());
@@ -597,34 +604,43 @@ public class PoobkemonGUI {
     }
 
     private void showAttackOptions() {
-        JDialog dialog = new JDialog(mainFrame, "Seleccionar ataque", true);
-        dialog.setLayout(new BorderLayout());
-        dialog.setSize(300, 200);
-        dialog.setLocationRelativeTo(mainFrame);
-        
-        JLabel title = new JLabel("Elija uno de los siguientes ataques", SwingConstants.CENTER);
-        dialog.add(title, BorderLayout.NORTH);
-        
-        JPanel buttonsPanel = new JPanel(new GridLayout(0, 1, 5, 5));
-        
-        // Obtener ataques del Pokémon actual (usando valores por defecto)
-        for (int i = 0; i < 2; i++) {
-            JButton attackBtn = new JButton((i+1) + ". Ataque " + (i+1));
-            int finalI = i;
-            attackBtn.addActionListener(e -> {
-                try {
-                    juego.realizarAccion("atacar", finalI);
-                    dialog.dispose();
-                    updateBattleScreen();
-                } catch (ExceptionPOOBkemon ex) {
-                    JOptionPane.showMessageDialog(dialog, "Error al atacar: " + ex.getMessage());
-                }
-            });
-            buttonsPanel.add(attackBtn);
+        try {
+            List<Movimiento> movimientos = estadoActual.pokemonActivo.getMovimientos();
+            String[] opciones = movimientos.stream().map(Movimiento::getNombre).toArray(String[]::new);
+            String seleccion = (String) JOptionPane.showInputDialog(
+                mainFrame,
+                "Selecciona un movimiento:",
+                "Opciones de ataque",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                opciones,
+                opciones[0]
+            );
+
+            if (seleccion != null) {
+                Movimiento movimientoSeleccionado = movimientos.stream()
+                    .filter(m -> m.getNombre().equals(seleccion))
+                    .findFirst()
+                    .orElse(null);
+
+				if (movimientoSeleccionado != null) {
+					juego.realizarAccion("atacar", movimientoSeleccionado);
+					estadoActual = juego.obtenerEstadoActual();
+
+					// Actualizar barras de salud
+					actualizarBarraDeSalud(playerHealthBar, estadoActual.pokemonActivo.getSalud(), estadoActual.pokemonActivo.getSaludInicial());
+					actualizarBarraDeSalud(opponentHealthBar, estadoActual.pokemonOponente.getSalud(), estadoActual.pokemonOponente.getSaludInicial());
+
+					if (estadoActual.pokemonOponente.getSalud() <= 0) {
+						JOptionPane.showMessageDialog(mainFrame, "¡Has derrotado al Pokémon oponente!");
+					} else if (estadoActual.pokemonActivo.getSalud() <= 0) {
+						JOptionPane.showMessageDialog(mainFrame, "Tu Pokémon ha sido derrotado.");
+					}
+				}
+            }
+        } catch (ExceptionPOOBkemon e) {
+            JOptionPane.showMessageDialog(mainFrame, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
-        dialog.add(buttonsPanel, BorderLayout.CENTER);
-        dialog.setVisible(true);
     }
 
     private void showItemOptions() {
