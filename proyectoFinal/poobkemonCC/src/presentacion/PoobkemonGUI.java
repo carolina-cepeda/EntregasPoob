@@ -42,51 +42,52 @@ public class PoobkemonGUI {
             return null;
         }
     }
-
-    private void mostrarMenuPrincipal() {
-        // Panel con imagen de fondo
-        JPanel panel = new JPanel(new GridBagLayout()) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                ImageIcon icon = cargarImagen("/fondoInicial.png");
-                if (icon != null) {
-                    g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
-                } else {
-                    // Si no hay imagen, mostrar fondo sólido
-                    g.setColor(new Color(240, 240, 240));
-                    g.fillRect(0, 0, getWidth(), getHeight());
-                }
+private void mostrarMenuPrincipal() {
+    // Panel con imagen de fondo
+    JPanel panel = new JPanel(new GridBagLayout()) {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            URL recurso = getClass().getResource("/presentacion/resources/fondoInicial.png");
+            if (recurso != null) {
+                ImageIcon icon = new ImageIcon(recurso);
+                g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
+            } else {
+                // Si no hay imagen, mostrar fondo sólido
+                g.setColor(new Color(240, 240, 240));
+                g.fillRect(0, 0, getWidth(), getHeight());
             }
-        };
-        panel.setBorder(BorderFactory.createEmptyBorder(50, 150, 50, 150));
+        }
+    };
+    panel.setBorder(BorderFactory.createEmptyBorder(50, 150, 50, 150));
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 0, 10, 0);
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.gridwidth = GridBagConstraints.REMAINDER;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.insets = new Insets(10, 0, 10, 0);
 
-        JLabel titulo = new JLabel("POOBKEMON", SwingConstants.CENTER);
-        titulo.setFont(new Font("Arial", Font.BOLD, 36));
-        titulo.setForeground(Color.WHITE);
-        panel.add(titulo, gbc);
+    JLabel titulo = new JLabel("POOBKEMON", SwingConstants.CENTER);
+    titulo.setFont(new Font("Arial", Font.BOLD, 36));
+    titulo.setForeground(Color.WHITE);
+    panel.add(titulo, gbc);
 
-        JButton botonModoNormal = crearBotonEstilizado("Normal");
-        botonModoNormal.addActionListener(e -> mostrarSeleccionSubModo());
-        panel.add(botonModoNormal, gbc);
+    JButton botonModoNormal = crearBotonEstilizado("Normal");
+    botonModoNormal.addActionListener(e -> mostrarSeleccionSubModo());
+    panel.add(botonModoNormal, gbc);
 
-        JButton botonModoSupervivencia = crearBotonEstilizado("Supervivencia");
-        botonModoSupervivencia.addActionListener(e -> {
-            JOptionPane.showMessageDialog(marcoPrincipal, "Modo supervivencia no implementado aún");
-        });
-        panel.add(botonModoSupervivencia, gbc);
+    JButton botonModoSupervivencia = crearBotonEstilizado("Supervivencia");
+    botonModoSupervivencia.addActionListener(e -> {
+        JOptionPane.showMessageDialog(marcoPrincipal, "Modo supervivencia no implementado aún");
+    });
+    panel.add(botonModoSupervivencia, gbc);
 
-        marcoPrincipal.getContentPane().removeAll();
-        marcoPrincipal.add(panel, BorderLayout.CENTER);
-        marcoPrincipal.revalidate();
-        marcoPrincipal.repaint();
-        marcoPrincipal.setVisible(true);
-    }
+    marcoPrincipal.getContentPane().removeAll();
+    marcoPrincipal.add(panel, BorderLayout.CENTER);
+    marcoPrincipal.revalidate();
+    marcoPrincipal.repaint();
+    marcoPrincipal.setVisible(true);
+}
+
 
     private JButton crearBotonEstilizado(String texto) {
         JButton boton = new JButton(texto);
@@ -162,25 +163,74 @@ public class PoobkemonGUI {
 
         JButton botonIniciar = crearBotonEstilizado("Iniciar Batalla");
         botonIniciar.addActionListener(e -> {
-            int tipoIA1 = tipoMaquina1.getSelectedIndex() + 1;
-            int tipoIA2 = tipoMaquina2.getSelectedIndex() + 1;
+        int tipoIA1 = tipoMaquina1.getSelectedIndex() + 1;
+        int tipoIA2 = tipoMaquina2.getSelectedIndex() + 1;
 
-            try {
-                Normal modoNormal = new Normal();
-                juego.seleccionarModoJuego(modoNormal);
-                modoNormal.setTipoJuego(3); // MvM
-                modoNormal.prepararBatalla("Máquina 1", "Máquina 2", tipoIA1, tipoIA2);
-                modoNormal.iniciarBatalla();
-            } catch (ExceptionPOOBkemon ex) {
-                JOptionPane.showMessageDialog(dialogo, "Error al iniciar batalla: " + ex.getMessage());
-            }
+        try {
+            Normal modoNormal = new Normal();
+            juego.seleccionarModoJuego(modoNormal);
+            modoNormal.setTipoJuego(3); 
+            modoNormal.prepararBatalla("Máquina 1", "Máquina 2", tipoIA1, tipoIA2);
 
             dialogo.dispose();
-        });
+            mostrarBatallaAutomatica(modoNormal);
+        } catch (ExceptionPOOBkemon ex) {
+            JOptionPane.showMessageDialog(dialogo, "Error al iniciar batalla: " + ex.getMessage());
+        }
+    });
+
+        
         dialogo.add(botonIniciar, gbc);
 
         dialogo.setVisible(true);
     }
+
+
+    private void mostrarBatallaAutomatica(Normal modo) {
+        estadoActual = juego.obtenerEstadoActual();
+        if (estadoActual == null) {
+            JOptionPane.showMessageDialog(marcoPrincipal, "Error al obtener estado del juego");
+            mostrarMenuPrincipal();
+            return;
+        }
+
+        JPanel panelBatalla = crearPanelBatalla();
+        marcoPrincipal.getContentPane().removeAll();
+        marcoPrincipal.add(panelBatalla);
+        marcoPrincipal.revalidate();
+        marcoPrincipal.repaint();
+
+        Timer timer = new Timer(1500, null);
+        timer.addActionListener(e -> {
+            if (!juego.hayBatallaActiva()) {
+                timer.stop();
+                String ganador = juego.getNombreGanador(); 
+            
+                JOptionPane.showMessageDialog(marcoPrincipal, "¡Batalla finalizada!\nGanador: " + ganador);
+                mostrarMenuPrincipal();
+                return;
+            }
+
+            try {
+                Entrenador actual = juego.getEntrenadorActual();
+                if (actual instanceof EntrenadorMaquina cpu) {
+                    cpu.realizarAccionAutomatica(juego);
+                    juego.comenzarTurno();
+                    estadoActual = juego.obtenerEstadoActual();
+                    actualizarPantallaBatalla();
+                }
+            } catch (ExceptionPOOBkemon ex) {
+                timer.stop();
+                JOptionPane.showMessageDialog(marcoPrincipal, "Error durante la batalla: " + ex.getMessage());
+                mostrarMenuPrincipal();
+            }
+        });
+
+        timer.start();
+    }
+
+
+
 
     private void mostrarConfiguracionJugadorVsMaquina() {
         JDialog dialogo = new JDialog(marcoPrincipal, "Configuración Player vs Máquina", true);
@@ -509,101 +559,96 @@ public class PoobkemonGUI {
 
     private void iniciarBatalla() {
         estadoActual = juego.obtenerEstadoActual();
-
         if (estadoActual == null) {
             JOptionPane.showMessageDialog(marcoPrincipal, "Error al obtener estado del juego");
             mostrarMenuPrincipal();
             return;
         }
 
+        JPanel panelBatalla = crearPanelBatalla();
         marcoPrincipal.getContentPane().removeAll();
+        marcoPrincipal.add(panelBatalla);
+        marcoPrincipal.revalidate();
+        marcoPrincipal.repaint();
+    }
 
-        // Panel principal con imagen de fondo de batalla
-        JPanel panelBatalla = new JPanel(new BorderLayout()) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                ImageIcon icon = cargarImagen("/fondoBatalla.png");
-                if (icon != null) {
-                    g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
-                } else {
-                    g.setColor(new Color(240, 240, 240));
-                    g.fillRect(0, 0, getWidth(), getHeight());
-                }
-            }
-        };
 
-        // Panel para Pokémon del oponente (esquina superior derecha)
-        JPanel panelOponente = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panelOponente.setOpaque(false);
-
-        JLabel nombrePokemonOponente = new JLabel(estadoActual.pokemonOponente.getNombre());
-        nombrePokemonOponente.setFont(new Font("Arial", Font.BOLD, 14));
-        nombrePokemonOponente.setForeground(Color.WHITE);
-        panelOponente.add(nombrePokemonOponente);
-
-        JLabel imagenPokemonOponente = new JLabel();
-        try {
-            ImageIcon icon = cargarImagen("/pokemon/" + estadoActual.pokemonOponente.getNombre().toLowerCase() + ".png");
+    private JPanel crearPanelBatalla() {
+    JPanel panelBatalla = new JPanel(new BorderLayout()) {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            ImageIcon icon = cargarImagen("resources/fondoBatalla.png");
             if (icon != null) {
-                imagenPokemonOponente.setIcon(icon);
-            } else {
-                imagenPokemonOponente.setText("Imagen no encontrada");
+                g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
-        } catch (Exception e) {
-            imagenPokemonOponente.setText("Imagen no encontrada");
         }
-        panelOponente.add(imagenPokemonOponente);
+    };
 
-        barraSaludOponente = new JProgressBar(0, 100);
-        barraSaludOponente.setValue(estadoActual.pokemonOponente.getSalud());
-        barraSaludOponente.setString(estadoActual.pokemonOponente.getSalud() + "/" + estadoActual.pokemonOponente.getSaludInicial());
-        barraSaludOponente.setStringPainted(true);
-        barraSaludOponente.setForeground(Color.GREEN);
-        panelOponente.add(barraSaludOponente);
+    // Panel del oponente
+    JPanel panelOponente = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    panelOponente.setOpaque(false);
 
-        panelBatalla.add(panelOponente, BorderLayout.NORTH);
+    JLabel nombrePokemonOponente = new JLabel(estadoActual.pokemonOponente.getNombre());
+    nombrePokemonOponente.setFont(new Font("Arial", Font.BOLD, 14));
+    nombrePokemonOponente.setForeground(Color.WHITE);
+    panelOponente.add(nombrePokemonOponente);
 
-        // Panel para Pokémon del jugador (esquina inferior izquierda)
-        JPanel panelJugador = new JPanel(new BorderLayout());
-        panelJugador.setOpaque(false);
+    JLabel imagenPokemonOponente = new JLabel();
+    ImageIcon iconOponente = cargarImagen("/pokemon/" + estadoActual.pokemonOponente.getNombre().toLowerCase() + ".png");
+    if (iconOponente != null) {
+        imagenPokemonOponente.setIcon(iconOponente);
+    } else {
+        imagenPokemonOponente.setText("Imagen no encontrada");
+    }
+    panelOponente.add(imagenPokemonOponente);
 
-        JPanel panelInfoJugador = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panelInfoJugador.setOpaque(false);
+    barraSaludOponente = new JProgressBar(0, 100);
+    barraSaludOponente.setValue(estadoActual.pokemonOponente.getSalud());
+    barraSaludOponente.setString(estadoActual.pokemonOponente.getSalud() + "/" + estadoActual.pokemonOponente.getSaludInicial());
+    barraSaludOponente.setStringPainted(true);
+    barraSaludOponente.setForeground(Color.GREEN);
+    panelOponente.add(barraSaludOponente);
 
-        JLabel nombrePokemonJugador = new JLabel(estadoActual.pokemonActivo.getNombre());
-        nombrePokemonJugador.setFont(new Font("Arial", Font.BOLD, 14));
-        nombrePokemonJugador.setForeground(Color.WHITE);
-        panelInfoJugador.add(nombrePokemonJugador);
+    panelBatalla.add(panelOponente, BorderLayout.NORTH);
 
-        JLabel imagenPokemonJugador = new JLabel();
-        try {
-            ImageIcon iconoPokemon = cargarImagen("/pokemon/" + estadoActual.pokemonActivo.getNombre().toLowerCase() + ".png");
-            if (iconoPokemon != null) {
-                imagenPokemonJugador.setIcon(iconoPokemon);
-            } else {
-                imagenPokemonJugador.setText("Imagen no encontrada");
-            }
-        } catch (Exception e) {
-            imagenPokemonJugador.setText("Imagen no encontrada");
-        }
-        panelInfoJugador.add(imagenPokemonJugador);
+    // Panel del jugador
+    JPanel panelJugador = new JPanel(new BorderLayout());
+    panelJugador.setOpaque(false);
 
-        JLabel etiquetaJugador = new JLabel(estadoActual.nombreJugador);
-        etiquetaJugador.setFont(new Font("Arial", Font.BOLD, 16));
-        etiquetaJugador.setForeground(Color.WHITE);
-        panelInfoJugador.add(etiquetaJugador);
+    JPanel panelInfoJugador = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    panelInfoJugador.setOpaque(false);
 
-        barraSaludJugador = new JProgressBar(0, 100);
-        barraSaludJugador.setValue(estadoActual.pokemonActivo.getSalud());
-        barraSaludJugador.setString(estadoActual.pokemonActivo.getSalud() + "/" + estadoActual.pokemonActivo.getSaludInicial());
-        barraSaludJugador.setStringPainted(true);
-        barraSaludJugador.setForeground(Color.GREEN);
-        panelInfoJugador.add(barraSaludJugador);
+    JLabel nombrePokemonJugador = new JLabel(estadoActual.pokemonActivo.getNombre());
+    nombrePokemonJugador.setFont(new Font("Arial", Font.BOLD, 14));
+    nombrePokemonJugador.setForeground(Color.WHITE);
+    panelInfoJugador.add(nombrePokemonJugador);
 
-        panelJugador.add(panelInfoJugador, BorderLayout.NORTH);
+    JLabel imagenPokemonJugador = new JLabel();
+    ImageIcon iconJugador = cargarImagen("/pokemon/" + estadoActual.pokemonActivo.getNombre().toLowerCase() + ".png");
+    if (iconJugador != null) {
+        imagenPokemonJugador.setIcon(iconJugador);
+    } else {
+        imagenPokemonJugador.setText("Imagen no encontrada");
+    }
+    panelInfoJugador.add(imagenPokemonJugador);
 
-        // Panel de acciones con botones más pequeños debajo de la barra de salud
+    JLabel etiquetaJugador = new JLabel(estadoActual.nombreJugador);
+    etiquetaJugador.setFont(new Font("Arial", Font.BOLD, 16));
+    etiquetaJugador.setForeground(Color.WHITE);
+    panelInfoJugador.add(etiquetaJugador);
+
+    barraSaludJugador = new JProgressBar(0, 100);
+    barraSaludJugador.setValue(estadoActual.pokemonActivo.getSalud());
+    barraSaludJugador.setString(estadoActual.pokemonActivo.getSalud() + "/" + estadoActual.pokemonActivo.getSaludInicial());
+    barraSaludJugador.setStringPainted(true);
+    barraSaludJugador.setForeground(Color.GREEN);
+    panelInfoJugador.add(barraSaludJugador);
+
+    panelJugador.add(panelInfoJugador, BorderLayout.NORTH);
+
+    // Panel de acciones (solo para PvP o PvM)
+    if (!estadoActual.nombreJugador.toLowerCase().contains("máquina")) {
         JPanel panelAcciones = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         panelAcciones.setOpaque(false);
 
@@ -626,26 +671,24 @@ public class PoobkemonGUI {
         botonHuir.setPreferredSize(new Dimension(100, 30));
         botonHuir.addActionListener(e -> {
             int opcion = JOptionPane.showConfirmDialog(marcoPrincipal,
-                "¿Estás seguro de que quieres huir?",
-                "Confirmar huida",
-                JOptionPane.YES_NO_OPTION);
+                    "¿Estás seguro de que quieres huir?",
+                    "Confirmar huida",
+                    JOptionPane.YES_NO_OPTION);
 
             if (opcion == JOptionPane.YES_OPTION) {
                 JOptionPane.showMessageDialog(marcoPrincipal,
-                    estadoActual.nombreOponente + " ha ganado el juego, felicidades!!");
+                        estadoActual.nombreOponente + " ha ganado el juego, felicidades!!");
                 mostrarMenuPrincipal();
             }
         });
         panelAcciones.add(botonHuir);
 
         panelJugador.add(panelAcciones, BorderLayout.SOUTH);
-
-        panelBatalla.add(panelJugador, BorderLayout.SOUTH);
-
-        marcoPrincipal.add(panelBatalla);
-        marcoPrincipal.revalidate();
-        marcoPrincipal.repaint();
     }
+
+    panelBatalla.add(panelJugador, BorderLayout.SOUTH);
+    return panelBatalla;
+}
 
     private void actualizarBarraDeSalud(JProgressBar barra, int vidaActual, int vidaMaxima) {
         barra.setValue((int) ((vidaActual / (double) vidaMaxima) * 100));
@@ -802,7 +845,7 @@ public class PoobkemonGUI {
         estadoActual = juego.obtenerEstadoActual();
 
         if (estadoActual == null || !juego.hayBatallaActiva()) {
-            String ganador = "Jugador"; // Esto debería obtenerse del juego
+            String ganador = juego.getNombreGanador(); 
             JOptionPane.showMessageDialog(marcoPrincipal,
                 "El jugador " + ganador + " ha ganado el juego, felicidades!!");
             mostrarMenuPrincipal();

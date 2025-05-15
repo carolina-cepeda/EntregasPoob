@@ -135,4 +135,8 @@ public class Juego {
         this.entrenador2 = e2;
     }
 
+    public String getNombreGanador(){
+        return getEntrenadorActual().getNombre();
+    }
+
 }

@@ -34,43 +34,37 @@ public class pruebasUnitariasC1 {
         EstadoJuego estado = juego.obtenerEstadoActual();
 
         boolean itemPresente = estado.items.stream()
-            .anyMatch(item -> item.getNombre().equals("Potion"));
+                .anyMatch(item -> item.getNombre().equals("Potion"));
 
         assertTrue("La poción no está en la lista de items", itemPresente);
     }
 
-
     // TURNOS Y COMBATE
-   @Test 
-public void testAtaqueDisminuyeVidaOponente() throws ExceptionPOOBkemon {
-    Juego juego = new Juego();
-    juego.crearEntrenadores("Red", "Blue");
+    @Test
+    public void testAtaqueDisminuyeVidaOponente() throws ExceptionPOOBkemon {
+        Juego juego = new Juego();
+        juego.crearEntrenadores("Red", "Blue");
 
-    Pokemon charmander = crearPokemonBasico("Charmander");
-    Pokemon bulbasaur = crearPokemonBasico("Bulbasaur");
+        Pokemon charmander = crearPokemonBasico("Charmander");
+        Pokemon bulbasaur = crearPokemonBasico("Bulbasaur");
 
-    juego.agregarPokemonAEntrenador(1, charmander);
-    juego.agregarPokemonAEntrenador(2, bulbasaur);
+        juego.agregarPokemonAEntrenador(1, charmander);
+        juego.agregarPokemonAEntrenador(2, bulbasaur);
 
-    juego.comenzarBatalla();
+        juego.comenzarBatalla();
 
-    EstadoJuego estadoAntes = juego.obtenerEstadoActual();
+        EstadoJuego estadoAntes = juego.obtenerEstadoActual();
+        Pokemon oponenteAntes = estadoAntes.pokemonOponente;
+        int vidaInicial = oponenteAntes.getSalud();
 
-    // Detectamos quién es el oponente en este turno
-    Pokemon oponenteAntes = estadoAntes.pokemonOponente;
-    int vidaInicial = oponenteAntes.getSalud();
+        juego.realizarAccion("atacar", 0);
 
-    juego.realizarAccion("atacar", 0);
+        EstadoJuego estadoDespues = juego.obtenerEstadoActual();
+        Pokemon oponenteDespues = estadoDespues.pokemonOponente;
+        int vidaActual = oponenteDespues.getSalud();
 
-    EstadoJuego estadoDespues = juego.obtenerEstadoActual();
-    Pokemon oponenteDespues = estadoDespues.pokemonOponente;
-    int vidaActual = oponenteDespues.getSalud();
-
-    // Comparamos por nombre para asegurarnos que estamos midiendo al mismo Pokémon
-    assertEquals(oponenteAntes.getNombre(), oponenteDespues.getNombre());
-    assertTrue("El ataque no redujo la vida del oponente", vidaActual < vidaInicial);
-}
-
+        assertTrue("El ataque no redujo la vida del oponente", vidaActual < vidaInicial);
+    }
 
     @Test
     public void testCambioDeTurnoFuncionando() throws ExceptionPOOBkemon {
@@ -135,12 +129,74 @@ public void testAtaqueDisminuyeVidaOponente() throws ExceptionPOOBkemon {
     // CREACIÓN DE POKEMONES
     private Pokemon crearPokemonBasico(String nombre) {
         Movimiento[] movimientos = {
-            new Movimiento("Placaje", 40, 100, 35, 0, "Normal", null),
-            new Movimiento("Nada", 3, 100, 40, 0, "Normal", null),
-            new Movimiento("Nada2", 2, 100, 40, 0, "Normal", null),
-            new Movimiento("Nada3", 2, 100, 40, 0, "Normal", null)
+                new Movimiento("Placaje", 40, 100, 35, 0, "Normal", null),
+                new Movimiento("Nada", 3, 100, 40, 0, "Normal", null),
+                new Movimiento("Nada2", 2, 100, 40, 0, "Normal", null),
+                new Movimiento("Nada3", 2, 100, 40, 0, "Normal", null)
         };
         return new Pokemon(nombre, 200, 30, "Normal", null, 150, 100, 120, 110, 160, 100, 100, movimientos);
+    }
+
+    // ADICIONALES
+    @Test
+    public void testCreacionPokemon() {
+        Movimiento[] movimientos = {
+                new Movimiento("Placaje", 40, 100, 35, 0, "Normal", null),
+                new Movimiento("Rayo", 50, 95, 30, 0, "Eléctrico", null),
+                new Movimiento(null, 0, 0, 0, 0, null, null),
+                new Movimiento(null, 0, 0, 0, 0, null, null)
+        };
+        Pokemon pikachu = new Pokemon("Pikachu", 100, 25, "Eléctrico", null, 55, 40, 50, 50, 90, 100, 100, movimientos);
+
+        assertEquals("Pikachu", pikachu.getNombre());
+        assertEquals(100, pikachu.getSalud());
+        assertEquals("Eléctrico", pikachu.getTipoPrincipal());
+        assertEquals(2, pikachu.getMovimientos().size()); // Verifica que tenga 2 movimientos
+    }
+
+    @Test
+    public void testCreacionItem() {
+        Item pocion = new Pocion("Potion");
+
+        assertEquals("Potion", pocion.getNombre());
+        assertThrows(IllegalArgumentException.class, () -> new Pocion("InvalidPotion")); // Verifica que se lance una
+                                                                                         // excepción para un nombre
+                                                                                         // inválido
+    }
+
+    @Test
+    public void testAgregarPokemonAEntrenador() throws ExceptionPOOBkemon {
+        Entrenador entrenador = new Entrenador("Ash", "Rojo");
+        Pokemon pikachu = new Pokemon("Pikachu", 100, 25, "Eléctrico", "abc", 55, 40, 50, 50, 90, 100, 0,
+                new Movimiento[0]);
+
+        entrenador.agregarPokemon(pikachu);
+        assertEquals(1, entrenador.getPokemones().size());
+        assertEquals(pikachu, entrenador.getPokemonActivo());
+
+        // Agregar más Pokémon hasta el límite
+        for (int i = 0; i < 3; i++) {
+            entrenador.agregarPokemon(
+                    new Pokemon("Pokemon" + i, 100, 25, "Normal", null, 50, 50, 50, 50, 50, 100, i, new Movimiento[0]));
+        }
+        assertEquals(6, entrenador.getPokemones().size()); // Debería tener 6 Pokémon
+
+        // Intentar agregar un séptimo Pokémon
+        Pokemon extraPokemon = new Pokemon("Extra", 100, 25, "Normal", null, 50, 50, 50, 50, 50, 100, 0,
+                new Movimiento[0]);
+        entrenador.agregarPokemon(extraPokemon); // No debería agregarlo
+        assertEquals(6, entrenador.getPokemones().size()); // Debería seguir teniendo 6 Pokémon
+    }
+
+    // Tests para la clase Movimiento
+    public static class MovimientoTest {
+        @Test
+        public void testCreacionMovimiento() {
+            Movimiento movimiento = new Movimiento("Placaje", 40, 100, 35, 0, "Normal", null);
+            assertEquals("Placaje", movimiento.getNombre());
+            assertEquals(40, movimiento.getPotencia());
+            assertEquals("Normal", movimiento.getTipo());
+        }
     }
 
 }
