@@ -42,23 +42,23 @@ public class PoobkemonGUI {
             return null;
         }
     }
-private void mostrarMenuPrincipal() {
-    // Panel con imagen de fondo
-    JPanel panel = new JPanel(new GridBagLayout()) {
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            URL recurso = getClass().getResource("/presentacion/resources/fondoInicial.png");
-            if (recurso != null) {
-                ImageIcon icon = new ImageIcon(recurso);
-                g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
-            } else {
-                // Si no hay imagen, mostrar fondo sólido
-                g.setColor(new Color(240, 240, 240));
-                g.fillRect(0, 0, getWidth(), getHeight());
+    private void mostrarMenuPrincipal() {
+        // Panel con imagen de fondo
+        JPanel panel = new JPanel(new GridBagLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                URL recurso = getClass().getResource("/presentacion/resources/fondoInicial.png"); // servirá?
+                if (recurso != null) {
+                    ImageIcon icon = new ImageIcon(recurso);
+                    g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
+                } else {
+                    // Si no hay imagen, mostrar fondo sólido
+                    g.setColor(new Color(240, 240, 240));
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
             }
-        }
-    };
+        };
     panel.setBorder(BorderFactory.createEmptyBorder(50, 150, 50, 150));
 
     GridBagConstraints gbc = new GridBagConstraints();
@@ -595,7 +595,7 @@ private void mostrarMenuPrincipal() {
     panelOponente.add(nombrePokemonOponente);
 
     JLabel imagenPokemonOponente = new JLabel();
-    ImageIcon iconOponente = cargarImagen("/pokemon/" + estadoActual.pokemonOponente.getNombre().toLowerCase() + ".png");
+    ImageIcon iconOponente = cargarImagen("resources/" + estadoActual.pokemonOponente.getNombre().toLowerCase() + ".png");
     if (iconOponente != null) {
         imagenPokemonOponente.setIcon(iconOponente);
     } else {
@@ -625,7 +625,7 @@ private void mostrarMenuPrincipal() {
     panelInfoJugador.add(nombrePokemonJugador);
 
     JLabel imagenPokemonJugador = new JLabel();
-    ImageIcon iconJugador = cargarImagen("/pokemon/" + estadoActual.pokemonActivo.getNombre().toLowerCase() + ".png");
+    ImageIcon iconJugador = cargarImagen("resources/" + estadoActual.pokemonActivo.getNombre().toLowerCase() + ".png");
     if (iconJugador != null) {
         imagenPokemonJugador.setIcon(iconJugador);
     } else {
@@ -855,6 +855,9 @@ private void mostrarMenuPrincipal() {
         iniciarBatalla();
     }
 
+    /**
+     * uso de IA para manejar la lista de pokemones
+     */
     private class RenderizadorListaPokemon extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index,
