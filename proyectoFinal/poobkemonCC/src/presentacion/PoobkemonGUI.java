@@ -48,7 +48,7 @@ public class PoobkemonGUI {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                URL recurso = getClass().getResource("/presentacion/resources/fondoInicial.png"); // servirá?
+                URL recurso = getClass().getResource("/presentacion/resources/fondoInicial.png"); // NO SIRVE?
                 if (recurso != null) {
                     ImageIcon icon = new ImageIcon(recurso);
                     g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
@@ -588,6 +588,8 @@ public class PoobkemonGUI {
     // Panel del oponente
     JPanel panelOponente = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     panelOponente.setOpaque(false);
+    panelOponente.setBorder(BorderFactory.createEmptyBorder(120, 0, 0, 0)); // top= - px
+
 
     JLabel nombrePokemonOponente = new JLabel(estadoActual.pokemonOponente.getNombre());
     nombrePokemonOponente.setFont(new Font("Arial", Font.BOLD, 14));
