@@ -4,6 +4,11 @@ public class Normal implements ModoJuego {
 
     private Juego juego;
     private int tipoJuego; // 1 = PvP, 2 = PvM, 3 = MvM
+    private String nombre1;
+    private String nombre2;
+    private int tipoIA1;
+    private int tipoIA2;
+
 
     @Override
     public void configurarJuego(Juego juego) {
@@ -26,6 +31,7 @@ public class Normal implements ModoJuego {
                 EntrenadorMaquina cpu = crearEntrenadorMaquina(tipoIA1, nombre2, "Azul");
 
                 juego.setEntrenadores(humano, cpu);
+                juego.comenzarBatalla();
             }
 
             case 3 -> { // MvM
@@ -46,37 +52,40 @@ public class Normal implements ModoJuego {
     }
 
     public void iniciarBatalla() throws ExceptionPOOBkemon {
-        switch (tipoJuego) {
-            case 2 -> { // PvM
-                while (juego.hayBatallaActiva()) {
-                    if (juego.esTurnoJugador()) {
-                        // Esperar acción del jugador humano (guiado por la GUI)
-                        juego.esperarAccionJugador();
-                    } else {
-                        Entrenador actual = juego.getEntrenadorActual();
-                        if (actual instanceof EntrenadorMaquina cpu) {
-                            cpu.realizarAccionAutomatica(juego);
-                        } else {
-                            throw new ExceptionPOOBkemon("El entrenador actual no es una máquina.");
-                        }
-                    }
-                    juego.comenzarTurno();
-                }
-            }
-            case 3 -> { // MvM
-                while (juego.hayBatallaActiva()) {
-                    Entrenador actual = juego.getEntrenadorActual();
-                    if (actual instanceof EntrenadorMaquina cpu) {
-                        cpu.realizarAccionAutomatica(juego);
-                    } else {
-                        throw new ExceptionPOOBkemon("El entrenador actual no es una máquina.");
-                    }
-                    juego.comenzarTurno();
-                }
-            }
-            default -> throw new ExceptionPOOBkemon("Modo de juego inválido.");
-        }
+    switch (tipoJuego) {
+
+       case 2 -> { // PvM
+        Entrenador humano = new Entrenador(nombre1, "Rojo");
+        EntrenadorMaquina cpu = crearEntrenadorMaquina(tipoIA1, nombre2, "Azul");
+
+        cpu.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
+        cpu.seleccionarItemsAuto(juego.getItemsBase());
+
+        // solo mientras pruebo QUITAR LUEGO
+        humano.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
+        humano.seleccionarItemsAuto(juego.getItemsBase());
+
+        juego.setEntrenadores(humano, cpu);
+        juego.comenzarBatalla();
     }
+
+
+        case 3 -> {
+            while (juego.hayBatallaActiva()) {
+                Entrenador actual = juego.getEntrenadorActual();
+                if (actual instanceof EntrenadorMaquina cpu) {
+                    cpu.realizarAccionAutomatica(juego);
+                } else {
+                    throw new ExceptionPOOBkemon("El entrenador actual no es una máquina.");
+                }
+                juego.comenzarTurno();
+            }
+        }
+
+        default -> throw new ExceptionPOOBkemon("Modo de juego inválido.");
+    }
+}
+
 
     private EntrenadorMaquina crearEntrenadorMaquina(int tipo, String nombre, String color) {
         return switch (tipo) {

@@ -45,6 +45,7 @@ public class PoobkemonGUI {
     private void mostrarMenuPrincipal() {
         // Panel con imagen de fondo
         JPanel panel = new JPanel(new GridBagLayout()) {
+
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -54,7 +55,7 @@ public class PoobkemonGUI {
                     g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
                 } else {
                     // Si no hay imagen, mostrar fondo sólido
-                    g.setColor(new Color(240, 240, 240));
+                    g.setColor(Color.GREEN);
                     g.fillRect(0, 0, getWidth(), getHeight());
                 }
             }
@@ -68,7 +69,7 @@ public class PoobkemonGUI {
 
     JLabel titulo = new JLabel("POOBKEMON", SwingConstants.CENTER);
     titulo.setFont(new Font("Arial", Font.BOLD, 36));
-    titulo.setForeground(Color.WHITE);
+    titulo.setForeground(new Color(50, 205, 50));
     panel.add(titulo, gbc);
 
     JButton botonModoNormal = crearBotonEstilizado("Normal");
@@ -221,7 +222,7 @@ public class PoobkemonGUI {
                 }
             } catch (ExceptionPOOBkemon ex) {
                 timer.stop();
-                JOptionPane.showMessageDialog(marcoPrincipal, "Error durante la batalla: " + ex.getMessage());
+                JOptionPane.showMessageDialog(marcoPrincipal, " " + ex.getMessage());
                 mostrarMenuPrincipal();
             }
         });
@@ -256,6 +257,7 @@ public class PoobkemonGUI {
         dialogo.add(campoNombreJugador, gbc);
 
         JButton botonIniciar = crearBotonEstilizado("Iniciar Batalla");
+        
         botonIniciar.addActionListener(e -> {
             int tipoIA = tipoMaquina.getSelectedIndex() + 1;
             String nombreJugador = campoNombreJugador.getText().trim();
@@ -270,7 +272,9 @@ public class PoobkemonGUI {
                 juego.seleccionarModoJuego(modoNormal);
                 modoNormal.setTipoJuego(2); // PvM
                 modoNormal.prepararBatalla(nombreJugador, "Máquina", tipoIA, 0);
-                modoNormal.iniciarBatalla();
+                dialogo.dispose();
+                iniciarBatallaPvM(modoNormal);
+
             } catch (ExceptionPOOBkemon ex) {
                 JOptionPane.showMessageDialog(dialogo, "Error al iniciar batalla: " + ex.getMessage());
             }
@@ -281,6 +285,46 @@ public class PoobkemonGUI {
 
         dialogo.setVisible(true);
     }
+
+   private void iniciarBatallaPvM(Normal modo) {
+    JPanel panel = new JPanel(new GridBagLayout());
+    JLabel esperando = new JLabel("Preparando batalla...");
+    esperando.setFont(new Font("Arial", Font.BOLD, 24));
+    panel.add(esperando);
+
+    marcoPrincipal.getContentPane().removeAll();
+    marcoPrincipal.add(panel, BorderLayout.CENTER);
+    marcoPrincipal.revalidate();
+    marcoPrincipal.repaint();
+    /*
+    * sugerencia IA de usar un hilo para hacer la lógica en segundo plano
+    */
+    new Thread(() -> {
+        try {
+            modo.iniciarBatalla(); 
+
+            SwingUtilities.invokeLater(() -> {
+                estadoActual = juego.obtenerEstadoActual();
+                if (estadoActual == null) {
+                    JOptionPane.showMessageDialog(marcoPrincipal, "Error al obtener estado del juego tras iniciar.");
+                    mostrarMenuPrincipal();
+                    return;
+                }
+
+                JPanel panelBatalla = crearPanelBatalla();
+                marcoPrincipal.getContentPane().removeAll();
+                marcoPrincipal.add(panelBatalla);
+                marcoPrincipal.revalidate();
+                marcoPrincipal.repaint();
+            });
+
+        } catch (ExceptionPOOBkemon e) {
+            SwingUtilities.invokeLater(() ->
+                JOptionPane.showMessageDialog(marcoPrincipal, "Error durante la batalla: " + e.getMessage()));
+        }
+    }).start();
+}
+
 
     private void mostrarEntradaNombresJugadores() {
         JDialog dialogo = new JDialog(marcoPrincipal, "Nombres de jugadores", true);
@@ -593,7 +637,7 @@ public class PoobkemonGUI {
 
     JLabel nombrePokemonOponente = new JLabel(estadoActual.pokemonOponente.getNombre());
     nombrePokemonOponente.setFont(new Font("Arial", Font.BOLD, 14));
-    nombrePokemonOponente.setForeground(Color.WHITE);
+    nombrePokemonOponente.setForeground(Color.BLACK);
     panelOponente.add(nombrePokemonOponente);
 
     JLabel imagenPokemonOponente = new JLabel();
@@ -623,7 +667,7 @@ public class PoobkemonGUI {
 
     JLabel nombrePokemonJugador = new JLabel(estadoActual.pokemonActivo.getNombre());
     nombrePokemonJugador.setFont(new Font("Arial", Font.BOLD, 14));
-    nombrePokemonJugador.setForeground(Color.WHITE);
+    nombrePokemonJugador.setForeground(Color.BLACK);
     panelInfoJugador.add(nombrePokemonJugador);
 
     JLabel imagenPokemonJugador = new JLabel();
@@ -637,7 +681,7 @@ public class PoobkemonGUI {
 
     JLabel etiquetaJugador = new JLabel(estadoActual.nombreJugador);
     etiquetaJugador.setFont(new Font("Arial", Font.BOLD, 16));
-    etiquetaJugador.setForeground(Color.WHITE);
+    etiquetaJugador.setForeground(Color.CYAN);
     panelInfoJugador.add(etiquetaJugador);
 
     barraSaludJugador = new JProgressBar(0, 100);
@@ -725,9 +769,24 @@ public class PoobkemonGUI {
                     juego.realizarAccion("atacar", indiceMovimiento);
                     estadoActual = juego.obtenerEstadoActual();
 
-                    // Actualizar barras de salud
-                    actualizarBarraDeSalud(barraSaludJugador, estadoActual.pokemonActivo.getSalud(), estadoActual.pokemonActivo.getSaludInicial());
-                    actualizarBarraDeSalud(barraSaludOponente, estadoActual.pokemonOponente.getSalud(), estadoActual.pokemonOponente.getSaludInicial());
+                    // Guardar referencias antes del ataque
+                    Pokemon atacanteAntes = estadoActual.pokemonActivo;
+                    Pokemon oponenteAntes = estadoActual.pokemonOponente;
+
+                    juego.realizarAccion("atacar", indiceMovimiento);
+
+                    // Obtener nuevo estado
+                    estadoActual = juego.obtenerEstadoActual();
+
+                    // Actualizar solo al oponente que fue atacado
+                    if (estadoActual.pokemonActivo.getNombre().equals(atacanteAntes.getNombre())) {
+                        // El turno no cambió, se atacó al oponente
+                        actualizarBarraDeSalud(barraSaludOponente, estadoActual.pokemonOponente.getSalud(), estadoActual.pokemonOponente.getSaludInicial());
+                    } else {
+                        // El turno cambió, así que el atacante es ahora el oponente
+                        actualizarBarraDeSalud(barraSaludJugador, estadoActual.pokemonOponente.getSalud(), estadoActual.pokemonOponente.getSaludInicial());
+                    }
+
 
                     if (estadoActual.pokemonOponente.getSalud() <= 0) {
                         JOptionPane.showMessageDialog(marcoPrincipal, "¡Has derrotado al Pokémon oponente!");
