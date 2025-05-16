@@ -743,64 +743,57 @@ public class PoobkemonGUI {
     }
 
     private void mostrarOpcionesAtaque() {
-        try {
-            List<Movimiento> movimientos = estadoActual.pokemonActivo.getMovimientos();
-            String[] opciones = movimientos.stream().map(Movimiento::getNombre).toArray(String[]::new);
-            String seleccion = (String) JOptionPane.showInputDialog(
-                marcoPrincipal,
-                "Selecciona un movimiento:",
-                "Opciones de ataque",
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                opciones,
-                opciones[0]
-            );
+    try {
+        List<Movimiento> movimientos = estadoActual.pokemonActivo.getMovimientos();
+        String[] opciones = movimientos.stream().map(Movimiento::getNombre).toArray(String[]::new);
+        String seleccion = (String) JOptionPane.showInputDialog(
+            marcoPrincipal,
+            "Selecciona un movimiento:",
+            "Opciones de ataque",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            opciones,
+            opciones[0]
+        );
 
-            if (seleccion != null) {
-                int indiceMovimiento = -1;
-                for (int i = 0; i < movimientos.size(); i++) {
-                    if (movimientos.get(i).getNombre().equals(seleccion)) {
-                        indiceMovimiento = i;
-                        break;
-                    }
-                }
-
-                if (indiceMovimiento != -1) {
-                    juego.realizarAccion("atacar", indiceMovimiento);
-                    estadoActual = juego.obtenerEstadoActual();
-
-                    // Guardar referencias antes del ataque
-                    Pokemon atacanteAntes = estadoActual.pokemonActivo;
-                    Pokemon oponenteAntes = estadoActual.pokemonOponente;
-
-                    juego.realizarAccion("atacar", indiceMovimiento);
-
-                    // Obtener nuevo estado
-                    estadoActual = juego.obtenerEstadoActual();
-
-                    // Actualizar solo al oponente que fue atacado
-                    if (estadoActual.pokemonActivo.getNombre().equals(atacanteAntes.getNombre())) {
-                        // El turno no cambió, se atacó al oponente
-                        actualizarBarraDeSalud(barraSaludOponente, estadoActual.pokemonOponente.getSalud(), estadoActual.pokemonOponente.getSaludInicial());
-                    } else {
-                        // El turno cambió, así que el atacante es ahora el oponente
-                        actualizarBarraDeSalud(barraSaludJugador, estadoActual.pokemonOponente.getSalud(), estadoActual.pokemonOponente.getSaludInicial());
-                    }
-
-
-                    if (estadoActual.pokemonOponente.getSalud() <= 0) {
-                        JOptionPane.showMessageDialog(marcoPrincipal, "¡Has derrotado al Pokémon oponente!");
-                    } else if (estadoActual.pokemonActivo.getSalud() <= 0) {
-                        JOptionPane.showMessageDialog(marcoPrincipal, "Tu Pokémon ha sido derrotado.");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(marcoPrincipal, "Movimiento no válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        if (seleccion != null) {
+            int indiceMovimiento = -1;
+            for (int i = 0; i < movimientos.size(); i++) {
+                if (movimientos.get(i).getNombre().equals(seleccion)) {
+                    indiceMovimiento = i;
+                    break;
                 }
             }
-        } catch (ExceptionPOOBkemon e) {
-            JOptionPane.showMessageDialog(marcoPrincipal, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+            if (indiceMovimiento != -1) {
+                // Guardar estado antes del ataque
+                int saludJugadorAntes = estadoActual.pokemonActivo.getSalud();
+                int saludOponenteAntes = estadoActual.pokemonOponente.getSalud();
+
+                // Realizar el ataque
+                juego.realizarAccion("atacar", indiceMovimiento);
+                
+                // Obtener nuevo estado
+                estadoActual = juego.obtenerEstadoActual();
+
+                // Actualizar ambas barras de salud
+                actualizarBarraDeSalud(barraSaludJugador, estadoActual.pokemonActivo.getSalud(), estadoActual.pokemonActivo.getSaludInicial());
+                actualizarBarraDeSalud(barraSaludOponente, estadoActual.pokemonOponente.getSalud(), estadoActual.pokemonOponente.getSaludInicial());
+
+                // Mostrar mensajes si algún Pokémon fue derrotado
+                if (estadoActual.pokemonOponente.getSalud() <= 0) {
+                    JOptionPane.showMessageDialog(marcoPrincipal, "¡Has derrotado al Pokémon oponente!");
+                } else if (estadoActual.pokemonActivo.getSalud() <= 0) {
+                    JOptionPane.showMessageDialog(marcoPrincipal, "Tu Pokémon ha sido derrotado.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(marcoPrincipal, "Movimiento no válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
+    } catch (ExceptionPOOBkemon e) {
+        JOptionPane.showMessageDialog(marcoPrincipal, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
+}
 
     private void mostrarOpcionesItem() {
         JDialog dialogo = new JDialog(marcoPrincipal, "Seleccionar ítem", true);
