@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * clase entrenador , puede ser un jugador o una
+ */
 public class Entrenador {
 
     private String nombre;

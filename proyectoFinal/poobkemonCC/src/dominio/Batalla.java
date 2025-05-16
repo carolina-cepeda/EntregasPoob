@@ -10,6 +10,12 @@ public class Batalla {
     private Entrenador turnoActual;
     private final ControladorTurno controlador;
 
+    /**
+     * metodo constructor de la batalla
+     * @param e1
+     * @param e2
+     * @param juegoParam
+     */
     public Batalla(Entrenador e1, Entrenador e2, Juego juegoParam) {
         this.entrenador1 = e1;
         this.entrenador2 = e2;
@@ -18,10 +24,19 @@ public class Batalla {
         this.controlador = new ControladorTurno(this);
     }
 
+    /**
+     * metodo para iniciar la batalla usando un controlador de turnos
+     */
     public void iniciarBatalla() {
         controlador.iniciar();
     }
 
+    /**
+     * metodo para manejar una acción hecha por un entrenador
+     * @param accion
+     * @param obj : objeto/pokemon objetivo de la accion
+     * @throws ExceptionPOOBkemon
+     */
     public void comenzarTurno(String accion, Object obj) throws ExceptionPOOBkemon {
         System.out.println("Acción recibida: " + accion);
         System.out.println("Objeto asociado: " + obj);
@@ -77,6 +92,10 @@ public class Batalla {
         verificarFinYContinuar();
     }
 
+    /**
+     * metodo para hacer la accion automatica de un entrenador si este es una maquina 
+     * @throws ExceptionPOOBkemon
+     */
     public void comenzarTurno() throws ExceptionPOOBkemon {
         if (turnoActual instanceof EntrenadorMaquina maquina) {
             // Realizar acción automática para el entrenador máquina
@@ -88,18 +107,33 @@ public class Batalla {
         verificarFinYContinuar();
     }
 
+    /**
+     * ,metodo para hacer aleatorio el comienzo del juego 
+     * @return
+     */
     private boolean lanzarMoneda() {
         return Math.random() < 0.5;
     }
 
+    /**
+     * metodo para cambiar el turno
+     */
     private void cambiarTurno() {
         turnoActual = (turnoActual == entrenador1) ? entrenador2 : entrenador1;
     }
 
+    /**
+     * metodo para obtener la información del oponente del entrenador del turno actual
+     * @return
+     */
     public Entrenador obtenerOponente() {
         return (turnoActual == entrenador1) ? entrenador2 : entrenador1;
     }
 
+    /**
+     * metodo para verificar si la batalla ha terminado,antes de cambiar el turno para revisar si ya se termino la batalla
+     * @throws ExceptionPOOBkemon con el nombre del ganador si se termina la batalla
+     */
     private void verificarFinYContinuar() throws ExceptionPOOBkemon {
         System.out.println("Verificando si la batalla ha terminado...");
         boolean e1SinPokemones = entrenador1.getPokemones().stream().allMatch(p -> p.getSalud() <= 0);
@@ -116,15 +150,26 @@ public class Batalla {
         cambiarTurno();
         controlador.iniciar();
     }
-
+    /**
+     * metodo para obtener el entrenador que esta jugando actualmente
+     * @return
+     */
     public Entrenador getTurnoActual() {
         return turnoActual;
     }
 
+    /**
+     * metodo para obtener el entrenador 1
+     * @return
+     */
     public Entrenador getEntrenador1() {
         return entrenador1;
     }
 
+    /**
+     * metodo para obtener el entrenador 2
+     * @return
+     */
     public Entrenador getEntrenador2() {
         return entrenador2;
     }

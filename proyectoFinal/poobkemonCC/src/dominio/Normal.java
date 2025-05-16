@@ -1,5 +1,8 @@
 package dominio;
 
+/**
+ * modo de juego normal definido para el juego jugador vs jugador, jugador vs maquina y maquina vs maquina
+ */
 public class Normal implements ModoJuego {
 
     private Juego juego;
@@ -13,13 +16,24 @@ public class Normal implements ModoJuego {
     @Override
     public void configurarJuego(Juego juego) {
         this.juego = juego;
-        // Solo se inicializa, el resto será guiado por la GUI o flujo externo
     }
 
+    /**
+     * especificar que tipo de juego es playervs player, player vs maquina o maquina vs maquina
+     * @param tipo
+     */
     public void setTipoJuego(int tipo) {
         this.tipoJuego = tipo;
     }
 
+    /**
+     * metodo para preparar la batalla, see hace uso de juego.
+     * @param nombre1
+     * @param nombre2
+     * @param tipoIA1
+     * @param tipoIA2
+     * @throws ExceptionPOOBkemon
+     */
     public void prepararBatalla(String nombre1, String nombre2, int tipoIA1, int tipoIA2) throws ExceptionPOOBkemon {
         switch (tipoJuego) {
             case 1 -> { // PvP
@@ -51,6 +65,10 @@ public class Normal implements ModoJuego {
         }
     }
 
+    /**
+     * metodo para iniciar la batalla 
+     * @throws ExceptionPOOBkemon
+     */
     public void iniciarBatalla() throws ExceptionPOOBkemon {
     switch (tipoJuego) {
 
@@ -86,7 +104,13 @@ public class Normal implements ModoJuego {
     }
 }
 
-
+    /**
+     * metodo para crear el entrenador que es un a maquina
+     * @param tipo
+     * @param nombre
+     * @param color
+     * @return
+     */
     private EntrenadorMaquina crearEntrenadorMaquina(int tipo, String nombre, String color) {
         return switch (tipo) {
             case 1 -> new defensiveTrainer(nombre, color);

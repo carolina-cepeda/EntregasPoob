@@ -2,6 +2,10 @@ package dominio;
 
 import java.util.*;
 
+/**
+ * clase pocion que aumenta la salud de un pokemon
+ * 
+ */
 public class Pocion extends Item {
 
 	private int puntosSanacion;
@@ -13,6 +17,10 @@ public class Pocion extends Item {
 		put("Revive", 1/2); 
 	}};
 
+	/**
+	 * constructor
+	 * @param nombre
+	 */
 	public Pocion(String nombre) {
 		super(nombre);
 		if (!tiposPocion.containsKey(nombre)) {
@@ -20,6 +28,10 @@ public class Pocion extends Item {
 		}
 		this.puntosSanacion = tiposPocion.get(nombre);
 	}
+
+	/**
+	 * metodo para usar la pocion sobre un pokemon
+	 */
 
 	@Override
 	public void usar(Pokemon p) {
@@ -41,6 +53,9 @@ public class Pocion extends Item {
 	}
 
 	@Override
+	/**
+	 * metodo que devuelve el nombre de la pocion
+	 */
 	public String toString() {
 		return getNombre(); // usa el getter heredado
 	}
