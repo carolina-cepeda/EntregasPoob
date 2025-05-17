@@ -70,25 +70,36 @@ public class Normal implements ModoJuego {
      * @throws ExceptionPOOBkemon
      */
     public void iniciarBatalla() throws ExceptionPOOBkemon {
-    switch (tipoJuego) {
+        switch (tipoJuego) {
+        case 2 -> { // PvM
+            Entrenador humano = new Entrenador(nombre1, "Rojo");
+            EntrenadorMaquina cpu = crearEntrenadorMaquina(tipoIA1, nombre2, "Azul");
 
-       case 2 -> { // PvM
-        Entrenador humano = new Entrenador(nombre1, "Rojo");
-        EntrenadorMaquina cpu = crearEntrenadorMaquina(tipoIA1, nombre2, "Azul");
+            cpu.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
+            cpu.seleccionarItemsAuto(juego.getItemsBase());
 
-        cpu.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
-        cpu.seleccionarItemsAuto(juego.getItemsBase());
+            // solo mientras pruebo QUITAR LUEGO
+            humano.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
+            humano.seleccionarItemsAuto(juego.getItemsBase());
 
-        // solo mientras pruebo QUITAR LUEGO
-        humano.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
-        humano.seleccionarItemsAuto(juego.getItemsBase());
+            juego.setEntrenadores(humano, cpu);
+            juego.comenzarBatalla();
+        }
 
-        juego.setEntrenadores(humano, cpu);
-        juego.comenzarBatalla();
-    }
+        case 3 -> { // MvM
+            // Primero configurar los entrenadores (esto estaba faltando)
+            EntrenadorMaquina cpu1 = crearEntrenadorMaquina(tipoIA1, nombre1, "Rojo");
+            EntrenadorMaquina cpu2 = crearEntrenadorMaquina(tipoIA2, nombre2, "Azul");
 
+            cpu1.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
+            cpu2.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
+            cpu1.seleccionarItemsAuto(juego.getItemsBase());
+            cpu2.seleccionarItemsAuto(juego.getItemsBase());
 
-        case 3 -> {
+            juego.setEntrenadores(cpu1, cpu2);
+            juego.comenzarBatalla();
+
+            // Luego manejar el juego automático
             while (juego.hayBatallaActiva()) {
                 Entrenador actual = juego.getEntrenadorActual();
                 if (actual instanceof EntrenadorMaquina cpu) {
