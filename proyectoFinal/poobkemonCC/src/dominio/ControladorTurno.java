@@ -9,10 +9,17 @@ public class ControladorTurno {
     private Timer temporizador;
     private final int LIMITE_TIEMPO = 20000; // 20 segundos en milisegundos
 
+    /**
+     * clase para controlar los turnos 
+     * @param batalla
+     */
     public ControladorTurno(Batalla batalla) {
         this.batalla = batalla;
     }
 
+    /**
+     * metodo para iniciar el turno en la batalla
+     */
     public void iniciar() {
         detener(); // Por si había un tiempo anterior corriendo
         temporizador = new Timer();
@@ -31,12 +38,19 @@ public class ControladorTurno {
         }, LIMITE_TIEMPO);
     }
 
+    /**
+     *metodo para detener el temporizador
+     */
     public void detener() {
         if (temporizador != null) {
             temporizador.cancel();
         }
     }
 
+    /**
+     * metodo para penalizar por inactividad
+     * @throws ExceptionPOOBkemon
+     */
     private void penalizarPorInactividad() throws ExceptionPOOBkemon {
         batalla.getTurnoActual().getPokemonActivo().reducirPP(1);
         batalla.comenzarTurno("pasar", null); 

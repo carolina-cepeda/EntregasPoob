@@ -3,13 +3,23 @@ package dominio;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map.Entry;
-
+/**
+ * clase del entrenador maquina que se especifica en defenderse
+ */
 public class defensiveTrainer extends EntrenadorMaquina {
 
+	/**
+	 * constructor
+	 * @param nombre
+	 * @param color
+	 */
 	public defensiveTrainer(String nombre, String color) {
 		super(nombre, color);
 	}
 	
+	/**
+	 * metodo para decidir accion
+	 */
 	@Override
 	public Entry<String, Object> decidirAccion(Pokemon enemigo) {
 	
@@ -22,7 +32,6 @@ public class defensiveTrainer extends EntrenadorMaquina {
 				}
 			}
 		}
-
 		String[] pociones = {"HyperPotion", "SuperPotion", "Potion"};
 		for (String nombre : pociones) {
 			for (Item item : getItems()) {
@@ -31,7 +40,6 @@ public class defensiveTrainer extends EntrenadorMaquina {
 				}
 			}
 		}
-
 		Pokemon activo = getPokemonActivo();
 		ArrayList<Movimiento> movimientos = activo.getMovimientos();
 		for (int i = 0; i < movimientos.size(); i++) {
@@ -39,11 +47,7 @@ public class defensiveTrainer extends EntrenadorMaquina {
 				return new AbstractMap.SimpleEntry<>("atacar", i);
 			}
 		}
-
 		return new AbstractMap.SimpleEntry<>("huir", null);
 	}
-
-
-
 
 }

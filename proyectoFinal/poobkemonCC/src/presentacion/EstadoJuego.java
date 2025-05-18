@@ -2,7 +2,10 @@ package presentacion;
 
 import dominio.*;
 import java.util.List;
-
+/**
+ * clase para manejar el estado del juego, comunica a la presentación con
+ * aplicación 
+ */
 public class EstadoJuego {
     public String nombreJugador;
     public Pokemon pokemonActivo;
@@ -11,6 +14,15 @@ public class EstadoJuego {
     public String nombreOponente;
     public Pokemon pokemonOponente;
 
+    /**
+     * constructor
+     * @param nombreJugador
+     * @param activo
+     * @param equipo
+     * @param items
+     * @param nombreOponente
+     * @param pokemonOponente
+     */
     public EstadoJuego(String nombreJugador, Pokemon activo, List<Pokemon> equipo,
                      List<Item> items, String nombreOponente, Pokemon pokemonOponente) {
         this.nombreJugador = nombreJugador;

@@ -6,21 +6,30 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 
-
+/**
+ * clase del entrenador maquina que se especifica en cambiar de pokemon
+ */
 public class changingTrainer extends EntrenadorMaquina {
 
 	private boolean yaCambio = false;
+	/**
+	 * constructor
+	 * @param nombre
+	 * @param color
+	 */
 	public changingTrainer(String nombre, String color) {
 		super(nombre, color);
 	}
 
+	/**
+	 * metodo para decidir accion
+	 */
 
 	@Override
 	public Entry<String, Object> decidirAccion(Pokemon enemigo) {
 		if (!yaCambio) {
 			double mejorEfectividad = 1.0;
 			Pokemon mejorOpcion = null;
-
 			for (Pokemon p : getPokemones()) {
 				if (p.getSalud() > 0 && p != getPokemonActivo()) {
 					double efectividad = TipoEfectividad.getMultiplicador(
@@ -33,13 +42,11 @@ public class changingTrainer extends EntrenadorMaquina {
 					}
 				}
 			}
-
 			if (mejorOpcion != null) {
 				yaCambio = true; // marcar que ya cambió
 				return new AbstractMap.SimpleEntry<>("cambiar", mejorOpcion);
 			}
 		}
-
 		Pokemon activo = getPokemonActivo();
 		ArrayList<Movimiento> movimientos = activo.getMovimientos();
 		List<Integer> opciones = new ArrayList<>();
@@ -48,7 +55,6 @@ public class changingTrainer extends EntrenadorMaquina {
 				opciones.add(i);
 			}
 		}
-
 		if (!opciones.isEmpty()) {
 			int randomIndex = new Random().nextInt(opciones.size());
 			yaCambio = false; // próximo turno puede volver a cambiar
@@ -56,7 +62,5 @@ public class changingTrainer extends EntrenadorMaquina {
 		}
 		return new AbstractMap.SimpleEntry<>("huir", null);
 	}
-
-
 
 }

@@ -3,13 +3,22 @@ package dominio;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map.Entry;
-
+/**
+ * clase del entrenador maquina que es experta en el juego
+ */
 public class expertTrainer extends EntrenadorMaquina {
-
+/**
+	 * constructor
+	 * @param nombre
+	 * @param color
+	 */
 	public expertTrainer(String nombre, String color) {
 		super(nombre, color);
 	}
 	
+    /**
+	 * metodo para decidir accion
+	 */
 	@Override
 	public Entry<String, Object> decidirAccion(Pokemon enemigo) {
 		int mejorMovimiento = seleccionarMejorMovimiento(getPokemonActivo(), enemigo);
@@ -28,6 +37,12 @@ public class expertTrainer extends EntrenadorMaquina {
 		return new AbstractMap.SimpleEntry<>("huir", null);
 	}
 
+    /**
+     * metodo para seleccionar el mejor movimiento posible
+     * @param propio
+     * @param enemigo
+     * @return
+     */
 	private int seleccionarMejorMovimiento(Pokemon propio, Pokemon enemigo) {
     ArrayList<Movimiento> movimientos = propio.getMovimientos();
     int mejorIndice = -1;
@@ -53,6 +68,11 @@ public class expertTrainer extends EntrenadorMaquina {
     return mejorIndice;
 }
 
+/**
+ * metodo para seleccionar el mejor cambio
+ * @param enemigo
+ * @return
+ */
 private Pokemon seleccionarMejorCambio(Pokemon enemigo) {
     Pokemon actual = getPokemonActivo();
     double mejorEfectividad = 1.0;
@@ -81,6 +101,5 @@ private Pokemon seleccionarMejorCambio(Pokemon enemigo) {
 
     return mejor;
 }
-
 
 }

@@ -3,13 +3,23 @@ package dominio;
 import java.util.*;
 import java.util.Map.Entry;
 
+/**
+ * clase del entrenador maquina que se especifica en ataque
+ */
 public class attackingTrainer extends EntrenadorMaquina {
 
+	/**
+	 * constructor
+	 * @param nombre
+	 * @param color
+	 */
     public attackingTrainer(String nombre, String color) {
         super(nombre, color);
     }
 
-	
+	/**
+	 * metodo para decidir accion
+	 */
 	@Override
 	public Entry<String, Object> decidirAccion(Pokemon pokemonEnemigo) {
 		Pokemon miPokemon = getPokemonActivo();
