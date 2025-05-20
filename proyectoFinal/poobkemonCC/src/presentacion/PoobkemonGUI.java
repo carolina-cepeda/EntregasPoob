@@ -20,7 +20,7 @@ public class PoobkemonGUI extends JFrame{
     private JMenuBar menuBar;
     private JMenu menuArchivo;
     private JMenuItem itemPausar, itemAbrir, itemGuardar, itemSalir;
-
+    private JLabel etiquetaTurno;
 
     public PoobkemonGUI() {
         juego = new Juego();
@@ -819,8 +819,18 @@ private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pok
 
     // Panel de acciones (solo para PvP o PvM)
     if (!estadoActual.nombreJugador.toLowerCase().contains("máquina")) {
+
         JPanel panelAcciones = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         panelAcciones.setOpaque(false);
+
+        //etiqueta turno
+        etiquetaTurno = new JLabel("Turno de: " + estadoActual.nombreJugador);
+        etiquetaTurno.setFont(new Font("Arial", Font.BOLD, 16));
+        etiquetaTurno.setForeground(Color.YELLOW);
+        etiquetaTurno.setAlignmentX(Component.CENTER_ALIGNMENT); 
+        panelAcciones.add(etiquetaTurno);
+        panelAcciones.add(Box.createVerticalStrut(10)); 
+
 
         JButton botonAtacar = crearBotonEstilizado("Atacar");
         botonAtacar.setPreferredSize(new Dimension(100, 30));
@@ -1021,7 +1031,7 @@ private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pok
 
     private void actualizarPantallaBatalla() {
         estadoActual = juego.obtenerEstadoActual();
-
+        
         if (estadoActual == null || !juego.hayBatallaActiva()) {
             String ganador = juego.getNombreGanador(); 
             JOptionPane.showMessageDialog(this,
@@ -1030,7 +1040,7 @@ private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pok
             return;
         }
 
-        iniciarBatalla();
+        iniciarBatalla(); 
     }
 
     /**
