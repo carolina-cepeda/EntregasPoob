@@ -985,10 +985,19 @@ public class PoobkemonGUI extends JFrame{
         File selectedFile = fileChooser.getSelectedFile();
         try {
             Juego juegoCargado = PokemonPersistencia.cargarEstadoJuego(selectedFile.getAbsolutePath());
+
             if (juegoCargado != null) {
                 juego = juegoCargado;
+                estadoActual = juego.obtenerEstadoActual();
+                if(estadoActual != null){
+                    JPanel panelBatalla = crearPanelBatalla();
+                    getContentPane().removeAll();
+                    add(panelBatalla,BorderLayout.CENTER);
+            
+                revalidate();
                 repaint();
                 JOptionPane.showMessageDialog(this, "Archivo abierto exitosamente.");
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "No se pudo cargar el archivo.", "Error", JOptionPane.ERROR_MESSAGE);
             }
