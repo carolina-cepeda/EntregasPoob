@@ -7,7 +7,7 @@ import java.util.TimerTask;
 public class ControladorTurno implements Serializable {
 
     private Batalla batalla;
-    private Timer temporizador;
+    private transient Timer temporizador;
     private final int LIMITE_TIEMPO = 20000; // 20 segundos en milisegundos
 
     /**
