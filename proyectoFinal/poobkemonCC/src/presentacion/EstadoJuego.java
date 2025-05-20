@@ -1,12 +1,13 @@
 package presentacion;
 
 import dominio.*;
+import java.io.Serializable;
 import java.util.List;
 /**
  * clase para manejar el estado del juego, comunica a la presentación con
  * aplicación 
  */
-public class EstadoJuego {
+public class EstadoJuego implements Serializable {
     public String nombreJugador;
     public Pokemon pokemonActivo;
     public List<Pokemon> equipo;
