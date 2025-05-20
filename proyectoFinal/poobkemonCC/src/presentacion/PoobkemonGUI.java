@@ -290,7 +290,6 @@ public class PoobkemonGUI extends JFrame{
                 modoNormal.setTipoJuego(2); // PvM
                 dialogo.dispose();
                 mostrarSeleccionPokemonPvM(nombreJugador, tipoIA);
-                dialogo.dispose();
         });
         dialogo.add(botonIniciar, gbc);
 
@@ -401,8 +400,6 @@ private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pok
 }
 
 
-
-
    private void iniciarBatallaPvM(Normal modo) {
     JPanel panel = new JPanel(new GridBagLayout());
     JLabel esperando = new JLabel("Preparando batalla...");
@@ -413,35 +410,36 @@ private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pok
     this.add(panel, BorderLayout.CENTER);
     this.revalidate();
     this.repaint();
-    /*
-    * sugerencia IA de usar un hilo para hacer la lógica en segundo plano
-    */
+
     new Thread(() -> {
         try {
             modo.iniciarBatalla(); 
 
             SwingUtilities.invokeLater(() -> {
-                estadoActual = juego.obtenerEstadoActual();
-                if (estadoActual == null) {
-                    JOptionPane.showMessageDialog(this, "Error al obtener estado del juego tras iniciar.");
-                    mostrarMenuPrincipal();
-                    return;
+                try {
+                    estadoActual = juego.obtenerEstadoActual();
+                    if (estadoActual == null) {
+                        JOptionPane.showMessageDialog(this, "Error al obtener estado del juego tras iniciar.");
+                        mostrarMenuPrincipal();
+                        return;
+                    }
+
+                    JPanel panelBatalla = crearPanelBatalla();
+                    this.getContentPane().removeAll();
+                    this.add(panelBatalla);
+                    this.revalidate();
+                    this.repaint();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Error al actualizar la interfaz: " + e.getMessage());
                 }
-
-                JPanel panelBatalla = crearPanelBatalla();
-                this.getContentPane().removeAll();
-                this.add(panelBatalla);
-                this.revalidate();
-                this.repaint();
             });
-
         } catch (ExceptionPOOBkemon e) {
-            SwingUtilities.invokeLater(() ->
-                JOptionPane.showMessageDialog(this, "Error durante la batalla: " + e.getMessage()));
+            SwingUtilities.invokeLater(() -> {
+                JOptionPane.showMessageDialog(this, "Error durante la batalla: " + e.getMessage());
+            });
         }
     }).start();
 }
-
 
     private void mostrarEntradaNombresJugadores() {
         JDialog dialogo = new JDialog(this, "Nombres de jugadores", true);
