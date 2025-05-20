@@ -29,22 +29,8 @@ public class Juego {
      * metodo para inicializar datos base 
      */
     private void inicializarDatosBase() {
-        movimientosBase = new ArrayList<>();
-        movimientosBase.add(new Movimiento("Bubble", 40, 100, 30, 0, "agua", null));
-        movimientosBase.add(new Movimiento("Dragon Rage", 40, 100, 10, 0, "dragón", null));
-        movimientosBase.add(new Movimiento("Flamethrower", 90, 100, 15, 0, "fuego", null));
-        movimientosBase.add(new Movimiento("Placaje", 40, 100, 35, 0, "normal", null));
-        movimientosBase.add(new Movimiento("Stun Spore", 0, 75, 30, 0, "planta", null));
-        movimientosBase.add(new Movimiento("Peck", 35, 100, 35, 0, "volador", null));
-
-        pokemonesBase = new ArrayList<>();
-        Movimiento[] movimientosArray = movimientosBase.toArray(Movimiento[]::new);
-        pokemonesBase.add(new Pokemon("Charizard", 360, 20, "fuego", "volador", 293, 280, 348, 295, 0, 0, 0, movimientosArray));
-        pokemonesBase.add(new Pokemon("Blastoise", 362, 20, "agua", null, 291, 328, 280, 295, 339, 0, 0, movimientosArray));
-        pokemonesBase.add(new Pokemon("Venusaur", 364, 20, "planta", "veneno", 289, 291, 284, 328, 328, 0, 0, movimientosArray));
-        pokemonesBase.add(new Pokemon("Gengar", 324, 20, "fantasma", "veneno", 251, 240, 350, 394, 273, 0, 0, movimientosArray));
-        pokemonesBase.add(new Pokemon("Dragonite", 386, 20, "dragon", "volador", 403, 317, 284, 328, 328, 0, 0, movimientosArray));
-
+       
+        pokemonesBase = PokemonPersistencia.importarPokemones("src/dominio/pokemonesBase.bat");
         itemsBase = new ArrayList<>();
         itemsBase.add(new Pocion("Potion"));
         itemsBase.add(new Pocion("SuperPotion"));
