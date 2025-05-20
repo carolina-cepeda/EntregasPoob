@@ -17,7 +17,7 @@ public class PoobkemonGUI extends JFrame{
      // menu
     private JMenuBar menuBar;
     private JMenu menuArchivo;
-    private JMenuItem itemNuevo, itemAbrir, itemGuardar, itemSalir;
+    private JMenuItem itemPausar, itemAbrir, itemGuardar, itemSalir;
 
 
     public PoobkemonGUI() {
@@ -942,13 +942,13 @@ panel.add(botonModoSupervivencia, gbc);
         menuBar = new JMenuBar();
         menuArchivo = new JMenu("Archivo");
     
-        itemNuevo = new JMenuItem("Nuevo");
+        itemPausar = new JMenuItem("Pausar");
         itemAbrir = new JMenuItem("Abrir");
         itemGuardar = new JMenuItem("Guardar");
         itemSalir = new JMenuItem("Salir");
    
 
-        menuArchivo.add(itemNuevo);
+        menuArchivo.add(itemPausar);
         menuArchivo.add(itemAbrir);
         menuArchivo.add(itemGuardar);
 
@@ -966,12 +966,14 @@ panel.add(botonModoSupervivencia, gbc);
      * se utiliza un listener para cada elemento del menú.
      */
     private void prepareActionsMenu() {
+        itemPausar.addActionListener(e-> juego.pausar());
 
         itemAbrir.addActionListener(e -> optionOpen());
 
         itemGuardar.addActionListener(e -> optionSave());
 
         itemSalir.addActionListener(e -> optionExit());
+    
 
     }
 

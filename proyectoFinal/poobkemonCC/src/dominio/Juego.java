@@ -223,4 +223,12 @@ public class Juego implements Serializable {
         return PokemonPersistencia.cargarEstadoJuego(rutaArchivo);
     }
 
+
+    /**
+     * metodo para pausar el juego
+     */
+    public void pausar(){
+        batalla.detener();
+    }
+
 }

@@ -174,4 +174,11 @@ public class Batalla implements Serializable {
     public Entrenador getEntrenador2() {
         return entrenador2;
     }
+
+    /**
+     * metodo para pausar el juego
+     */
+    public void detener(){
+        controlador.detener();
+    }
 }
