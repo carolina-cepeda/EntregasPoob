@@ -144,8 +144,15 @@ public class Batalla implements Serializable {
         System.out.println("La batalla continúa. Cambiando turno...");
         cambiarTurno();
 
-        // Bucle automático para turnos de máquina
         while (turnoActual instanceof EntrenadorMaquina maquina) {
+            try {
+                Thread.sleep(1000); // Esperar 1 segundo antes de la acción
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); 
+                System.out.println("Hilo interrumpido.");
+                return;
+            }
+
             System.out.println("Turno automático para: " + maquina.getNombre());
             maquina.realizarAccionAutomatica(juego);
 
@@ -153,6 +160,7 @@ public class Batalla implements Serializable {
 
             cambiarTurno();
         }
+
 
         controlador.iniciar();
 }
