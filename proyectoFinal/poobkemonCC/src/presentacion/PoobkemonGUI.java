@@ -5,7 +5,9 @@ import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.*;
 
 public class PoobkemonGUI extends JFrame{
@@ -283,24 +285,123 @@ public class PoobkemonGUI extends JFrame{
                 return;
             }
 
-            try {
                 Normal modoNormal = new Normal();
                 juego.seleccionarModoJuego(modoNormal);
                 modoNormal.setTipoJuego(2); // PvM
-                modoNormal.prepararBatalla(nombreJugador, "Máquina", tipoIA, 0);
                 dialogo.dispose();
-                iniciarBatallaPvM(modoNormal);
-
-            } catch (ExceptionPOOBkemon ex) {
-                JOptionPane.showMessageDialog(dialogo, "Error al iniciar batalla: " + ex.getMessage());
-            }
-
-            dialogo.dispose();
+                mostrarSeleccionPokemonPvM(nombreJugador, tipoIA);
+                dialogo.dispose();
         });
         dialogo.add(botonIniciar, gbc);
 
         dialogo.setVisible(true);
     }
+
+    private void mostrarSeleccionPokemonPvM(String nombreJugador, int tipoIA) {
+        JDialog dialogo = new JDialog(this, "Selecciona tus Pokémon", true);
+        dialogo.setLayout(new BorderLayout());
+        dialogo.setSize(600, 500);
+        dialogo.setLocationRelativeTo(this);
+
+        DefaultListModel<Pokemon> modeloLista = new DefaultListModel<>();
+        JList<Pokemon> listaPokemon = new JList<>(modeloLista);
+        listaPokemon.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        listaPokemon.setCellRenderer(new RenderizadorListaPokemon());
+
+        for (Pokemon p : juego.getPokemonesBaseCopia()) {
+            modeloLista.addElement(p);
+        }
+
+        JScrollPane scrollPane = new JScrollPane(listaPokemon);
+        JButton botonAceptar = new JButton("Aceptar");
+
+        botonAceptar.addActionListener(e -> {
+            List<Pokemon> seleccionados = listaPokemon.getSelectedValuesList();
+            if (seleccionados.size() != 6) {
+                JOptionPane.showMessageDialog(dialogo, "Debes seleccionar exactamente 6 Pokémon.");
+                return;
+            }
+            dialogo.dispose();
+            mostrarSeleccionItemsPvM(nombreJugador, tipoIA, seleccionados);
+        });
+
+        dialogo.add(scrollPane, BorderLayout.CENTER);
+        dialogo.add(botonAceptar, BorderLayout.SOUTH);
+        dialogo.setVisible(true);
+}
+
+
+private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pokemon> pokemonesSeleccionados) {
+    JDialog dialogo = new JDialog(this, "Selecciona tus ítems", true);
+    dialogo.setLayout(new BorderLayout());
+    dialogo.setSize(400, 300);
+    dialogo.setLocationRelativeTo(this);
+
+    JPanel panelItems = new JPanel(new GridLayout(5, 2));
+    JLabel labelMensaje = new JLabel("Elige hasta 2 de cada tipo de poción y 1 Revive");
+
+    Map<String, Integer> contador = new HashMap<>();
+    contador.put("Potion", 0);
+    contador.put("SuperPotion", 0);
+    contador.put("HyperPotion", 0);
+    contador.put("Revive", 0);
+
+    JComboBox<String> comboItems = new JComboBox<>(new String[]{"Potion", "SuperPotion", "HyperPotion", "Revive"});
+    DefaultListModel<String> modeloLista = new DefaultListModel<>();
+    JList<String> listaSeleccion = new JList<>(modeloLista);
+    JScrollPane scroll = new JScrollPane(listaSeleccion);
+
+    JButton botonAgregar = new JButton("Agregar");
+    botonAgregar.addActionListener(e -> {
+        String tipo = (String) comboItems.getSelectedItem();
+        int max = tipo.equals("Revive") ? 1 : 2;
+        if (contador.get(tipo) < max) {
+            contador.put(tipo, contador.get(tipo) + 1);
+            modeloLista.addElement(tipo);
+        } else {
+            JOptionPane.showMessageDialog(dialogo, "Ya seleccionaste el máximo de " + tipo);
+        }
+    });
+
+    JButton botonFinalizar = new JButton("Finalizar");
+    botonFinalizar.addActionListener(e -> {
+        try {
+            Normal modoNormal = new Normal();
+            modoNormal.setTipoJuego(2); // PvM
+            juego.seleccionarModoJuego(modoNormal);
+
+            for (Pokemon p : pokemonesSeleccionados) {
+                juego.agregarPokemonAEntrenador(1, p); // humano
+            }
+
+            // Agregar ítems
+            for (int i = 0; i < modeloLista.size(); i++) {
+                juego.agregarItemAEntrenador(1, new Pocion(modeloLista.get(i)));
+            }
+
+            // Preparar batalla completa
+            modoNormal.prepararBatalla(nombreJugador, "Máquina", tipoIA, 0);
+
+            dialogo.dispose();
+            iniciarBatallaPvM(modoNormal);
+
+        } catch (ExceptionPOOBkemon ex) {
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+        }
+    });
+
+    panelItems.add(comboItems);
+    panelItems.add(botonAgregar);
+
+    dialogo.add(labelMensaje, BorderLayout.NORTH);
+    dialogo.add(panelItems, BorderLayout.CENTER);
+    dialogo.add(scroll, BorderLayout.EAST);
+    dialogo.add(botonFinalizar, BorderLayout.SOUTH);
+    dialogo.setVisible(true);
+}
+
+
+
 
    private void iniciarBatallaPvM(Normal modo) {
     JPanel panel = new JPanel(new GridBagLayout());
