@@ -80,13 +80,21 @@ public class PoobkemonGUI extends JFrame{
     JButton botonModoNormal = crearBotonEstilizado("Normal");
     botonModoNormal.addActionListener(e -> mostrarSeleccionSubModo());
     panel.add(botonModoNormal, gbc);
-
-    JButton botonModoSupervivencia = crearBotonEstilizado("Supervivencia");
-    botonModoSupervivencia.addActionListener(e -> {
-        JOptionPane.showMessageDialog(this, "Modo supervivencia no implementado aún");
-    });
-    panel.add(botonModoSupervivencia, gbc);
-
+JButton botonModoSupervivencia = crearBotonEstilizado("Supervivencia");
+botonModoSupervivencia.addActionListener(e -> {
+    try {
+        Supervivencia modoSupervivencia = new Supervivencia();
+        juego.seleccionarModoJuego(modoSupervivencia);
+   
+        modoSupervivencia.prepararBatalla("jugador1","jugador2");
+        
+        iniciarBatalla();
+    } catch (ExceptionPOOBkemon ex) {
+        JOptionPane.showMessageDialog(PoobkemonGUI.this, 
+            "Error al iniciar modo supervivencia: " + ex.getMessage());
+    }
+});
+panel.add(botonModoSupervivencia, gbc);
 
     prepareElementsMenu();
 
@@ -427,7 +435,7 @@ public class PoobkemonGUI extends JFrame{
         JScrollPane panelDesplazamiento1 = new JScrollPane(listaPokemon1);
         panelJugador1.add(panelDesplazamiento1, BorderLayout.CENTER);
 
-        JLabel etiquetaConteo1 = new JLabel("0/3 Pokémon seleccionados");
+        JLabel etiquetaConteo1 = new JLabel("0 Pokémon seleccionados");
         panelJugador1.add(etiquetaConteo1, BorderLayout.SOUTH);
 
         // Panel para Jugador 2 (similar al jugador 1)
@@ -448,7 +456,7 @@ public class PoobkemonGUI extends JFrame{
         JScrollPane panelDesplazamiento2 = new JScrollPane(listaPokemon2);
         panelJugador2.add(panelDesplazamiento2, BorderLayout.CENTER);
 
-        JLabel etiquetaConteo2 = new JLabel("0/3 Pokémon seleccionados");
+        JLabel etiquetaConteo2 = new JLabel("0 Pokémon seleccionados");
         panelJugador2.add(etiquetaConteo2, BorderLayout.SOUTH);
 
         panelPrincipal.add(panelJugador1);
@@ -469,7 +477,7 @@ public class PoobkemonGUI extends JFrame{
                 pokemonesSeleccionados1.clear();
                 // Obtener TODOS los Pokémon seleccionados
                 pokemonesSeleccionados1.addAll(listaPokemon1.getSelectedValuesList());
-                etiquetaConteo1.setText(pokemonesSeleccionados1.size() + "/3 Pokémon seleccionados");
+                etiquetaConteo1.setText(pokemonesSeleccionados1.size() + "Pokémon seleccionados");
             }
         });
 
@@ -477,19 +485,11 @@ public class PoobkemonGUI extends JFrame{
             if (!e.getValueIsAdjusting()) {
                 pokemonesSeleccionados2.clear();
                 pokemonesSeleccionados2.addAll(listaPokemon2.getSelectedValuesList());
-                etiquetaConteo2.setText(pokemonesSeleccionados2.size() + "/3 Pokémon seleccionados");
+                etiquetaConteo2.setText(pokemonesSeleccionados2.size() + "Pokémon seleccionados");
             }
         });
 
         botonAceptar.addActionListener(e -> {
-            if (pokemonesSeleccionados1.size() < 3) {
-                etiquetaMensaje.setText(nombreJugador1 + " no ha seleccionado suficientes Pokémon");
-                return;
-            }
-            if (pokemonesSeleccionados2.size() < 3) {
-                etiquetaMensaje.setText(nombreJugador2 + " no ha seleccionado suficientes Pokémon");
-                return;
-            }
 
             // Asignar Pokémon a los jugadores
             try {

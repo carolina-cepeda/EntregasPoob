@@ -38,6 +38,8 @@ public class Normal implements ModoJuego {
         switch (tipoJuego) {
             case 1 -> { // PvP
                 juego.crearEntrenadores(nombre1, nombre2);
+                // como añado restriccion de 6 pokemones?
+                
             }
 
             case 2 -> { // PvM
@@ -46,6 +48,10 @@ public class Normal implements ModoJuego {
 
                 juego.setEntrenadores(humano, cpu);
                 juego.comenzarBatalla();
+
+                 if (humano.getPokemones().size() != 6 || cpu.getPokemones().size() != 6) {
+                throw new ExceptionPOOBkemon("Cada entrenador debe tener exactamente 6 Pokémon.");
+            }
             }
 
             case 3 -> { // MvM
@@ -77,10 +83,6 @@ public class Normal implements ModoJuego {
 
             cpu.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
             cpu.seleccionarItemsAuto(juego.getItemsBase());
-
-            // solo mientras pruebo QUITAR LUEGO
-            humano.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
-            humano.seleccionarItemsAuto(juego.getItemsBase());
 
             juego.setEntrenadores(humano, cpu);
             juego.comenzarBatalla();
