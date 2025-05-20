@@ -148,7 +148,7 @@ public class Entrenador implements Serializable{
     Collections.shuffle(disponibles); // Mezcla los Pokémon disponibles para q sea mas aleatorio
     int seleccionados = 0;
     for (Pokemon p : disponibles) {
-        if (seleccionados >= 3) break;
+        if (seleccionados >= 3) break; 
         this.agregarPokemon(p);
             seleccionados++;
         }
