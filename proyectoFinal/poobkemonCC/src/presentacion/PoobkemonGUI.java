@@ -54,55 +54,55 @@ public class PoobkemonGUI extends JFrame{
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                URL recurso = getClass().getResource("resources/fondoInicial.png"); // NO SIRVE?
+                URL recurso = getClass().getResource("presentation/resources/fondoInicial.png"); 
                 if (recurso != null) {
                     ImageIcon icon = new ImageIcon(recurso);
                     g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
                 } else {
                     // Si no hay imagen, mostrar fondo sólido
-                    g.setColor(Color.GREEN);
+                    g.setColor(new Color(11,103,48));
                     g.fillRect(0, 0, getWidth(), getHeight());
                 }
             }
         };
-    panel.setBorder(BorderFactory.createEmptyBorder(50, 150, 50, 150));
+            panel.setBorder(BorderFactory.createEmptyBorder(50, 150, 50, 150));
 
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.gridwidth = GridBagConstraints.REMAINDER;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.insets = new Insets(10, 0, 10, 0);
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridwidth = GridBagConstraints.REMAINDER;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.insets = new Insets(10, 0, 10, 0);
 
-    JLabel titulo = new JLabel("POOBKEMON", SwingConstants.CENTER);
-    titulo.setFont(new Font("Arial", Font.BOLD, 36));
-    titulo.setForeground(new Color(50, 205, 50));
-    panel.add(titulo, gbc);
+            JLabel titulo = new JLabel("POOBKEMON", SwingConstants.CENTER);
+            titulo.setFont(new Font("Arial", Font.BOLD, 36));
+            titulo.setForeground(new Color(50, 205, 50));
+            panel.add(titulo, gbc);
 
-    JButton botonModoNormal = crearBotonEstilizado("Normal");
-    botonModoNormal.addActionListener(e -> mostrarSeleccionSubModo());
-    panel.add(botonModoNormal, gbc);
-JButton botonModoSupervivencia = crearBotonEstilizado("Supervivencia");
-botonModoSupervivencia.addActionListener(e -> {
-    try {
-        Supervivencia modoSupervivencia = new Supervivencia();
-        juego.seleccionarModoJuego(modoSupervivencia);
-   
-        modoSupervivencia.prepararBatalla("jugador1","jugador2");
-        
-        iniciarBatalla();
-    } catch (ExceptionPOOBkemon ex) {
-        JOptionPane.showMessageDialog(PoobkemonGUI.this, 
-            "Error al iniciar modo supervivencia: " + ex.getMessage());
-    }
-});
-panel.add(botonModoSupervivencia, gbc);
+            JButton botonModoNormal = crearBotonEstilizado("Normal");
+            botonModoNormal.addActionListener(e -> mostrarSeleccionSubModo());
+            panel.add(botonModoNormal, gbc);
+            JButton botonModoSupervivencia = crearBotonEstilizado("Supervivencia");
+            botonModoSupervivencia.addActionListener(e -> {
+                try {
+                    Supervivencia modoSupervivencia = new Supervivencia();
+                    juego.seleccionarModoJuego(modoSupervivencia);
+            
+                    modoSupervivencia.prepararBatalla("jugador1","jugador2");
+                    
+                    iniciarBatalla();
+                } catch (ExceptionPOOBkemon ex) {
+                    JOptionPane.showMessageDialog(PoobkemonGUI.this, 
+                        "Error al iniciar modo supervivencia: " + ex.getMessage());
+                }
+            });
+            panel.add(botonModoSupervivencia, gbc);
 
-    prepareElementsMenu();
+            prepareElementsMenu();
 
-    this.getContentPane().removeAll();
-    this.add(panel, BorderLayout.CENTER);
-    this.revalidate();
-    this.repaint();
-    this.setVisible(true);
+            this.getContentPane().removeAll();
+            this.add(panel, BorderLayout.CENTER);
+            this.revalidate();
+            this.repaint();
+            this.setVisible(true);
 }
 
 
