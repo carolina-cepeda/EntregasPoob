@@ -109,9 +109,8 @@ public class Normal implements ModoJuego {
                 } else {
                     throw new ExceptionPOOBkemon("El entrenador actual no es una máquina.");
                 }
-                juego.comenzarTurno();
             }
-        }
+            }
 
         default -> throw new ExceptionPOOBkemon("Modo de juego inválido.");
     }

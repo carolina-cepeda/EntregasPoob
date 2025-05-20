@@ -98,7 +98,9 @@ public class Batalla implements Serializable {
      * @throws ExceptionPOOBkemon
      */
     public void comenzarTurno() throws ExceptionPOOBkemon {
+
         if (turnoActual instanceof EntrenadorMaquina maquina) {
+
             // Realizar acción automática para el entrenador máquina
             maquina.realizarAccionAutomatica(juego);
         } else {
@@ -137,6 +139,26 @@ public class Batalla implements Serializable {
      */
     private void verificarFinYContinuar() throws ExceptionPOOBkemon {
         System.out.println("Verificando si la batalla ha terminado...");
+        if (batallaTerminada()) return;
+
+        System.out.println("La batalla continúa. Cambiando turno...");
+        cambiarTurno();
+
+        // Bucle automático para turnos de máquina
+        while (turnoActual instanceof EntrenadorMaquina maquina) {
+            System.out.println("Turno automático para: " + maquina.getNombre());
+            maquina.realizarAccionAutomatica(juego);
+
+            if (batallaTerminada()) return;
+
+            cambiarTurno();
+        }
+
+        controlador.iniciar();
+}
+
+
+    private boolean batallaTerminada() throws ExceptionPOOBkemon {
         boolean e1SinPokemones = entrenador1.getPokemones().stream().allMatch(p -> p.getSalud() <= 0);
         boolean e2SinPokemones = entrenador2.getPokemones().stream().allMatch(p -> p.getSalud() <= 0);
 
@@ -146,11 +168,9 @@ public class Batalla implements Serializable {
             controlador.detener();
             throw new ExceptionPOOBkemon(ganador.getNombre() + ExceptionPOOBkemon.GANADOR);
         }
+        return false;
+}
 
-        System.out.println("La batalla continúa. Cambiando turno...");
-        cambiarTurno();
-        controlador.iniciar();
-    }
     /**
      * metodo para obtener el entrenador que esta jugando actualmente
      * @return
