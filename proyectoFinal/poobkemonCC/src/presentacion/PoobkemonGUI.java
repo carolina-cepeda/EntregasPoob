@@ -233,10 +233,28 @@ public class PoobkemonGUI extends JFrame{
             try {
                 Entrenador actual = juego.getEntrenadorActual();
                 if (actual instanceof EntrenadorMaquina cpu) {
+                    int saludJugadorAntes = estadoActual.pokemonActivo.getSalud();
+                    int saludOponenteAntes = estadoActual.pokemonOponente.getSalud();
+                    
                     cpu.realizarAccionAutomatica(juego);
                     juego.comenzarTurno();
+                    
+
                     estadoActual = juego.obtenerEstadoActual();
-                    actualizarPantallaBatalla();
+                    
+
+                    actualizarBarraDeSalud(barraSaludJugador, estadoActual.pokemonActivo.getSalud(), 
+                        estadoActual.pokemonActivo.getSaludInicial());
+                    actualizarBarraDeSalud(barraSaludOponente, estadoActual.pokemonOponente.getSalud(), 
+                        estadoActual.pokemonOponente.getSaludInicial());
+                    
+                    if (saludJugadorAntes <= 0 || saludOponenteAntes <= 0) {
+                        this.getContentPane().removeAll();
+                        this.add(crearPanelBatalla());
+                        this.revalidate();
+                    }
+                    
+                    this.repaint();
                 }
             } catch (ExceptionPOOBkemon ex) {
                 timer.stop();
@@ -246,8 +264,7 @@ public class PoobkemonGUI extends JFrame{
         });
 
         timer.start();
-    }
-
+}
 
 
 

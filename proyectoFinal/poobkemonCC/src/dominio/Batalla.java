@@ -146,7 +146,7 @@ public class Batalla implements Serializable {
 
         while (turnoActual instanceof EntrenadorMaquina maquina) {
             try {
-                Thread.sleep(1000); // Esperar 1 segundo antes de la acción
+                Thread.sleep(1500); // Esperar 1 segundo antes de la acción
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt(); 
                 System.out.println("Hilo interrumpido.");
