@@ -1,9 +1,10 @@
 package dominio;
 
+import java.io.Serializable;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ControladorTurno {
+public class ControladorTurno implements Serializable {
 
     private Batalla batalla;
     private Timer temporizador;

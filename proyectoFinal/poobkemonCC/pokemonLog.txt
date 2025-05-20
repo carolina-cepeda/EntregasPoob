@@ -2,3 +2,5 @@ Error al guardar el estado del juego: dominio.ControladorTurno
 Error al cargar el estado del juego: writing aborted; java.io.NotSerializableException: dominio.ControladorTurno
 Error al guardar el estado del juego: dominio.ControladorTurno
 Error al cargar el estado del juego: writing aborted; java.io.NotSerializableException: dominio.ControladorTurno
+Error al guardar el estado del juego: java.util.Timer
+Error al cargar el estado del juego: writing aborted; java.io.NotSerializableException: java.util.Timer
