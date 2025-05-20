@@ -1,7 +1,12 @@
 package dominio;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +22,7 @@ public class PokemonPersistencia {
      * @param rutaArchivo La ruta del archivo a importar
      * @return Lista de objetos Pokemon cargados desde el archivo
      */
-    public static List<Pokemon> importarPokemones(String rutaArchivo) {
+    public static List<Pokemon> importarPokemones(String rutaArchivo) throws ExceptionPOOBkemon {
         List<Pokemon> pokemones = new ArrayList<>();
         
         try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
@@ -69,10 +74,34 @@ public class PokemonPersistencia {
             }
             
         } catch (IOException e) {
-            System.err.println("Error al importar pokemones: " + e.getMessage());
-            e.printStackTrace();
+            throw new ExceptionPOOBkemon("error al importar los pokemones");
         }
         
         return pokemones;
     }
+
+    public static void guardarEstadoJuego(Juego juego, String rutaArchivo) {
+    try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(rutaArchivo))) {
+        oos.writeObject(juego);
+    } catch (IOException e) {
+
+        try (FileWriter log = new FileWriter("pokemonLog.txt", true)) {
+            log.write("Error al guardar el estado del juego: " + e.getMessage() + "\n");
+        } catch (IOException ignored) {}
+    }
+    }
+
+    public static Juego cargarEstadoJuego(String rutaArchivo) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(rutaArchivo))) {
+            return (Juego) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+
+            try (FileWriter log = new FileWriter("pokemonLog.txt", true)) {
+                log.write("Error al cargar el estado del juego: " + e.getMessage() + "\n");
+            } catch (IOException ignored) {}
+            return null;
+        }
+    }
+
+    
 }

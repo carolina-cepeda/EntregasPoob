@@ -1,5 +1,6 @@
 package dominio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * clase entrenador , puede ser un jugador o una
  */
-public class Entrenador {
+public class Entrenador implements Serializable{
 
     private String nombre;
     private int PP;

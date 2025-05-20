@@ -1,9 +1,11 @@
 package dominio;
 
+import java.io.Serializable;
+
 /**
  * clase abstracta item 
  */
-public abstract class Item {
+public abstract class Item  implements Serializable{
 
 	private String nombre;
 /**

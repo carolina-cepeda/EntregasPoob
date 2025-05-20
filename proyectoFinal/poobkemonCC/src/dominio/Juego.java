@@ -1,12 +1,13 @@
 package dominio;
 
+import java.io.Serializable;
 import java.util.*;
 import presentacion.EstadoJuego;
 
 /**
  * clase principal del juego poobkemon
  */
-public class Juego {
+public class Juego implements Serializable {
 
     private ModoJuego modoJuego;
     private Batalla batalla;
@@ -22,20 +23,30 @@ public class Juego {
      * constructor del juego 
      */
     public Juego() {
-        inicializarDatosBase();
+        try {
+            inicializarDatosBase();
+        } catch (ExceptionPOOBkemon ex) {
+        }
+
     }
 
     /**
      * metodo para inicializar datos base 
      */
-    private void inicializarDatosBase() {
-       
+    private void inicializarDatosBase() throws ExceptionPOOBkemon {
+       try{
         pokemonesBase = PokemonPersistencia.importarPokemones("src/dominio/pokemonesBase.bat");
+    
+
         itemsBase = new ArrayList<>();
         itemsBase.add(new Pocion("Potion"));
         itemsBase.add(new Pocion("SuperPotion"));
         itemsBase.add(new Pocion("HyperPotion"));
         itemsBase.add(new Pocion("Revive"));
+       }
+       catch(ExceptionPOOBkemon exception){
+
+       }
     }
 
     /**
@@ -195,6 +206,21 @@ public class Juego {
      */
     public String getNombreGanador(){
         return getEntrenadorActual().getNombre();
+    }
+
+
+    /**
+     * metodo para guardar el juego
+     */
+    public void guardarPartida(String rutaArchivo){
+        PokemonPersistencia.guardarEstadoJuego(this, rutaArchivo);
+    }
+
+    /**
+     * metodo para abrir un archivo de partida
+     */
+    public static Juego cargarJuego(String rutaArchivo){
+        return PokemonPersistencia.cargarEstadoJuego(rutaArchivo);
     }
 
 }

@@ -1,12 +1,13 @@
 package dominio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 /**
- * hacer abstracta ???
+ * clase para pokemon
  */
-public class Pokemon {
+public class Pokemon implements Serializable{
 
 	public String nombre;
 

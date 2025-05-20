@@ -1,8 +1,11 @@
 package dominio;
+
+import java.io.Serializable;
+
 /**
  * clase que crea los movimientos usados por pokemones
  */
-public class Movimiento {
+public class Movimiento implements Serializable {
 
     private String nombre;
     private int potencia;

@@ -1,8 +1,9 @@
 package dominio;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Batalla {
+public class Batalla implements Serializable {
 
     private final Entrenador entrenador1;
     private final Entrenador entrenador2;

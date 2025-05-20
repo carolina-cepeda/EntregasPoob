@@ -2,30 +2,35 @@ package presentacion;
 
 import dominio.*;
 import java.awt.*;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 
-public class PoobkemonGUI {
-    private JFrame marcoPrincipal;
-    private final Juego juego;
+public class PoobkemonGUI extends JFrame{
+    private Juego juego;
     private EstadoJuego estadoActual;
     private JProgressBar barraSaludJugador;
     private JProgressBar barraSaludOponente;
 
+     // menu
+    private JMenuBar menuBar;
+    private JMenu menuArchivo;
+    private JMenuItem itemNuevo, itemAbrir, itemGuardar, itemSalir;
+
+
     public PoobkemonGUI() {
         juego = new Juego();
-        inicializarMarcoPrincipal();
+        inicializarthis();
         mostrarMenuPrincipal();
     }
 
-    private void inicializarMarcoPrincipal() {
-        marcoPrincipal = new JFrame("POOBKEMON");
-        marcoPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        marcoPrincipal.setSize(800, 600);
-        marcoPrincipal.setLayout(new BorderLayout());
-        marcoPrincipal.setLocationRelativeTo(null);
+    private void inicializarthis() {
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(800, 600);
+        this.setLayout(new BorderLayout());
+        this.setLocationRelativeTo(null);
     }
 
     private ImageIcon cargarImagen(String ruta) {
@@ -49,7 +54,7 @@ public class PoobkemonGUI {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                URL recurso = getClass().getResource("/presentacion/resources/fondoInicial.png"); // NO SIRVE?
+                URL recurso = getClass().getResource("resources/fondoInicial.png"); // NO SIRVE?
                 if (recurso != null) {
                     ImageIcon icon = new ImageIcon(recurso);
                     g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
@@ -78,15 +83,18 @@ public class PoobkemonGUI {
 
     JButton botonModoSupervivencia = crearBotonEstilizado("Supervivencia");
     botonModoSupervivencia.addActionListener(e -> {
-        JOptionPane.showMessageDialog(marcoPrincipal, "Modo supervivencia no implementado aún");
+        JOptionPane.showMessageDialog(this, "Modo supervivencia no implementado aún");
     });
     panel.add(botonModoSupervivencia, gbc);
 
-    marcoPrincipal.getContentPane().removeAll();
-    marcoPrincipal.add(panel, BorderLayout.CENTER);
-    marcoPrincipal.revalidate();
-    marcoPrincipal.repaint();
-    marcoPrincipal.setVisible(true);
+
+    prepareElementsMenu();
+
+    this.getContentPane().removeAll();
+    this.add(panel, BorderLayout.CENTER);
+    this.revalidate();
+    this.repaint();
+    this.setVisible(true);
 }
 
 
@@ -101,10 +109,10 @@ public class PoobkemonGUI {
     }
 
     private void mostrarSeleccionSubModo() {
-        JDialog dialogo = new JDialog(marcoPrincipal, "Selección de modo", true);
+        JDialog dialogo = new JDialog(this, "Selección de modo", true);
         dialogo.setLayout(new GridBagLayout());
         dialogo.setSize(400, 300);
-        dialogo.setLocationRelativeTo(marcoPrincipal);
+        dialogo.setLocationRelativeTo(this);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -140,10 +148,10 @@ public class PoobkemonGUI {
     }
 
     private void mostrarConfiguracionMaquinaVsMaquina() {
-        JDialog dialogo = new JDialog(marcoPrincipal, "Configuración Máquina vs Máquina", true);
+        JDialog dialogo = new JDialog(this, "Configuración Máquina vs Máquina", true);
         dialogo.setLayout(new GridBagLayout());
         dialogo.setSize(400, 300);
-        dialogo.setLocationRelativeTo(marcoPrincipal);
+        dialogo.setLocationRelativeTo(this);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -190,16 +198,16 @@ public class PoobkemonGUI {
     private void mostrarBatallaAutomatica(Normal modo) {
         estadoActual = juego.obtenerEstadoActual();
         if (estadoActual == null) {
-            JOptionPane.showMessageDialog(marcoPrincipal, "Error al obtener estado del juego");
+            JOptionPane.showMessageDialog(this, "Error al obtener estado del juego");
             mostrarMenuPrincipal();
             return;
         }
 
         JPanel panelBatalla = crearPanelBatalla();
-        marcoPrincipal.getContentPane().removeAll();
-        marcoPrincipal.add(panelBatalla);
-        marcoPrincipal.revalidate();
-        marcoPrincipal.repaint();
+        this.getContentPane().removeAll();
+        this.add(panelBatalla);
+        this.revalidate();
+        this.repaint();
 
         Timer timer = new Timer(1500, null);
         timer.addActionListener(e -> {
@@ -207,7 +215,7 @@ public class PoobkemonGUI {
                 timer.stop();
                 String ganador = juego.getNombreGanador(); 
             
-                JOptionPane.showMessageDialog(marcoPrincipal, "¡Batalla finalizada!\nGanador: " + ganador);
+                JOptionPane.showMessageDialog(this, "¡Batalla finalizada!\nGanador: " + ganador);
                 mostrarMenuPrincipal();
                 return;
             }
@@ -222,7 +230,7 @@ public class PoobkemonGUI {
                 }
             } catch (ExceptionPOOBkemon ex) {
                 timer.stop();
-                JOptionPane.showMessageDialog(marcoPrincipal, " " + ex.getMessage());
+                JOptionPane.showMessageDialog(this, " " + ex.getMessage());
                 mostrarMenuPrincipal();
             }
         });
@@ -234,10 +242,10 @@ public class PoobkemonGUI {
 
 
     private void mostrarConfiguracionJugadorVsMaquina() {
-        JDialog dialogo = new JDialog(marcoPrincipal, "Configuración Player vs Máquina", true);
+        JDialog dialogo = new JDialog(this, "Configuración Player vs Máquina", true);
         dialogo.setLayout(new GridBagLayout());
         dialogo.setSize(400, 300);
-        dialogo.setLocationRelativeTo(marcoPrincipal);
+        dialogo.setLocationRelativeTo(this);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -292,10 +300,10 @@ public class PoobkemonGUI {
     esperando.setFont(new Font("Arial", Font.BOLD, 24));
     panel.add(esperando);
 
-    marcoPrincipal.getContentPane().removeAll();
-    marcoPrincipal.add(panel, BorderLayout.CENTER);
-    marcoPrincipal.revalidate();
-    marcoPrincipal.repaint();
+    this.getContentPane().removeAll();
+    this.add(panel, BorderLayout.CENTER);
+    this.revalidate();
+    this.repaint();
     /*
     * sugerencia IA de usar un hilo para hacer la lógica en segundo plano
     */
@@ -306,31 +314,31 @@ public class PoobkemonGUI {
             SwingUtilities.invokeLater(() -> {
                 estadoActual = juego.obtenerEstadoActual();
                 if (estadoActual == null) {
-                    JOptionPane.showMessageDialog(marcoPrincipal, "Error al obtener estado del juego tras iniciar.");
+                    JOptionPane.showMessageDialog(this, "Error al obtener estado del juego tras iniciar.");
                     mostrarMenuPrincipal();
                     return;
                 }
 
                 JPanel panelBatalla = crearPanelBatalla();
-                marcoPrincipal.getContentPane().removeAll();
-                marcoPrincipal.add(panelBatalla);
-                marcoPrincipal.revalidate();
-                marcoPrincipal.repaint();
+                this.getContentPane().removeAll();
+                this.add(panelBatalla);
+                this.revalidate();
+                this.repaint();
             });
 
         } catch (ExceptionPOOBkemon e) {
             SwingUtilities.invokeLater(() ->
-                JOptionPane.showMessageDialog(marcoPrincipal, "Error durante la batalla: " + e.getMessage()));
+                JOptionPane.showMessageDialog(this, "Error durante la batalla: " + e.getMessage()));
         }
     }).start();
 }
 
 
     private void mostrarEntradaNombresJugadores() {
-        JDialog dialogo = new JDialog(marcoPrincipal, "Nombres de jugadores", true);
+        JDialog dialogo = new JDialog(this, "Nombres de jugadores", true);
         dialogo.setLayout(new BorderLayout());
         dialogo.setSize(600, 300);
-        dialogo.setLocationRelativeTo(marcoPrincipal);
+        dialogo.setLocationRelativeTo(this);
 
         // Panel principal con dos columnas
         JPanel panelPrincipal = new JPanel(new GridLayout(1, 2, 10, 10));
@@ -383,10 +391,10 @@ public class PoobkemonGUI {
     }
 
     private void mostrarSeleccionPokemon(String nombreJugador1, String nombreJugador2) {
-        JDialog dialogo = new JDialog(marcoPrincipal, "Selección de Pokémon", true);
+        JDialog dialogo = new JDialog(this, "Selección de Pokémon", true);
         dialogo.setLayout(new BorderLayout());
         dialogo.setSize(800, 600);
-        dialogo.setLocationRelativeTo(marcoPrincipal);
+        dialogo.setLocationRelativeTo(this);
 
         // Panel principal con dos columnas
         JPanel panelPrincipal = new JPanel(new GridLayout(1, 2, 10, 10));
@@ -509,10 +517,10 @@ public class PoobkemonGUI {
     }
 
     private void mostrarSeleccionItems(String nombreJugador1, String nombreJugador2) {
-        JDialog dialogo = new JDialog(marcoPrincipal, "Selección de Ítems", true);
+        JDialog dialogo = new JDialog(this, "Selección de Ítems", true);
         dialogo.setLayout(new BorderLayout());
         dialogo.setSize(800, 600);
-        dialogo.setLocationRelativeTo(marcoPrincipal);
+        dialogo.setLocationRelativeTo(this);
 
         // Panel principal con dos columnas
         JPanel panelPrincipal = new JPanel(new GridLayout(1, 2, 10, 10));
@@ -604,16 +612,16 @@ public class PoobkemonGUI {
     private void iniciarBatalla() {
         estadoActual = juego.obtenerEstadoActual();
         if (estadoActual == null) {
-            JOptionPane.showMessageDialog(marcoPrincipal, "Error al obtener estado del juego");
+            JOptionPane.showMessageDialog(this, "Error al obtener estado del juego");
             mostrarMenuPrincipal();
             return;
         }
 
         JPanel panelBatalla = crearPanelBatalla();
-        marcoPrincipal.getContentPane().removeAll();
-        marcoPrincipal.add(panelBatalla);
-        marcoPrincipal.revalidate();
-        marcoPrincipal.repaint();
+        this.getContentPane().removeAll();
+        this.add(panelBatalla);
+        this.revalidate();
+        this.repaint();
     }
 
 
@@ -716,13 +724,13 @@ public class PoobkemonGUI {
         JButton botonHuir = crearBotonEstilizado("Huir");
         botonHuir.setPreferredSize(new Dimension(100, 30));
         botonHuir.addActionListener(e -> {
-            int opcion = JOptionPane.showConfirmDialog(marcoPrincipal,
+            int opcion = JOptionPane.showConfirmDialog(this,
                     "¿Estás seguro de que quieres huir?",
                     "Confirmar huida",
                     JOptionPane.YES_NO_OPTION);
 
             if (opcion == JOptionPane.YES_OPTION) {
-                JOptionPane.showMessageDialog(marcoPrincipal,
+                JOptionPane.showMessageDialog(this,
                         estadoActual.nombreOponente + " ha ganado el juego, felicidades!!");
                 mostrarMenuPrincipal();
             }
@@ -747,7 +755,7 @@ public class PoobkemonGUI {
         List<Movimiento> movimientos = estadoActual.pokemonActivo.getMovimientos();
         String[] opciones = movimientos.stream().map(Movimiento::getNombre).toArray(String[]::new);
         String seleccion = (String) JOptionPane.showInputDialog(
-            marcoPrincipal,
+            this,
             "Selecciona un movimiento:",
             "Opciones de ataque",
             JOptionPane.PLAIN_MESSAGE,
@@ -782,24 +790,24 @@ public class PoobkemonGUI {
 
                 // Mostrar mensajes si algún Pokémon fue derrotado
                 if (estadoActual.pokemonOponente.getSalud() <= 0) {
-                    JOptionPane.showMessageDialog(marcoPrincipal, "¡Has derrotado al Pokémon oponente!");
+                    JOptionPane.showMessageDialog(this, "¡Has derrotado al Pokémon oponente!");
                 } else if (estadoActual.pokemonActivo.getSalud() <= 0) {
-                    JOptionPane.showMessageDialog(marcoPrincipal, "Tu Pokémon ha sido derrotado.");
+                    JOptionPane.showMessageDialog(this, "Tu Pokémon ha sido derrotado.");
                 }
             } else {
-                JOptionPane.showMessageDialog(marcoPrincipal, "Movimiento no válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Movimiento no válido.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     } catch (ExceptionPOOBkemon e) {
-        JOptionPane.showMessageDialog(marcoPrincipal, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
 
     private void mostrarOpcionesItem() {
-        JDialog dialogo = new JDialog(marcoPrincipal, "Seleccionar ítem", true);
+        JDialog dialogo = new JDialog(this, "Seleccionar ítem", true);
         dialogo.setLayout(new BorderLayout());
         dialogo.setSize(300, 200);
-        dialogo.setLocationRelativeTo(marcoPrincipal);
+        dialogo.setLocationRelativeTo(this);
 
         JLabel titulo = new JLabel("Elija uno de los siguientes ítems", SwingConstants.CENTER);
         dialogo.add(titulo, BorderLayout.NORTH);
@@ -839,10 +847,10 @@ public class PoobkemonGUI {
     }
 
     private void mostrarOpcionesCambioPokemon() {
-        JDialog dialogo = new JDialog(marcoPrincipal, "Cambiar Pokémon", true);
+        JDialog dialogo = new JDialog(this, "Cambiar Pokémon", true);
         dialogo.setLayout(new BorderLayout());
         dialogo.setSize(400, 300);
-        dialogo.setLocationRelativeTo(marcoPrincipal);
+        dialogo.setLocationRelativeTo(this);
 
         // Lista de Pokémon disponibles
         DefaultListModel<Pokemon> modeloLista = new DefaultListModel<>();
@@ -900,7 +908,7 @@ public class PoobkemonGUI {
 
         if (estadoActual == null || !juego.hayBatallaActiva()) {
             String ganador = juego.getNombreGanador(); 
-            JOptionPane.showMessageDialog(marcoPrincipal,
+            JOptionPane.showMessageDialog(this,
                 "El jugador " + ganador + " ha ganado el juego, felicidades!!");
             mostrarMenuPrincipal();
             return;
@@ -925,6 +933,98 @@ public class PoobkemonGUI {
             return renderizador;
         }
     }
+
+    /**
+     * * Método para preparar los elementos del menu
+     * 
+     */
+    private void prepareElementsMenu() {
+        menuBar = new JMenuBar();
+        menuArchivo = new JMenu("Archivo");
+    
+        itemNuevo = new JMenuItem("Nuevo");
+        itemAbrir = new JMenuItem("Abrir");
+        itemGuardar = new JMenuItem("Guardar");
+        itemSalir = new JMenuItem("Salir");
+   
+
+        menuArchivo.add(itemNuevo);
+        menuArchivo.add(itemAbrir);
+        menuArchivo.add(itemGuardar);
+
+        menuArchivo.add(new JSeparator()); 
+        menuArchivo.add(itemSalir);
+    
+        menuBar.add(menuArchivo);
+        setJMenuBar(menuBar);
+        prepareActionsMenu();
+
+    }
+
+     /**
+     * * Método para preparar las acciones del menú.
+     * se utiliza un listener para cada elemento del menú.
+     */
+    private void prepareActionsMenu() {
+
+        itemAbrir.addActionListener(e -> optionOpen());
+
+        itemGuardar.addActionListener(e -> optionSave());
+
+        itemSalir.addActionListener(e -> optionExit());
+
+    }
+
+    /**
+     * metodo para abnrir un archivo
+     */
+    private void optionOpen() {
+    JFileChooser fileChooser = new JFileChooser();
+    int result = fileChooser.showOpenDialog(this);
+    if (result == JFileChooser.APPROVE_OPTION) {
+        File selectedFile = fileChooser.getSelectedFile();
+        try {
+            Juego juegoCargado = PokemonPersistencia.cargarEstadoJuego(selectedFile.getAbsolutePath());
+            if (juegoCargado != null) {
+                juego = juegoCargado;
+                repaint();
+                JOptionPane.showMessageDialog(this, "Archivo abierto exitosamente.");
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo cargar el archivo.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al abrir el archivo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
+
+
+    /**
+     * metodo para guardar un archivo 
+     */
+   private void optionSave() {
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try {
+                juego.guardarPartida(selectedFile.getAbsolutePath());
+                JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente.");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error al guardar el archivo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+
+    /**
+     * metodo para salir
+     */
+    private void optionExit() {
+        System.exit(0);
+    }
+
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new PoobkemonGUI());
