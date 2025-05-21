@@ -35,41 +35,42 @@ public class Normal implements ModoJuego {
      * @throws ExceptionPOOBkemon
      */
     public void prepararBatalla(String nombre1, String nombre2, int tipoIA1, int tipoIA2) throws ExceptionPOOBkemon {
-        switch (tipoJuego) {
-            case 1 -> { // PvP
-                juego.crearEntrenadores(nombre1, nombre2);
-                // como añado restriccion de 6 pokemones?
-                
-            }
+    this.nombre1 = nombre1;
+    this.nombre2 = nombre2;
+    this.tipoIA1 = tipoIA1;
+    this.tipoIA2 = tipoIA2;
 
-            case 2 -> { // PvM
-                Entrenador humano = new Entrenador(nombre1, "Rojo");
-                EntrenadorMaquina cpu = crearEntrenadorMaquina(tipoIA1, nombre2, "Azul");
-
-                juego.setEntrenadores(humano, cpu);
-                juego.comenzarBatalla();
-
-                 if (humano.getPokemones().size() != 6 || cpu.getPokemones().size() != 6) {
-                throw new ExceptionPOOBkemon("Cada entrenador debe tener exactamente 6 Pokémon.");
-            }
-            }
-
-            case 3 -> { // MvM
-                EntrenadorMaquina cpu1 = crearEntrenadorMaquina(tipoIA1, nombre1, "Rojo");
-                EntrenadorMaquina cpu2 = crearEntrenadorMaquina(tipoIA2, nombre2, "Azul");
-
-                juego.setEntrenadores(cpu1, cpu2);
-                cpu1.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
-                cpu2.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
-                cpu1.seleccionarItemsAuto(juego.getItemsBase());
-                cpu2.seleccionarItemsAuto(juego.getItemsBase());
-
-                juego.comenzarBatalla();
-            }
-
-            default -> throw new ExceptionPOOBkemon("Modo de juego inválido.");
+    switch (tipoJuego) {
+        case 1 -> { // PvP
+            juego.crearEntrenadores(nombre1, nombre2);
         }
+
+        case 2 -> { // PvM
+            Entrenador humano = new Entrenador(nombre1, "Rojo");
+            EntrenadorMaquina cpu = crearEntrenadorMaquina(tipoIA1, nombre2, "Azul");
+
+            juego.setEntrenadores(humano, cpu);
+          
+        }
+
+        case 3 -> {
+            EntrenadorMaquina cpu1 = crearEntrenadorMaquina(tipoIA1, nombre1, "Rojo");
+            EntrenadorMaquina cpu2 = crearEntrenadorMaquina(tipoIA2, nombre2, "Azul");
+
+            juego.setEntrenadores(cpu1, cpu2);
+            cpu1.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
+            cpu2.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
+            cpu1.seleccionarItemsAuto(juego.getItemsBase());
+            cpu2.seleccionarItemsAuto(juego.getItemsBase());
+
+            juego.comenzarBatalla();
+        }
+
+        default -> throw new ExceptionPOOBkemon("Modo de juego inválido.");
     }
+}
+
+
 
     /**
      * metodo para iniciar la batalla 
@@ -89,7 +90,7 @@ public class Normal implements ModoJuego {
         }
 
         case 3 -> { // MvM
-            // Primero configurar los entrenadores (esto estaba faltando)
+        
             EntrenadorMaquina cpu1 = crearEntrenadorMaquina(tipoIA1, nombre1, "Rojo");
             EntrenadorMaquina cpu2 = crearEntrenadorMaquina(tipoIA2, nombre2, "Azul");
 
