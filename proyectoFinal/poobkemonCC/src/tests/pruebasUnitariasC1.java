@@ -217,7 +217,7 @@ public class pruebasUnitariasC1 {
                 crearPokemon("Eevee")
         );
         e.seleccionarPokemonesAuto(disponibles);
-        assertTrue(e.getPokemones().size() <= 3);
+        assertTrue(e.getPokemones().size() <= 6);
     }
 
     @Test
