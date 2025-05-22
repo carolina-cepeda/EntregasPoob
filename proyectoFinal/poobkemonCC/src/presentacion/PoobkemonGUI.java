@@ -900,19 +900,20 @@ private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pok
             }
 
             if (indiceMovimiento != -1) {
-                // Guardar estado antes del ataque
+ 
                 int saludJugadorAntes = estadoActual.pokemonActivo.getSalud();
                 int saludOponenteAntes = estadoActual.pokemonOponente.getSalud();
 
-                // Realizar el ataque
                 juego.realizarAccion("atacar", indiceMovimiento);
-                
-                // Obtener nuevo estado
+
                 estadoActual = juego.obtenerEstadoActual();
 
-                // Actualizar ambas barras de salud
+                // Actualizar datos
                 actualizarBarraDeSalud(barraSaludJugador, estadoActual.pokemonActivo.getSalud(), estadoActual.pokemonActivo.getSaludInicial());
                 actualizarBarraDeSalud(barraSaludOponente, estadoActual.pokemonOponente.getSalud(), estadoActual.pokemonOponente.getSaludInicial());
+                    if (etiquetaTurno != null) {
+                                            etiquetaTurno.setText("Turno de: " + estadoActual.nombreJugador);
+                                        }
 
                 // Mostrar mensajes si algún Pokémon fue derrotado
                 if (estadoActual.pokemonOponente.getSalud() <= 0) {
@@ -953,13 +954,21 @@ private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pok
         botonUsar.addActionListener(e -> {
             Item seleccionado = listaItems.getSelectedValue();
             if (seleccionado != null) {
-                try {
+               try {
                     juego.realizarAccion("usarItem", seleccionado);
+
+                    estadoActual = juego.obtenerEstadoActual(); 
+                    if (etiquetaTurno != null) {
+                        etiquetaTurno.setText("Turno de: " + estadoActual.nombreJugador);
+                    }
+
                     dialogo.dispose();
                     actualizarPantallaBatalla();
                 } catch (ExceptionPOOBkemon ex) {
                     JOptionPane.showMessageDialog(dialogo, "Error al usar ítem: " + ex.getMessage());
                 }
+
+               
             } else {
                 JOptionPane.showMessageDialog(dialogo, "Selecciona un ítem primero");
             }
@@ -970,6 +979,7 @@ private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pok
         dialogo.add(panelBoton, BorderLayout.SOUTH);
 
         dialogo.setVisible(true);
+        
     }
 
     private void mostrarOpcionesCambioPokemon() {
