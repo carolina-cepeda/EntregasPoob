@@ -407,4 +407,48 @@ public class pruebasUnitariasC1 {
     }
     
 
+    //MODO NORMAL
+    @Test
+    public void testModoNormalJugadorVsMaquina() throws ExceptionPOOBkemon {
+        Juego juego = new Juego();
+        Normal modo = new Normal();
+        modo.setTipoJuego(2); // PvM
+        modo.configurarJuego(juego);
+
+
+        modo.prepararBatalla("Ash", "CPU", 1, 0); // tipoIA1 = 1 (defensivo), tipoIA2 se ignora en PvM
+
+        for (int i = 0; i < 3; i++) {
+            juego.agregarPokemonAEntrenador(1, crearPokemon("P" + i));
+        }
+        juego.agregarItemAEntrenador(1, new Pocion("Potion"));
+
+        // Iniciar batalla
+        modo.iniciarBatalla();
+
+        EstadoJuego estado = juego.obtenerEstadoActual();
+        assertNotNull(estado);
+        assertNotNull(estado.pokemonActivo);
+        assertNotNull(estado.pokemonOponente);
+    }
+
+//MODO SUPERVIVENCIA
+@Test
+public void testModoSupervivenciaPreparaBatalla() throws ExceptionPOOBkemon {
+    Juego juego = new Juego();
+    Supervivencia modo = new Supervivencia();
+    modo.configurarJuego(juego);
+
+    modo.prepararBatalla("Red", "Blue");
+
+    EstadoJuego estado = juego.obtenerEstadoActual();
+
+    assertNotNull(estado);
+    assertTrue(estado.nombreJugador.equals("Red") || estado.nombreJugador.equals("Blue"));
+    assertTrue(estado.nombreOponente.equals("Red") || estado.nombreOponente.equals("Blue"));
+    assertNotNull(estado.pokemonActivo);
+    assertNotNull(estado.pokemonOponente);
+    assertNotEquals(estado.pokemonActivo, estado.pokemonOponente);
+}
+
 }
