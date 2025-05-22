@@ -231,4 +231,16 @@ public class Juego implements Serializable {
         batalla.detener();
     }
 
+     /**
+     * metodo para obtener entrenador1
+     */
+    public Entrenador getEntrenador1(){
+        return entrenador1;
+    }
+    /**
+     * metodo para obtener entrenador2
+     */
+    public Entrenador getEntrenador2(){
+        return entrenador2;
+    }
 }

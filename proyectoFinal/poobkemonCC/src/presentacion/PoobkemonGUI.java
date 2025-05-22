@@ -25,6 +25,7 @@ public class PoobkemonGUI extends JFrame{
     public PoobkemonGUI() {
         juego = new Juego();
         inicializarthis();
+        prepareElementsMenu();
         mostrarMenuPrincipal();
     }
 
@@ -251,9 +252,8 @@ public class PoobkemonGUI extends JFrame{
                     if (saludJugadorAntes <= 0 || saludOponenteAntes <= 0) {
                         this.getContentPane().removeAll();
                         this.add(crearPanelBatalla());
-                        this.revalidate();
                     }
-                    
+                    this.revalidate();
                     this.repaint();
                 }
             } catch (ExceptionPOOBkemon ex) {
@@ -382,20 +382,17 @@ private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pok
     JButton botonFinalizar = new JButton("Finalizar");
     botonFinalizar.addActionListener(e -> {
         try {
-            Normal modoNormal = new Normal();
+           Normal modoNormal = new Normal();
             modoNormal.setTipoJuego(2); // PvM
             juego.seleccionarModoJuego(modoNormal);
 
+            modoNormal.prepararBatalla(nombreJugador, "Máquina", tipoIA, 0);
             for (Pokemon p : pokemonesSeleccionados) {
-                juego.agregarPokemonAEntrenador(1, p); // humano
+                juego.agregarPokemonAEntrenador(1, p);
             }
-
-            // Agregar ítems
             for (int i = 0; i < modeloLista.size(); i++) {
                 juego.agregarItemAEntrenador(1, new Pocion(modeloLista.get(i)));
             }
-
-            // Preparar batalla completa
             modoNormal.prepararBatalla(nombreJugador, "Máquina", tipoIA, 0);
 
             dialogo.dispose();
@@ -1102,7 +1099,12 @@ private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pok
      * se utiliza un listener para cada elemento del menú.
      */
     private void prepareActionsMenu() {
-        itemPausar.addActionListener(e-> juego.pausar());
+        itemPausar.addActionListener(e -> {
+                if (juego != null) {
+                    juego.pausar();
+                    JOptionPane.showMessageDialog(this, "Juego pausado");
+                }
+});
 
         itemAbrir.addActionListener(e -> optionOpen());
 
