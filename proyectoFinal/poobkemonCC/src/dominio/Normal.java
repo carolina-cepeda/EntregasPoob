@@ -79,13 +79,17 @@ public class Normal implements ModoJuego {
     public void iniciarBatalla() throws ExceptionPOOBkemon {
         switch (tipoJuego) {
         case 2 -> { // PvM
-            EntrenadorMaquina cpu = (EntrenadorMaquina) juego.getEntrenador2();
+                EntrenadorMaquina cpu = (EntrenadorMaquina) juego.getEntrenador2();
+                System.out.println("¿Entrenador 2 es null? " + (cpu == null));
+                
+                cpu.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
+                cpu.seleccionarItemsAuto(juego.getItemsBase());
 
-            cpu.seleccionarPokemonesAuto(juego.getPokemonesBaseCopia());
-            cpu.seleccionarItemsAuto(juego.getItemsBase());
+                System.out.println("Equipo de la máquina: " + cpu.getPokemones());
+                System.out.println("Pokémon activo de la máquina: " + cpu.getPokemonActivo());
 
-            juego.comenzarBatalla();
-        }
+                juego.comenzarBatalla();
+            }
 
         case 3 -> { // MvM
         
