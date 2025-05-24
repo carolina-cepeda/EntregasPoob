@@ -21,7 +21,9 @@ public class PoobkemonGUI extends JFrame{
     private JMenu menuArchivo;
     private JMenuItem itemPausar, itemAbrir, itemGuardar, itemSalir;
     private JLabel etiquetaTurno;
-
+/**
+ * constructor de la presentación
+ */
     public PoobkemonGUI() {
         juego = new Juego();
         inicializarthis();
@@ -29,6 +31,9 @@ public class PoobkemonGUI extends JFrame{
         mostrarMenuPrincipal();
     }
 
+    /**
+     * inicializacion de marco
+     */
     private void inicializarthis() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800, 600);
@@ -36,6 +41,11 @@ public class PoobkemonGUI extends JFrame{
         this.setLocationRelativeTo(null);
     }
 
+    /**
+     * meotdo para cargar las imagenes de forma más sencilla 
+     * @param ruta
+     * @return
+     */
     private ImageIcon cargarImagen(String ruta) {
         try {
             URL recurso = getClass().getResource(ruta);
@@ -46,10 +56,14 @@ public class PoobkemonGUI extends JFrame{
             return new ImageIcon(recurso);
         } catch (Exception e) {
             System.err.println("Error al cargar la imagen: " + ruta);
-            System.err.println("Detalles del error: " + e.getMessage());
+            POOBkemonLog.error(e);
             return null;
         }
     }
+
+    /**
+     * metodo apra mostrar el menu inicial 
+     */
     private void mostrarMenuPrincipal() {
         // Panel con imagen de fondo
         JPanel panel = new JPanel(new GridBagLayout()) {

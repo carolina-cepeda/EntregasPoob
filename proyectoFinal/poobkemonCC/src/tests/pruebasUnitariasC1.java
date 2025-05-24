@@ -126,7 +126,7 @@ public class pruebasUnitariasC1 {
     }
 
     @Test
-    public void testAgregarMasDe6Pokemon() {
+    public void testAgregar6Pokemon() {
         Entrenador e = new Entrenador("Ash", "Rojo");
         for (int i = 0; i < 7; i++) {
             e.agregarPokemon(crearPokemon("P" + i));
