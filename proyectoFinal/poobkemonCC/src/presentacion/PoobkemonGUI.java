@@ -264,11 +264,12 @@ public class PoobkemonGUI extends JFrame{
                         estadoActual.pokemonOponente.getSaludInicial());
                     
                     if (saludJugadorAntes <= 0 || saludOponenteAntes <= 0) {
-                        this.getContentPane().removeAll();
-                        this.add(crearPanelBatalla());
+                        actualizarPantallaBatalla();
+                    } else {
+                        this.revalidate();
+                        this.repaint();
                     }
-                    this.revalidate();
-                    this.repaint();
+
                 }
             } catch (ExceptionPOOBkemon ex) {
                 timer.stop();
@@ -925,12 +926,15 @@ private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pok
                     if (etiquetaTurno != null) {
                                             etiquetaTurno.setText("Turno de: " + estadoActual.nombreJugador);
                                         }
+                    
 
                 // Mostrar mensajes si algún Pokémon fue derrotado
                 if (estadoActual.pokemonOponente.getSalud() <= 0) {
                     JOptionPane.showMessageDialog(this, "¡Has derrotado al Pokémon oponente!");
+                    actualizarPantallaBatalla();
                 } else if (estadoActual.pokemonActivo.getSalud() <= 0) {
                     JOptionPane.showMessageDialog(this, "Tu Pokémon ha sido derrotado.");
+                    actualizarPantallaBatalla();
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Movimiento no válido.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -969,6 +973,12 @@ private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pok
                     juego.realizarAccion("usarItem", seleccionado);
 
                     estadoActual = juego.obtenerEstadoActual(); 
+                    
+                    if (estadoActual.pokemonActivo.getSalud() <= 0 || estadoActual.pokemonOponente.getSalud() <= 0) {
+                        actualizarPantallaBatalla();
+                        return;
+                    }
+
                     if (etiquetaTurno != null) {
                         etiquetaTurno.setText("Turno de: " + estadoActual.nombreJugador);
                     }
@@ -1061,7 +1071,7 @@ private void mostrarSeleccionItemsPvM(String nombreJugador, int tipoIA, List<Pok
             return;
         }
 
-        iniciarBatalla(); 
+       
     }
 
     /**
